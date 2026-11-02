@@ -7,7 +7,7 @@
   4. 反事实噪声样本（hard top-1/4 + 0.25*N(0,1)，两次）
 并统计梦境 consolidate 的调用次数（校验诊断自身的一致性）。
 """
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

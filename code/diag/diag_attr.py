@@ -3,7 +3,7 @@
 按真实 PLAN 边界（每块 600 步）核对段→任务，再对 linear 测试输入
 逐细胞打印：锐化意见、各段原始余弦、极差、信任权重、中心化贡献。
 """
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

@@ -1,5 +1,5 @@
 """完整统计 wave 200 个测试输入的失分模式（对齐 run_all 评估协议：纯 decide，无 observe）。"""
-import sys, numpy as np
+import os, sys, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from obm import OuroborosMesh, OBMConfig
 from obm.stream import build_stream

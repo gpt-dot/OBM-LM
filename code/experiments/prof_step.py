@@ -1,5 +1,5 @@
 """run_step 分相位性能剖析：定位 9.6s/step 的去向。"""
-import sys, time
+import os, sys, time
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import numpy as np
@@ -10,7 +10,7 @@ from obm_lm.corpus import DomainStream
 from obm_lm.tokenizer import BPETokenizer
 
 tok = BPETokenizer.load(os.path.join(_ROOT, "obm_mvp/data/cache/tokenizer.json"))
-streams = {d: DomainStream(d, np.load(fos.path.join(_ROOT, "obm_mvp/data/cache/{d}_tokens.npy")), seed=1000+k)
+streams = {d: DomainStream(d, np.load(os.path.join(_ROOT, f"obm_mvp/data/cache/{d}_tokens.npy")), seed=1000+k)
            for k, d in enumerate(["en_lit", "zh_classic", "code_py", "en_wiki"])}
 
 cfg = OBMLMConfig(seed=7, backend="torch", vocab=tok.vocab_size,

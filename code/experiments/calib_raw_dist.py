@@ -5,7 +5,7 @@ _context 用的是 batch 均值到段高斯的 _gauss_dist（var_floor 作点方
   - 段内：batch(12) 均值 -> 本任务冻结参照(240) 的距离分布
   - 跨任务：batch 均值 -> 异任务冻结参照的距离分布
 """
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

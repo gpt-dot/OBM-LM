@@ -2,7 +2,7 @@
 
 假设：专才在梦里反刍"高意外度"样本时大量翻车，信誉被 dream_alpha 拖垮。
 """
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

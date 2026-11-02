@@ -1,5 +1,5 @@
 """diag_boundary.py —— wave 段内 3 次误判边界，是哪个信号触发的？"""
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

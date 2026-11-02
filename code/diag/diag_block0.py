@@ -2,7 +2,7 @@
 
 回答：linear 专才是"从未学好"还是"学好后被凋谢/ decay 杀死"？
 """
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

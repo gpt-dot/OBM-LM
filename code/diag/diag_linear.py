@@ -1,5 +1,5 @@
 """linear 测试输入的 ctx/选中集/权重诊断（对比 sharp 前后）。"""
-import sys, numpy as np
+import os, sys, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from obm import OuroborosMesh, OBMConfig
 from obm.stream import build_stream

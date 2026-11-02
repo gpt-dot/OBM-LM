@@ -2,7 +2,7 @@
 
 在每个梦境前后，测量所有细胞在 block0 全量训练集上的真实精度。
 """
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

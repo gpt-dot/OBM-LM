@@ -1,5 +1,5 @@
 """diag_wave.py —— wave 测试输入：ctx/rels/选中/对错 全链路。"""
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

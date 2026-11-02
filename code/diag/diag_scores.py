@@ -2,7 +2,7 @@
 
 回答：为什么所有输入都塌向段 #5（blobs3）？
 """
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

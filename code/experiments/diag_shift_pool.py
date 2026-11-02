@@ -3,7 +3,7 @@
 验证假设：copy 专才 cell #0 因 shift 输入的 ctx 在段#0(copy)上权重 ≥0.11，
 cond_rel = 0.5 + 0.45*w0 ≥ 0.55 跨过合同线，被拉进 shift 池以全额 lr 训练。
 """
-import sys
+import os, sys
 
 import os as _os
 for _v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",

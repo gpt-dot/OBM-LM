@@ -1,5 +1,5 @@
 """修正版：索引 vs id 分开；并输出每细胞 wave 精度表。"""
-import sys, numpy as np
+import os, sys, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from obm import OuroborosMesh, OBMConfig
 from obm.stream import build_stream

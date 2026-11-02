@@ -5,7 +5,7 @@ prof_step 只覆盖了 run_step 主路径；本脚本用玩具协议 + 短梦境
 确认新增的引擎分派助手（ens_acc/ens_nll/argmax_pred/mean_nll/
 forward_stats 融合版）在 torch 路无崩溃且数值合理。
 """
-import sys, time
+import os, sys, time
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import numpy as np
 import torch

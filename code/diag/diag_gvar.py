@@ -1,5 +1,5 @@
 """追踪段 #2 封存时的 buffer 组成与 gvar。"""
-import sys, numpy as np
+import os, sys, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from obm import OuroborosMesh, OBMConfig
 from obm.stream import build_stream

@@ -3,7 +3,7 @@
 假设待验证：switch 窗口内（封存前 seg_counter 仍指旧段），受授细胞在
 新任务数据上被记账到旧段号；段复现时旧段号经合并转移，造成跨任务合同污染。
 """
-import sys
+import os, sys
 
 import os as _os
 for _v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",

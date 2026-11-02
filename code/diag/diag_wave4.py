@@ -1,5 +1,5 @@
 """细查：ctx[#2] 低的输入是哪些 + 错误样本的选中集构成。"""
-import sys, numpy as np
+import os, sys, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from obm import OuroborosMesh, OBMConfig
 from obm.stream import build_stream

@@ -1,5 +1,5 @@
 """diag_norm.py —— 各任务的脉冲范数分布 + 封存点的 recent/older 值。"""
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

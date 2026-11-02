@@ -1,5 +1,5 @@
 """插桩诊断：记录合同记账流水，定位 shift 专才消失 + sort 只有 0.78 的根因。"""
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

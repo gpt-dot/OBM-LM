@@ -3,7 +3,7 @@
 不跑模型，直接模拟封存窗口（每段取任务块中部的 200 个纯样本），
 然后看各任务测试输入的 top-1 段归属。
 """
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

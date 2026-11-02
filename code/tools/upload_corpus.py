@@ -1,5 +1,5 @@
 """上传新语料缓存到 scnet（带重试续传，后台跑）。"""
-import sys, time
+import os, sys, time
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from scnet_upload import efile_base, mkdir, upload_file

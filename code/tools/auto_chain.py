@@ -3,13 +3,13 @@
 轮询 scale7 作业，COMPLETED 立即提交 scale8（权重已在远端节点，无需下载），
 把排队/完工的空转时间压到零。FAILED 则只报警不提交。
 """
-import sys, time, subprocess
+import os, sys, time, subprocess
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from scnet_submit import region_token, job_detail
 
-JOB_S7 = "126531564"
+JOB_S7 = os.environ.get("SCNET_JOB_ID", "")
 CMD = ["python3", "scnet_submit.py", "--script", "deploy/train8.sh",
        "--name", "scale8_balance", "--wall", "06:00:00"]
 

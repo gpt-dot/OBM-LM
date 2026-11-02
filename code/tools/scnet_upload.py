@@ -6,9 +6,10 @@
 
 依赖 scnet_client.get_tokens() 取 token 与 efile 基址。
 """
-_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-import requests, urllib.request
+import os, sys, json, argparse, urllib.request, urllib.parse
+import requests
 
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from scnet_client import get_tokens
 

@@ -1,5 +1,5 @@
 """插桩：打印每次梦境的 ens_acc / 池构成 / in_dip，定位误分裂。"""
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

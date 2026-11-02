@@ -6,7 +6,7 @@
   - 按 block 统计每个细胞实际接受训练的步数（负迁移检测）
   - 梦境前后对比 copy 专精细胞的精度
 """
-import sys
+import os, sys
 import time
 
 import os as _os

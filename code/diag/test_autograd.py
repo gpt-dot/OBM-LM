@@ -1,5 +1,5 @@
 """autograd 数值梯度验证：每个算子的解析梯度 vs 中心差分。"""
-import sys
+import os, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from obm_lm.autograd import (T, bmm, gather, softmax, layernorm, gelu,

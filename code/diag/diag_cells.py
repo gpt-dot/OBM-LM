@@ -3,7 +3,7 @@
 回答：1) 各细胞到底会什么（路由的天花板）？
       2) 意见指纹为什么没有区分度（意见到处都尖）？
 """
-import sys
+import os, sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
