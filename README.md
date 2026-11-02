@@ -45,7 +45,7 @@
 
 | 归档 | 大小 | 内容 |
 | --- | ---: | --- |
-| `OBM-LM-scale8-训后-75M.pkl` | 209 MB | scale8 训后权重（四域最优，MD5 `5deefd69…`） |
+| `OBM-LM-scale8-posttrain-75M.zip` | 209 MB | scale8 训后权重（解压后为 `OBM-LM-scale8-训后-75M.pkl`，四域最优，MD5 `5deefd69…`） |
 | `OBM-LM-permanent-20261101.zip` | 836 MB | scale4~7 权重 + 12 份战报 + 69 份成绩单 + 设计文档 |
 | `OBM-LM-toolkit-20261101.zip` | 347 MB | 完整代码 + tokenizer/四域缓存 + torch 离线 wheel |
 
@@ -56,6 +56,7 @@ git clone https://github.com/gpt-dot/OBM-LM.git
 cd OBM-LM
 
 # 1) 下载并解压权重 / 缓存（Release 资产）
+#    scale8 权重 zip 解压后得到 OBM-LM-scale8-训后-75M.pkl
 #    将 OBM-LM-scale*.pkl 放入 models/ 或 code/models/
 
 # 2) 启动 zoo 推理演示（端口 8765）

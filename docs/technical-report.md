@@ -499,7 +499,7 @@ OBM 多出来的能力：
 
 | 包 | 大小 | 内容 |
 | --- | ---: | --- |
-| `OBM-LM-scale8-训后-75M.pkl` | 209 MB | scale8 训后权重（四域最优：113 / 800 / 55 / 277），MD5 `5deefd69…` |
+| `OBM-LM-scale8-posttrain-75M.zip` | 209 MB | scale8 训后权重（解压后为 `OBM-LM-scale8-训后-75M.pkl`，四域最优：113 / 800 / 55 / 277），MD5 `5deefd69…` |
 | `OBM-LM-永久产物-20261101.zip` | 836 MB | `models/` scale4~7 共 4 个 75 M 权重 pkl；`reports/` 12 份战报 + 设计文档；`results/` MVP 历史、results_lm 全量、69 个成绩单、scale7 成绩单与训练日志；`docs/` |
 | `OBM-LM-运行工具包-20261101.zip` | 347 MB | `code/` 核心代码 + 34 个实验脚本 + scnet 三件套 + auto_chain + night_pipeline + 17 个诊断脚本 + train5~9.sh；`data/cache` tokenizer 与四域 token 缓存；`wheels/` torch 1.13.1+cpu 离线 whl |
 
@@ -554,7 +554,7 @@ scale8 于 2026-11-03 06:30 完工，训练 213 分钟，由自驱作业链接�
 | 吞吐 | step 均值 2,128 ms（p50 1,727 ms），961 tok/s，peakRSS 4.5 GB |
 | 功能验收 | pass = True |
 
-四域全部刷新历史最优。权重已作为 Release 资产发布（`OBM-LM-scale8-训后-75M.pkl`，209 MB，MD5 `5deefd69…`），战报与日志归档于仓库 `reports/` 与 `results/scale8/`。
+四域全部刷新历史最优。权重已作为 Release 资产发布（`OBM-LM-scale8-posttrain-75M.zip`，209 MB，解压后为 `OBM-LM-scale8-训后-75M.pkl`，MD5 `5deefd69…`），战报与日志归档于仓库 `reports/` 与 `results/scale8/`。
 
 ### 11.2 scale9 接力（scale10 配方版）
 
