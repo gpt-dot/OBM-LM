@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>OBM-LM scale8 跨代战报</title><style>
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#f6f8fa;margin:0}
+.wrap{max-width:920px;margin:0 auto;background:#fff;padding:34px 40px 60px}
+h1{font-size:1.5em;margin:0 0 4px}
+.sub{color:#667;margin-bottom:24px}
+table{border-collapse:collapse;width:100%;margin:18px 0}
+th,td{border:1px solid #dde;padding:9px 12px;text-align:center;font-size:.95em}
+th{background:#f0f4f8}
+.ok{color:#0a7d32;font-weight:700}
+.note{background:#f6f9fc;border-left:4px solid #4a90d9;padding:12px 16px;margin:14px 0;font-size:.92em;line-height:1.8}
+</style></head><body><div class="wrap">
+<h1>OBM-LM scale8 跨代战报</h1>
+<div class="sub">2026-11-03 06:30 生成 · 自驱作业链首胜（抗清场体系实战验证）</div>
+
+<table>
+<tr><th>域 ppl（项目沿用口径）</th><th>scale4</th><th>scale5</th><th>scale6</th><th>scale7</th><th>scale8</th><th>最优</th></tr>
+<tr><td>en_lit</td><td>601</td><td>163</td><td>123</td><td>120</td><td class="ok">113</td><td class="ok">113 (scale8)</td></tr>
+<tr><td>zh_classic</td><td>963</td><td>1557</td><td>825</td><td>837</td><td class="ok">800</td><td class="ok">800 (scale8)</td></tr>
+<tr><td>code_py</td><td>1327</td><td>295</td><td>284</td><td>73</td><td class="ok">55</td><td class="ok">55 (scale8)</td></tr>
+<tr><td>en_wiki</td><td>4596</td><td>295</td><td>391</td><td>296</td><td class="ok">277</td><td class="ok">277 (scale8)</td></tr>
+</table>
+
+<div class="note"><b>四域全面刷新最优</b>——scale8 相对 scale7：en_lit −6%、zh_classic −4%、code_py −25%、en_wiki −6%。
+训练 6000 步（4×1500 对称域序），wall 213 分钟，resume 自 scale7@step31800。
+<br>注：ppl 为项目沿用口径（token 级）；跨域直接比较的限制见技术报告 §5.4。</div>
+
+<table>
+<tr><th>运行指标</th><th>值</th></tr>
+<tr><td>参数规模</td><td>75.78M（D=512, L=8, B=16）</td></tr>
+<tr><td>速度</td><td>step 均值 2128ms（p50 1727ms）· 961 tok/s · peakRSS 4.5GB</td></tr>
+<tr><td>市场事件</td><td>seal 封存 ×62 · death 凋亡 ×3 · birth 分裂 ×0（3 细胞满编健康）</td></tr>
+<tr><td>路由质量（market vs oracle）</td><td>en_lit 112.6/112.5 · zh 799.8/783.6 · code 54.5/54.1 · wiki 277.0/276.1 —— 市场路由紧贴最优单细胞</td></tr>
+<tr><td>领地分化</td><td>code_py 专才 54.1 vs 通才 2040.7（38×）；zh 专才 783.6 vs 通才 8273.1（11×）</td></tr>
+</table>
+
+<div class="note"><b>事故与恢复记录</b>：本代训练期间平台第三次清场（作业+日志+权重），恢复链实战验证：
+本地永久包提取 scale7 权重 → 分片上传 → MD5 校验（c28a73e6…）→ 自驱作业 bootstrap 自举 → 训练完成。
+首次自驱提交因漏 export OBM_ROOT 38 秒崩（tokenizer 路径回退硬编码），修复后 scale8-sd2 一次跑通。
+节点无外网实锤 → 自接力回退本地，scale9 已人工接力提交。</div>
+
+<div class="note"><b>下一棒 scale9（作业 ID 已脱敏）</b>：scale10 配方——λ=1.0 强正则 + embedding 豁免 WD +
+replay-need + dream-seq + 高质量域收尾（code_py/en_wiki 末两块）+ spawn 第 4 细胞。完工即裁决三项机制。</div>
+</div></body></html>

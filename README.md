@@ -16,11 +16,11 @@
 | --- | --- |
 | 模型规模 | 75 M 参数（D=512 / L=8 / B=16 / 16k vocab） |
 | 语言模型阶段 | 10.6 M → 75 M，四域（en_lit / zh_classic / code_py / en_wiki） |
-| 最强单代 | scale7：ppl 120 / 837 / **73** / 296 |
-| 生成质量 | code 域 top-1 token 命中率 0.5% → **28.2%**（56×） |
-| 训练量 | 31,800 步，951 tok/s，146.9 M tokens，tok/param 1.94 |
+| 最强单代 | scale8：ppl 113 / 800 / **55** / 277（四域全面刷新） |
+| 生成质量 | code 域 top-1 token 命中率 0.5% → **32.4%**（65×） |
+| 训练量 | 37,800 步，961 tok/s，146.9 M tokens，tok/param 1.94 |
 | 机制验证 | NLL 路由 top-1 决策与逐细胞实测最优 **100% 一致** |
-| 市场运转 | scale7 实录 47 次封存、3 次真实死亡、3 → 6 细胞凋亡修剪提速 1.49× |
+| 市场运转 | scale8 实录 62 次封存、3 次真实死亡；跨代 zoo 修剪 1.49× 提速 |
 | 部署栈 | 市场训练 + NLL 路由 + 跨代 zoo + 温度配方；零额外训练成本 |
 
 ## 仓库结构
@@ -37,15 +37,16 @@
 │   ├── tools/                       # scnet 平台客户端 / 夜间流水线
 │   ├── diag/                        # 诊断脚本集
 │   └── train*.sh                    # scale4~9 训练脚本
-├── reports/                         # 12 份战报 + 设计文档 + 训练方法
-└── results/                         # 69 份历史成绩单与训练日志
+├── reports/                         # 13 份战报 + 设计文档 + 训练方法
+└── results/                         # 历史成绩单、scale8 日志与训练结果
 ```
 
-模型权重（scale4~7，共 4 个 75 M pkl）、四域 token 缓存与 torch 离线 wheel 体积较大，随 [Releases](https://github.com/gpt-dot/OBM-LM/releases/tag/v0.1.0) 发布：
+模型权重（scale4~8，共 5 个 75 M pkl）、四域 token 缓存与 torch 离线 wheel 体积较大，随 [Releases](https://github.com/gpt-dot/OBM-LM/releases) 发布：
 
 | 归档 | 大小 | 内容 |
 | --- | ---: | --- |
-| `OBM-LM-permanent-20261101.zip` | 836 MB | 4 代权重 + 12 份战报 + 69 份成绩单 + 设计文档 |
+| `OBM-LM-scale8-训后-75M.pkl` | 209 MB | scale8 训后权重（四域最优，MD5 `5deefd69…`） |
+| `OBM-LM-permanent-20261101.zip` | 836 MB | scale4~7 权重 + 12 份战报 + 69 份成绩单 + 设计文档 |
 | `OBM-LM-toolkit-20261101.zip` | 347 MB | 完整代码 + tokenizer/四域缓存 + torch 离线 wheel |
 
 ## 快速开始
