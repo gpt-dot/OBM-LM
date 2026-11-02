@@ -1,0 +1,31 @@
+== OBM-LM scale run: pilot | cells=4 params=25.5M | steps/block=300 total=1800
+  s100 [blk0:en_lit] en_lit=25785713.1 zh_classic=29187988046.1 code_py=7356452923.2 en_wiki=2479197548.2 | online=0.107 cells=4 seg=0 2.4min
+  s200 [blk0:en_lit] en_lit=147205.5 zh_classic=4177613708.7 code_py=88576695.5 en_wiki=19975176.1 | online=0.120 cells=4 seg=0 4.7min
+  s300 [blk0:en_lit] en_lit=873.9 zh_classic=1711333014.7 code_py=1676406.4 en_wiki=126893.2 | online=0.149 cells=4 seg=0 7.6min
+== block 0 (en_lit) done in 459s, cells=4
+  s400 [blk1:zh_classic] en_lit=4083.0 zh_classic=17757.2 code_py=2011889.2 en_wiki=241202.8 | online=0.094 cells=4 seg=1 10.1min
+  [ckpt] step 499 saved (783s)
+  s500 [blk1:zh_classic] en_lit=4386.6 zh_classic=4096.2 code_py=2290000.2 en_wiki=318129.4 | online=0.111 cells=4 seg=1 13.1min
+  s600 [blk1:zh_classic] en_lit=6535.0 zh_classic=2149.2 code_py=2510158.3 en_wiki=428935.9 | online=0.075 cells=4 seg=1 18.5min
+== block 1 (zh_classic) done in 651s, cells=4
+  s700 [blk2:code_py] en_lit=6110447.9 zh_classic=570284186.7 code_py=1670705.8 en_wiki=92448977.1 | online=0.089 cells=5 seg=2 26.2min
+  s800 [blk2:code_py] en_lit=1323547.3 zh_classic=399628077.2 code_py=102808.7 en_wiki=11533783.1 | online=0.089 cells=5 seg=2 32.7min
+  s900 [blk2:code_py] en_lit=91808.1 zh_classic=114940528.7 code_py=1824.4 en_wiki=442959.5 | online=0.158 cells=5 seg=2 40.8min
+== block 2 (code_py) done in 1339s, cells=5
+  [ckpt] step 999 saved (2618s)
+  s1000 [blk3:en_wiki] en_lit=10815.5 zh_classic=48370189.4 code_py=4111.3 en_wiki=8056.1 | online=0.082 cells=5 seg=3 43.7min
+  s1100 [blk3:en_wiki] en_lit=5798.0 zh_classic=44909185.1 code_py=3766.7 en_wiki=3413.3 | online=0.078 cells=5 seg=3 46.8min
+  s1200 [blk3:en_wiki] en_lit=4555.1 zh_classic=45897062.3 code_py=4619.5 en_wiki=2218.3 | online=0.097 cells=5 seg=3 49.4min
+== block 3 (en_wiki) done in 515s, cells=5
+  s1300 [blk4:en_lit#repris4] en_lit=451.0 zh_classic=27131.7 code_py=99035.9 en_wiki=39430.7 | online=0.152 cells=5 seg=4 52.6min
+  s1400 [blk4:en_lit#repris4] en_lit=392.6 zh_classic=48969.2 code_py=100077.8 en_wiki=34343.2 | online=0.168 cells=5 seg=4 55.1min
+  [ckpt] step 1499 saved (3494s)
+  s1500 [blk4:en_lit#repris4] en_lit=362.7 zh_classic=42064.2 code_py=94920.2 en_wiki=31315.7 | online=0.178 cells=6 seg=4 58.3min
+== block 4 (en_lit#repris4) done in 532s, cells=6
+  s1600 [blk5:zh_classic#repris5] en_lit=9756687.6 zh_classic=64945280.6 code_py=223840747.9 en_wiki=397031746.1 | online=0.092 cells=6 seg=5 60.5min
+  s1700 [blk5:zh_classic#repris5] en_lit=371.2 zh_classic=30045.5 code_py=82277.5 en_wiki=31275.1 | online=0.112 cells=4 seg=5 63.4min
+  s1800 [blk5:zh_classic#repris5] en_lit=825.0 zh_classic=2363.0 code_py=97861.3 en_wiki=48849.6 | online=0.120 cells=4 seg=5 65.7min
+== block 5 (zh_classic#repris5) done in 448s, cells=4
+== samples saved
+{"en_lit": {"ppl": 825.0167496771663, "acc": 0.15266927083333331}, "zh_classic": {"ppl": 2363.027886541962, "acc": 0.13118489583333331}, "code_py": {"ppl": 97861.27314950051, "acc": 0.005045572916666667}, "en_wiki": {"ppl": 48849.60801457238, "acc": 0.020182291666666664}}
+== DONE pilot: wall=65.8min params=25.5M cells=4 tok/s=2803

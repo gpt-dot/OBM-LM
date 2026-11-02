@@ -1,0 +1,330 @@
+{
+ "gen_len": 40,
+ "prompts": [
+  "The old man looked at the sea and",
+  "It was a dark night in Paris, and",
+  "子曰：学而时习之，不亦",
+  "天地玄黄，宇宙",
+  "def quicksort(arr):",
+  "import numpy as np\n# compute the mean of",
+  "The Roman Empire was",
+  "Photosynthesis is the process by which"
+ ],
+ "runs": [
+  {
+   "tag": "scale4",
+   "cells": 3,
+   "params_m": 75.8,
+   "gens": [
+    {
+     "domain": "en_lit",
+     "prompt": "The old man looked at the sea and",
+     "text": " the Project Gutenberg Literary Archive Foundation the Project Gutenberg Literary Archive Foundation the Project Gutenberg Literary Archive Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation",
+     "sec": 53.9
+    },
+    {
+     "domain": "en_lit",
+     "prompt": "It was a dark night in Paris, and",
+     "text": " the Project Gutenberg™ electronic works to the Project Gutenberg™ electronic works.\r\n\r\n1.\r\n\r\n1.\r\n\r\n1.F.F.F.F.F.F.F.",
+     "sec": 27.0
+    },
+    {
+     "domain": "zh_classic",
+     "prompt": "子曰：学而时习之，不亦",
+     "text": "，而，而，而，而，而，而，而，而，而，而，而，而，而，而，而，而，而，而，而，而",
+     "sec": 14.9
+    },
+    {
+     "domain": "zh_classic",
+     "prompt": "天地玄黄，宇宙",
+     "text": "，\r\n。\r\n，\r\n，\r\n，\r\n，\r\n，\r\n，\r\n，\r\n，\r\n，\r\n，\r\n，\r\n，",
+     "sec": 14.3
+    },
+    {
+     "domain": "code_py",
+     "prompt": "def quicksort(arr):",
+     "text": "\n       殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺",
+     "sec": 15.0
+    },
+    {
+     "domain": "code_py",
+     "prompt": "import numpy as np\n# compute the mean of",
+     "text": " the Project Gutenberg™\r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       \r\n       ",
+     "sec": 28.6
+    },
+    {
+     "domain": "en_wiki",
+     "prompt": "The Roman Empire was",
+     "text": "，\r\n的，\r\n的，\r\n的，\r\n的，\r\n的，\r\n的，\r\n的，\r\n的，\r\n的，\r\n的",
+     "sec": 14.8
+    },
+    {
+     "domain": "en_wiki",
+     "prompt": "Photosynthesis is the process by which",
+     "text": " the Project Gutenberg Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary",
+     "sec": 13.8
+    }
+   ],
+   "gens_sampled": [
+    {
+     "domain": "en_lit",
+     "prompt": "The old man looked at the sea and",
+     "text": " do not\r\n念就是？”起身去隨隨, “_及. You may be to\r\nof any Project Gutenberg License永 all this electronic works in this work is a future trademark on",
+     "sec": 14.0
+    },
+    {
+     "domain": "en_lit",
+     "prompt": "It was a dark night in Paris, and",
+     "text": " the認得\r\nthe發 by all this of Project Gutenberg™ electronic works to the United States. You any Project Gutenberg License or other work as access to the terms with you may be for the\r",
+     "sec": 14.1
+    },
+    {
+     "domain": "zh_classic",
+     "prompt": "子曰：学而时习之，不亦",
+     "text": "。\r\n　　曰：「今去，生以者，無自中其母；行。此、君為在入。」子牙一子。今日言所金得！何成也",
+     "sec": 14.1
+    },
+    {
+     "domain": "zh_classic",
+     "prompt": "天地玄黄，宇宙",
+     "text": "。有將門，曰：「我此不在得見出、國來。」子牙之\r\n「你？」行者道：「君，還大一山多道：「這可時，",
+     "sec": 13.9
+    },
+    {
+     "domain": "code_py",
+     "prompt": "def quicksort(arr):",
+     "text": "\n               頭夫妻)\n           �搖十斷今日止首！”月娘道姬昌.聚相与i =共下來宿：「你。」行者道：「我，就請長老曰：「弟子；子牙言。",
+     "sec": 13.9
+    },
+    {
+     "domain": "code_py",
+     "prompt": "import numpy as np\n# compute the mean of",
+     "text": " Project Gutenberg™ work, and by\r\nSection away.\r\n\r\n〈 Foundation is not have a full “玉樓道ed。」行者道：「怎麼舊, or the terms to be with this agreement, if",
+     "sec": 14.8
+    },
+    {
+     "domain": "en_wiki",
+     "prompt": "The Roman Empire was",
+     "text": "。」行者道：「你！」子牙得，頭。\r\n\r\n不請？」三藏\r\n正大著一去？把無子山，與坐人我還那三怪的走之",
+     "sec": 13.7
+    },
+    {
+     "domain": "en_wiki",
+     "prompt": "Photosynthesis is the process by which",
+     "text": " are語眾，\r\n　　�頭如著他他來。\r\n\r\n辱要山睡的上、一\r\n何高天生。」行者，那看我日，卻是",
+     "sec": 13.7
+    }
+   ]
+  },
+  {
+   "tag": "scale5",
+   "cells": 3,
+   "params_m": 75.8,
+   "gens": [
+    {
+     "domain": "en_lit",
+     "prompt": "The old man looked at the sea and",
+     "text": " the first of the first of the first @-@ year . \n\n = = = = = = = \n\n = = = = = \n\n = = = = \n\n = = = = = \n\n = = =",
+     "sec": 4.7
+    },
+    {
+     "domain": "en_lit",
+     "prompt": "It was a dark night in Paris, and",
+     "text": " the\r\nthe command of the\r\nthe world of the\r\nthe world of the\r\nthe world of the\r\nthe world of the first time of the\r\nthe world of",
+     "sec": 4.6
+    },
+    {
+     "domain": "zh_classic",
+     "prompt": "子曰：学而时习之，不亦",
+     "text": "亦亦亦而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而",
+     "sec": 4.7
+    },
+    {
+     "domain": "zh_classic",
+     "prompt": "天地玄黄，宇宙",
+     "text": "，\r\n。\r\n，\r\n，\r\n，\r\n，\r\n，\r\n，\r\n，不不不不不不\r\n不不不\r\n\r\n",
+     "sec": 5.1
+    },
+    {
+     "domain": "code_py",
+     "prompt": "def quicksort(arr):",
+     "text": "\n        return self.\n        self.\n        self.\n        self.\n        self.\n        self.\n        self.\n        self.\n        self.\n        self.\n        self.\n        self.\n        self.",
+     "sec": 4.8
+    },
+    {
+     "domain": "code_py",
+     "prompt": "import numpy as np\n# compute the mean of",
+     "text": " the first of the first @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@",
+     "sec": 4.7
+    },
+    {
+     "domain": "en_wiki",
+     "prompt": "The Roman Empire was",
+     "text": " a new new new @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year",
+     "sec": 4.7
+    },
+    {
+     "domain": "en_wiki",
+     "prompt": "Photosynthesis is the process by which",
+     "text": " is a new @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@",
+     "sec": 4.6
+    }
+   ],
+   "gens_sampled": [
+    {
+     "domain": "en_lit",
+     "prompt": "The old man looked at the sea and",
+     "text": " an unm. This over to their own mind that, they\r\nreased on a little tastly out of Dóles with them or had been taken from . \n\n The former up",
+     "sec": 4.7
+    },
+    {
+     "domain": "en_lit",
+     "prompt": "It was a dark night in Paris, and",
+     "text": " he stopped\r\nstable from the game. He might be surely to an end of it seemed to have served there are goods\r\nfor for them--and even as any other,",
+     "sec": 4.7
+    },
+    {
+     "domain": "zh_classic",
+     "prompt": "子曰：学而时习之，不亦",
+     "text": "大一明。\r\n　　曰：「這相以日者為無已皆分出有生；則作著民如君子來。」劉被矣！」其自？」守行",
+     "sec": 4.6
+    },
+    {
+     "domain": "zh_classic",
+     "prompt": "天地玄黄，宇宙",
+     "text": "\r\n頭。\r\n\r\n生一為是這天上者王立之於看有\r\n行在矣。”\r\n　　　　不明也。子牙定大起的處以著",
+     "sec": 4.7
+    },
+    {
+     "domain": "code_py",
+     "prompt": "def quicksort(arr):",
+     "text": "\n                    've)\n\n    def __tals_example.\n        \"\"\"regx():\n                @pytest\",\n                        return \"RSL\": \"DVUALMQ =====\n    assert Pan",
+     "sec": 4.6
+    },
+    {
+     "domain": "code_py",
+     "prompt": "import numpy as np\n# compute the mean of",
+     "text": " this episode . \n\n = = Ts in 1997 's , including one year for an attempting \" was considered a short series of some schoolalisti Restoricide on his father",
+     "sec": 4.6
+    },
+    {
+     "domain": "en_wiki",
+     "prompt": "The Roman Empire was",
+     "text": " not of the first episode . \n\n = Ratronss between these song in the film , Hor and Bird Mi Khallan \" The series Tapner ' Ap",
+     "sec": 4.6
+    },
+    {
+     "domain": "en_wiki",
+     "prompt": "Photosynthesis is the process by which",
+     "text": " are seen on the Flightmatic . \n\n = = = Pak of 14th century season , in 171 a good @-@ American first parties and the Napalls.coml",
+     "sec": 4.6
+    }
+   ]
+  },
+  {
+   "tag": "scale6",
+   "cells": 3,
+   "params_m": 75.8,
+   "gens": [
+    {
+     "domain": "en_lit",
+     "prompt": "The old man looked at the sea and",
+     "text": " the\r\nand the\r\nand the\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r",
+     "sec": 4.6
+    },
+    {
+     "domain": "en_lit",
+     "prompt": "It was a dark night in Paris, and",
+     "text": " the\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe\r\nthe",
+     "sec": 4.6
+    },
+    {
+     "domain": "zh_classic",
+     "prompt": "子曰：学而时习之，不亦",
+     "text": "，以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以",
+     "sec": 4.6
+    },
+    {
+     "domain": "zh_classic",
+     "prompt": "天地玄黄，宇宙",
+     "text": "，以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以",
+     "sec": 4.6
+    },
+    {
+     "domain": "code_py",
+     "prompt": "def quicksort(arr):",
+     "text": "\n    \"\"\"\n    return self.get_config.get_config.get_config.get_config.get_config.get_config.get_config.add_config.add_",
+     "sec": 4.6
+    },
+    {
+     "domain": "code_py",
+     "prompt": "import numpy as np\n# compute the mean of",
+     "text": " the Project Gutenberg™ electronic works.\r\n\r\n1.E.E.E.E.E.E.E.E.E.\r\n\r\n1.\r\n\r\n1.\r\n\r\n1",
+     "sec": 4.6
+    },
+    {
+     "domain": "en_wiki",
+     "prompt": "The Roman Empire was",
+     "text": " a\r\nand and the\r\nand the\r\nand the\r\nand the\r\nand of the\r\nand the\r\nand the\r\nand the\r\nand the\r",
+     "sec": 4.6
+    },
+    {
+     "domain": "en_wiki",
+     "prompt": "Photosynthesis is the process by which",
+     "text": " was a\r\nand the\r\nand the\r\nand the\r\nand the\r\nand the\r\nand of the\r\nand the\r\nand the\r\nand the\r",
+     "sec": 4.7
+    }
+   ],
+   "gens_sampled": [
+    {
+     "domain": "en_lit",
+     "prompt": "The old man looked at the sea and",
+     "text": " he was\r\nthat--or of his country for, which\r\nhell to be in\r\nthe cooboings would have been my R. He had an roth’s",
+     "sec": 4.7
+    },
+    {
+     "domain": "en_lit",
+     "prompt": "It was a dark night in Paris, and",
+     "text": " the following\r\nor of their as not\r\nthe we know to him.\r\n\r\n\"“I have found up you can do I shall be a little.”\r\n\r\n    ; but that he",
+     "sec": 4.7
+    },
+    {
+     "domain": "zh_classic",
+     "prompt": "子曰：学而时习之，不亦",
+     "text": "有我；一然！\" 之。此上日無二事矣。」\r\n　　李知於文道：「小四人，生甚好做自與言曰：「當",
+     "sec": 4.7
+    },
+    {
+     "domain": "zh_classic",
+     "prompt": "天地玄黄，宇宙",
+     "text": "个以此。\r\n　　那迫是天有会字一辅，\r\n人。\r\n\r\n　　李主，因得。\r\n　　\r\n「回　且說住，",
+     "sec": 4.7
+    },
+    {
+     "domain": "code_py",
+     "prompt": "def quicksort(arr):",
+     "text": "\n    \"\"\"Check-closent-likeinions to the following\r\n        all node LI have been already for a list of this individual\n        if you will still gos are not see and in",
+     "sec": 4.6
+    },
+    {
+     "domain": "code_py",
+     "prompt": "import numpy as np\n# compute the mean of",
+     "text": " `str` and a :class:`.ClientEngine`, `kpile` or more than the same form. If any sample! The new\n    is very ``c``.",
+     "sec": 4.7
+    },
+    {
+     "domain": "en_wiki",
+     "prompt": "The Roman Empire was",
+     "text": " \" of the ' . \n\n The Piers a few\r\nwith his fkle in this ciing that was to our the first disased by Secure and some B",
+     "sec": 4.7
+    },
+    {
+     "domain": "en_wiki",
+     "prompt": "Photosynthesis is the process by which",
+     "text": " it would have \" and all, but no . \n\n = = = = = One 's ; in a pref' . Fazan , with he was as if gor. It is",
+     "sec": 4.6
+    }
+   ]
+  }
+ ]
+}

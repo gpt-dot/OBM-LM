@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>OBM-LM TRIZ 第三轮战报：推理栈夺权与备料管线加固</title>
+<style>
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;margin:0;background:#f6f8fa;color:#1a2332;line-height:1.7}
+.wrap{max-width:1060px;margin:0 auto;padding:30px 36px 60px;background:#fff}
+h1{font-size:23px;border-bottom:3px solid #1a5fb4;padding-bottom:10px}
+h2{font-size:17px;margin-top:30px;color:#1a5fb4}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0}
+th,td{border:1px solid #dfe6ee;padding:7px 10px;vertical-align:top}
+th{background:#eef2f7;text-align:left}
+.ok{color:#26a269;font-weight:600}.warn{color:#c01c28;font-weight:600}
+.note{background:#eaf2fc;border-left:4px solid #1a5fb4;padding:10px 14px;margin:14px 0;font-size:13.5px}
+code{background:#f0f2f5;padding:1px 5px;border-radius:3px;font-size:12.5px}
+pre{background:#fafbfd;border:1px solid #e6ebf0;padding:10px;border-radius:5px;font-size:12.5px;white-space:pre-wrap;word-break:break-all}
+</style></head><body><div class="wrap">
+
+<h1>OBM-LM TRIZ 第三轮战报：推理栈夺权 + 备料管线加固 + scale8 事先缓冲</h1>
+
+<div class="note"><b>本轮元矛盾</b>：上一轮发现"NLL 路由全面优于市场路由"后，三个工程矛盾立刻浮出水面——
+路由的<b>算力代价</b>、备料管线的<b>静默死亡</b>、scale8 的<b>设计悬置</b>。本轮全部收口。</div>
+
+<h2>TC-I：NLL 路由精度 vs 推理算力 → No.17 空间维数变化 + No.10 预先作用</h2>
+<p>物理矛盾：路由必须"全知"（软融合全部细胞才准）且"节俭"（每步跑 1 个细胞才快）。
+实测软路由 10.2s/生成 vs 市场 3.4s——精度换来 3 倍算力，不可部署。</p>
+<p><b>解法</b>：把路由决策从"生成期逐步"压缩到"prompt 期一次"——用无填充的真实尾部 64 token 算一次逐细胞 NLL，取 top-1，生成期只跑该细胞。</p>
+<table>
+<tr><th>验证项</th><th>结果</th></tr>
+<tr><td>前缀 NLL(64tok) vs 全窗口 NLL 决策一致率</td><td class="ok">100%（4 域全部窗口）</td></tr>
+<tr><td>top1 vs 软路由质量（en_lit / zh / code / wiki）</td><td>123/121 · 782/782 · 83/87 · 369/369 —— 几乎无损</td></tr>
+<tr><td>速度（3 栈对比，40 token 生成）</td><td>市场 3.40s · 软 NLL 10.16s · <b>top1-prefix 3.27s</b>（比软路由快 3.1×）</td></tr>
+</table>
+<p><b>路上抓到一个真 bug</b>：初版把左侧 <code>[0]</code> 填充也计入 NLL，pad token 主导打分导致所有 prompt 路由到同一细胞——改为无填充真实尾部后，8 条 prompt 中 7 条命中正确专才（zh/code→cell#3、en 双域→cell#4）。</p>
+<p><b>已部署</b>：<code>demo_sandbox.py --router nll-top1</code>（默认）。端到端验证：<code>def merge_sort</code> 自动路由代码专才，产出 <code>def merge_sort(20) -> None:</code> + docstring 结构，2.5s/次，8GB 沙箱内正常。</p>
+
+<h2>TC-J：备料管线静默死亡 vs 扩容刚需 → No.11 事先缓冲 + No.21 变害为利</h2>
+<p><b>事故复盘</b>：fetch_corpus3 进程在 zh 阶段完成后悄悄消失（无 stderr、无 traceback——疑似沙箱休眠杀进程）， Gutenberg IncompleteRead 失败率 27/63（download 无重试），且去重解析对 <code>g{bid}.txt</code> 命名永远失效。</p>
+<p><b>重建 fetch_corpus3b.py（分阶段幂等）</b>：</p>
+<ul>
+<li>5 次重试 + <b>Range 断点续传</b>（<code>.part</code> 残件成为续传起点，21 个残件变废为宝）+ aleph 镜像回退 + SSL 证书豁免兜底；</li>
+<li>gutenberg ID 跨命名格式去重（<code>title_123.txt</code> 与 <code>g123.txt</code> 通吃）；</li>
+<li><code>--stage books/pypi/encode</code> 分阶段短跑，任一阶段死掉重跑即可，幂等无损。</li>
+</ul>
+<p>实测：g78053 第 3 次重试经 Range 续传成功；books 阶段已在后台收尾（en 112 / zh 90 本在库）。sdist 已 87 个。</p>
+
+<h2>TC-K：scale8 设计悬置 vs 排队不确定性 → No.11 事先缓冲</h2>
+<p><code>deploy/train8.sh</code> 已备好并上传配套代码：resume scale7 → 对称四域 4×1500 步（~4.5h）→ LRU 重放 0.25 → lr 4e-4 续退火 → <code>--eval-router</code>（市场/逐细胞/NLL 路由三口径终局评估，本轮新加）。resume 源自动回退 scale6。scale7 一完工即提交。</p>
+
+<h2>当前态势</h2>
+<table>
+<tr><th>线</th><th>状态</th><th>备注</th></tr>
+<tr><td>scale7（对称四域修 en_wiki）</td><td>🔄 statR，2/4 块完成</td><td>zh 块 4.5s/步明显慢于 en 块 2.4s/步，预计还需 ~2h</td></tr>
+<tr><td>语料扩容（fetch_corpus3b）</td><td>🔄 books 阶段收尾</td><td>pypi 补齐 → encode 排队执行</td></tr>
+<tr><td>v3 推理栈</td><td class="ok">✅ 已部署验证</td><td>demo_sandbox 默认 nll-top1 路由</td></tr>
+<tr><td>train8.sh</td><td class="ok">✅ 缓冲就绪</td><td>scale7 完工即提交</td></tr>
+</table>
+
+<h2>下一轮 TRIZ 候选矛盾（已登记）</h2>
+<ul>
+<li><b>TC-N</b>：训练用市场、部署用 NLL——训练/部署路由不一致（No.34 自服务候选：--route-nll 训练模式 A/B）</li>
+<li><b>TC-O</b>：硬领地新手细胞需 500+ 步引导 vs 卡时预算（scale9 决策点）</li>
+<li><b>TC-P</b>：0.65 tok/param 新鲜度差 Chinchilla 30×——扩容语料 encode 后 scale9 直接吃</li>
+</ul>
+
+</div></body></html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>OBM-LM 跨代生成对比（scale4/5/6 × 贪心/采样）</title>
+<style>
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;margin:0;background:#f6f8fa;color:#1a2332;line-height:1.6}
+.wrap{max-width:1400px;margin:0 auto;padding:28px 32px 60px;background:#fff}
+h1{font-size:24px;border-bottom:3px solid #1a5fb4;padding-bottom:10px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;table-layout:fixed}
+th,td{border:1px solid #dfe6ee;padding:8px;vertical-align:top;word-wrap:break-word}
+th{background:#eef2f7}
+td.dom{background:#eaf2fc;width:170px}
+.ppl{color:#5a6a7e;font-size:11px;margin:2px 0}
+.pr{font-weight:600;font-size:12px}
+pre{white-space:pre-wrap;margin:2px 0 8px;font-family:inherit;font-size:12px;background:#fafbfd;padding:6px;border-radius:4px;max-height:180px;overflow:auto}
+.lbl{display:inline-block;background:#e9f7f0;color:#26a269;border-radius:8px;padding:0 8px;font-size:11px}
+.note{background:#eaf2fc;border-left:4px solid #1a5fb4;padding:10px 14px;margin:14px 0;font-size:13.5px}
+</style></head><body><div class="wrap">
+<h1>OBM-LM 跨代生成可读性档案（scale4 → 5 → 6）</h1>
+<div class="note"><b>结论</b>：贪心解码下三代都陷"复读循环"（评估指标 ppl 却在稳步改善）——
+这正是 ppl 与可读性的矛盾。加入温度 0.8 + top-k 40 + 重复惩罚 1.15 的<b>采样解码</b>（零训练成本，TRIZ No.35/No.13）
+后，循环死结全部解开：scale6 能产出文言句式骨架（「曰：…」）、Python 文档串风格、wikitext 标题结构，
+从"学舌"跨入"仿写"。语义连贯仍受限于 0.65 tok/param 数据新鲜度——scale8 的扩语料+加步数正是解此残余。</div>
+<table><tr><th style="width:170px">域 / prompt（ppl: 4/5/6）</th><th>scale4（12000步）</th><th>scale5（24000步）</th><th>scale6（27000步）</th></tr>
+<tr><td class='dom'>en_lit<div class='ppl'>scale4:601 / scale5:163 / scale6:123</div><div class='pr'>The old man looked at the sea and</div></td><td><div class='lbl'>贪心</div><pre> the Project Gutenberg Literary Archive Foundation the Project Gutenberg Literary Archive Foundation the Project Gutenberg Literary Archive Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation Foundation</pre><div class='lbl'>采样</div><pre> do not
+念就是？”起身去隨隨, “_及. You may be to
+of any Project Gutenberg License永 all this electronic works in this work is a future trademark on</pre></td><td><div class='lbl'>贪心</div><pre> the first of the first of the first @-@ year . 
+
+ = = = = = = = 
+
+ = = = = = 
+
+ = = = = 
+
+ = = = = = 
+
+ = = =</pre><div class='lbl'>采样</div><pre> an unm. This over to their own mind that, they
+reased on a little tastly out of Dóles with them or had been taken from . 
+
+ The former up</pre></td><td><div class='lbl'>贪心</div><pre> the
+and the
+and the
+the
+the
+the
+the
+the
+the
+the
+the
+the
+the</pre><div class='lbl'>采样</div><pre> he was
+that--or of his country for, which
+hell to be in
+the cooboings would have been my R. He had an roth’s</pre></td></tr><tr><td class='dom'>en_lit<div class='ppl'>scale4:601 / scale5:163 / scale6:123</div><div class='pr'>It was a dark night in Paris, and</div></td><td><div class='lbl'>贪心</div><pre> the Project Gutenberg™ electronic works to the Project Gutenberg™ electronic works.
+
+1.
+
+1.
+
+1.F.F.F.F.F.F.F.</pre><div class='lbl'>采样</div><pre> the認得
+the發 by all this of Project Gutenberg™ electronic works to the United States. You any Project Gutenberg License or other work as access to the terms with you may be for the</pre></td><td><div class='lbl'>贪心</div><pre> the
+the command of the
+the world of the
+the world of the
+the world of the
+the world of the first time of the
+the world of</pre><div class='lbl'>采样</div><pre> he stopped
+stable from the game. He might be surely to an end of it seemed to have served there are goods
+for for them--and even as any other,</pre></td><td><div class='lbl'>贪心</div><pre> the
+the
+the
+the
+the
+the
+the
+the
+the
+the
+the
+the
+the
+the</pre><div class='lbl'>采样</div><pre> the following
+or of their as not
+the we know to him.
+
+&quot;“I have found up you can do I shall be a little.”
+
+    ; but that he</pre></td></tr><tr><td class='dom'>zh_classic<div class='ppl'>scale4:963 / scale5:1557 / scale6:825</div><div class='pr'>子曰：学而时习之，不亦</div></td><td><div class='lbl'>贪心</div><pre>，而，而，而，而，而，而，而，而，而，而，而，而，而，而，而，而，而，而，而，而</pre><div class='lbl'>采样</div><pre>。
+　　曰：「今去，生以者，無自中其母；行。此、君為在入。」子牙一子。今日言所金得！何成也</pre></td><td><div class='lbl'>贪心</div><pre>亦亦亦而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而而</pre><div class='lbl'>采样</div><pre>大一明。
+　　曰：「這相以日者為無已皆分出有生；則作著民如君子來。」劉被矣！」其自？」守行</pre></td><td><div class='lbl'>贪心</div><pre>，以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以</pre><div class='lbl'>采样</div><pre>有我；一然！&quot; 之。此上日無二事矣。」
+　　李知於文道：「小四人，生甚好做自與言曰：「當</pre></td></tr><tr><td class='dom'>zh_classic<div class='ppl'>scale4:963 / scale5:1557 / scale6:825</div><div class='pr'>天地玄黄，宇宙</div></td><td><div class='lbl'>贪心</div><pre>，
+。
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，</pre><div class='lbl'>采样</div><pre>。有將門，曰：「我此不在得見出、國來。」子牙之
+「你？」行者道：「君，還大一山多道：「這可時，</pre></td><td><div class='lbl'>贪心</div><pre>，
+。
+，
+，
+，
+，
+，
+，
+，不不不不不不
+不不不
+
+</pre><div class='lbl'>采样</div><pre>
+頭。
+
+生一為是這天上者王立之於看有
+行在矣。”
+　　　　不明也。子牙定大起的處以著</pre></td><td><div class='lbl'>贪心</div><pre>，以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以以</pre><div class='lbl'>采样</div><pre>个以此。
+　　那迫是天有会字一辅，
+人。
+
+　　李主，因得。
+　　
+「回　且說住，</pre></td></tr><tr><td class='dom'>code_py<div class='ppl'>scale4:1327 / scale5:291 / scale6:284</div><div class='pr'>def quicksort(arr):</div></td><td><div class='lbl'>贪心</div><pre>
+       殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺殺</pre><div class='lbl'>采样</div><pre>
+               頭夫妻)
+           �搖十斷今日止首！”月娘道姬昌.聚相与i =共下來宿：「你。」行者道：「我，就請長老曰：「弟子；子牙言。</pre></td><td><div class='lbl'>贪心</div><pre>
+        return self.
+        self.
+        self.
+        self.
+        self.
+        self.
+        self.
+        self.
+        self.
+        self.
+        self.
+        self.
+        self.</pre><div class='lbl'>采样</div><pre>
+                    &#x27;ve)
+
+    def __tals_example.
+        &quot;&quot;&quot;regx():
+                @pytest&quot;,
+                        return &quot;RSL&quot;: &quot;DVUALMQ =====
+    assert Pan</pre></td><td><div class='lbl'>贪心</div><pre>
+    &quot;&quot;&quot;
+    return self.get_config.get_config.get_config.get_config.get_config.get_config.get_config.add_config.add_</pre><div class='lbl'>采样</div><pre>
+    &quot;&quot;&quot;Check-closent-likeinions to the following
+        all node LI have been already for a list of this individual
+        if you will still gos are not see and in</pre></td></tr><tr><td class='dom'>code_py<div class='ppl'>scale4:1327 / scale5:291 / scale6:284</div><div class='pr'>import numpy as np
+# compute the mean of</div></td><td><div class='lbl'>贪心</div><pre> the Project Gutenberg™
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       </pre><div class='lbl'>采样</div><pre> Project Gutenberg™ work, and by
+Section away.
+
+〈 Foundation is not have a full “玉樓道ed。」行者道：「怎麼舊, or the terms to be with this agreement, if</pre></td><td><div class='lbl'>贪心</div><pre> the first of the first @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@</pre><div class='lbl'>采样</div><pre> this episode . 
+
+ = = Ts in 1997 &#x27;s , including one year for an attempting &quot; was considered a short series of some schoolalisti Restoricide on his father</pre></td><td><div class='lbl'>贪心</div><pre> the Project Gutenberg™ electronic works.
+
+1.E.E.E.E.E.E.E.E.E.
+
+1.
+
+1.
+
+1</pre><div class='lbl'>采样</div><pre> `str` and a :class:`.ClientEngine`, `kpile` or more than the same form. If any sample! The new
+    is very ``c``.</pre></td></tr><tr><td class='dom'>en_wiki<div class='ppl'>scale4:4596 / scale5:295 / scale6:391</div><div class='pr'>The Roman Empire was</div></td><td><div class='lbl'>贪心</div><pre>，
+的，
+的，
+的，
+的，
+的，
+的，
+的，
+的，
+的，
+的</pre><div class='lbl'>采样</div><pre>。」行者道：「你！」子牙得，頭。
+
+不請？」三藏
+正大著一去？把無子山，與坐人我還那三怪的走之</pre></td><td><div class='lbl'>贪心</div><pre> a new new new @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year</pre><div class='lbl'>采样</div><pre> not of the first episode . 
+
+ = Ratronss between these song in the film , Hor and Bird Mi Khallan &quot; The series Tapner &#x27; Ap</pre></td><td><div class='lbl'>贪心</div><pre> a
+and and the
+and the
+and the
+and the
+and of the
+and the
+and the
+and the
+and the</pre><div class='lbl'>采样</div><pre> &quot; of the &#x27; . 
+
+ The Piers a few
+with his fkle in this ciing that was to our the first disased by Secure and some B</pre></td></tr><tr><td class='dom'>en_wiki<div class='ppl'>scale4:4596 / scale5:295 / scale6:391</div><div class='pr'>Photosynthesis is the process by which</div></td><td><div class='lbl'>贪心</div><pre> the Project Gutenberg Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary Literary</pre><div class='lbl'>采样</div><pre> are語眾，
+　　�頭如著他他來。
+
+辱要山睡的上、一
+何高天生。」行者，那看我日，卻是</pre></td><td><div class='lbl'>贪心</div><pre> is a new @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@ year @-@</pre><div class='lbl'>采样</div><pre> are seen on the Flightmatic . 
+
+ = = = Pak of 14th century season , in 171 a good @-@ American first parties and the Napalls.coml</pre></td><td><div class='lbl'>贪心</div><pre> was a
+and the
+and the
+and the
+and the
+and the
+and of the
+and the
+and the
+and the</pre><div class='lbl'>采样</div><pre> it would have &quot; and all, but no . 
+
+ = = = = = One &#x27;s ; in a pref&#x27; . Fazan , with he was as if gor. It is</pre></td></tr></table>
+</div></body></html>

@@ -1,0 +1,123 @@
+{
+ "tag": "wd_smoke",
+ "d_model": 64,
+ "n_layers": 2,
+ "batch": 4,
+ "ctx": 64,
+ "dist_refresh": 10,
+ "dream_period": 200,
+ "amp": true,
+ "n_params": 4476416,
+ "cells_final": 4,
+ "total_steps": 80,
+ "wall_sec": 4.173204660415649,
+ "step_time_mean": 0.049884054064750674,
+ "step_time_p50": 0.01770186424255371,
+ "step_time_p90": 0.07236053943634034,
+ "tok_per_sec": 4907.499551665937,
+ "peak_rss_mb": 1339.4609375,
+ "event_counts": {},
+ "events": [],
+ "segments": 0,
+ "online": [
+  {
+   "step": 25,
+   "block": 0,
+   "acc": 0.0,
+   "k": 1,
+   "peak": 0.001,
+   "cells": 4
+  },
+  {
+   "step": 50,
+   "block": 1,
+   "acc": 0.00390625,
+   "k": 1,
+   "peak": 0.001,
+   "cells": 4
+  },
+  {
+   "step": 75,
+   "block": 1,
+   "acc": 0.0,
+   "k": 1,
+   "peak": 0.001,
+   "cells": 4
+  }
+ ],
+ "territory": [
+  {
+   "cell": 0,
+   "seg_rel": {
+    "0": 0.462
+   },
+   "seg_best": {
+    "0": 0.542
+   }
+  },
+  {
+   "cell": 1,
+   "seg_rel": {
+    "0": 0.618
+   },
+   "seg_best": {
+    "0": 0.687
+   }
+  },
+  {
+   "cell": 2,
+   "seg_rel": {},
+   "seg_best": {}
+  },
+  {
+   "cell": 3,
+   "seg_rel": {},
+   "seg_best": {}
+  }
+ ],
+ "peak_acc_final": 0.0076,
+ "function_verdict": {
+  "seal(封存/边界)": false,
+  "birth(分裂)": false,
+  "death(凋亡)": false
+ },
+ "function_pass": false,
+ "watchdog": {
+  "en_lit": [
+   {
+    "step": 10,
+    "nll": 37.226
+   },
+   {
+    "step": 20,
+    "nll": 35.363
+   },
+   {
+    "step": 30,
+    "nll": 34.488
+   },
+   {
+    "step": 40,
+    "nll": 31.552
+   }
+  ],
+  "zh_classic": [
+   {
+    "step": 50,
+    "nll": 31.11
+   },
+   {
+    "step": 60,
+    "nll": 27.985
+   },
+   {
+    "step": 70,
+    "nll": 25.52
+   },
+   {
+    "step": 80,
+    "nll": 26.305
+   }
+  ]
+ }
+}

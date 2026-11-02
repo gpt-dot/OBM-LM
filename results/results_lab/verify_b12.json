@@ -1,0 +1,68 @@
+{
+ "tag": "verify_b12",
+ "d_model": 256,
+ "n_layers": 4,
+ "batch": 12,
+ "ctx": 256,
+ "dist_refresh": 10,
+ "dream_period": 200,
+ "amp": true,
+ "n_params": 25456640,
+ "cells_final": 4,
+ "total_steps": 1800,
+ "wall_sec": 1271.8860647678375,
+ "step_time_mean": 0.7060403609275818,
+ "step_time_p50": 0.49483728408813477,
+ "step_time_p90": 0.7164746046066897,
+ "tok_per_sec": 4347.559229693534,
+ "peak_rss_mb": 2961.79296875,
+ "event_counts": {
+  "seal": 5
+ },
+ "events": [
+  [
+   317,
+   "seal",
+   "概念段 #0 封存：n=273，库存 1 段，最近段距离 —"
+  ],
+  [
+   620,
+   "seal",
+   "概念段 #1 封存：n=242，库存 2 段，最近段距离 13.73"
+  ],
+  [
+   917,
+   "seal",
+   "概念段 #2 封存：n=273，库存 3 段，最近段距离 10.14"
+  ],
+  [
+   1220,
+   "seal",
+   "概念段 #3 封存：n=258，库存 4 段，最近段距离 7.32"
+  ],
+  [
+   1517,
+   "seal",
+   "任务复现：273 个片段并入概念段 #0（距离 0.06）"
+  ]
+ ],
+ "segments": 5,
+ "final_ppl": {
+  "en_lit": 916.3382516810345,
+  "zh_classic": 4620.98407901414,
+  "code_py": 993.7503624450994,
+  "en_wiki": 2167.6907782492817
+ },
+ "final_acc": {
+  "en_lit": 0.15364583333333331,
+  "zh_classic": 0.1298828125,
+  "code_py": 0.15071614583333331,
+  "en_wiki": 0.09358723958333334
+ },
+ "function_verdict": {
+  "seal(封存/边界)": true,
+  "birth(分裂)": false,
+  "death(凋亡)": false
+ },
+ "function_pass": true
+}

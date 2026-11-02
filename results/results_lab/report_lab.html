@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset='utf-8'>
+<style>
+body{font-family:system-ui,'Segoe UI',sans-serif;margin:24px;background:#0f1117;color:#e6e6e6}
+h1{font-size:20px} table{border-collapse:collapse;width:100%;font-size:13px;margin-top:12px}
+th,td{border:1px solid #2a2f3a;padding:6px 8px;text-align:right}
+th{background:#1a1e28;text-align:center} td:first-child,th:first-child{text-align:left}
+tr.pass td{background:#12271a} tr.fail td{background:#2a1616;opacity:.75}
+.best{background:#14301f;border:1px solid #2e6b3f;padding:10px 14px;border-radius:8px;font-size:15px}
+.note{color:#8a92a6;font-size:12px;margin-top:10px}
+</style></head><body>
+<h1>OBM-LM 跳跃型迭代对标（速度 × 功能 × 内存）</h1>
+<p class='best'>★ 最快且功能合格：<b>verify_ctx128</b> — 3.22× 提速，step 602ms，RSS 2669MB，事件 {'seal': 5}</p>
+<table><tr><th>配置</th><th>D</th><th>L</th><th>B</th><th>ctx</th><th>参数</th>
+<th>step(ms)</th><th>提速</th><th>tok/s</th><th>RSS(MB)</th><th>细胞</th><th>段</th>
+<th>封存</th><th>分裂</th><th>凋亡</th><th>功能</th></tr>
+<tr class='pass'><td>verify_ctx128</td><td>256</td><td>4</td><td>24</td><td>128</td><td>25.3M</td><td>602</td><td><b>3.22×</b></td><td>5096</td><td>2669</td><td>4</td><td>5</td><td>5</td><td>0</td><td>0</td><td>✓</td></tr>
+<tr class='pass'><td>verify_b12</td><td>256</td><td>4</td><td>12</td><td>256</td><td>25.5M</td><td>706</td><td><b>2.75×</b></td><td>4348</td><td>2962</td><td>4</td><td>5</td><td>5</td><td>0</td><td>0</td><td>✓</td></tr>
+<tr class='pass'><td>verify_b12_dbg</td><td>256</td><td>4</td><td>12</td><td>256</td><td>25.5M</td><td>747</td><td><b>2.60×</b></td><td>4109</td><td>2953</td><td>4</td><td>5</td><td>5</td><td>0</td><td>0</td><td>✓</td></tr>
+<tr class='pass'><td>g2_ctx128</td><td>256</td><td>4</td><td>24</td><td>256</td><td>25.3M</td><td>827</td><td><b>2.34×</b></td><td>3712</td><td>2885</td><td>4</td><td>2</td><td>2</td><td>0</td><td>0</td><td>✓</td></tr>
+<tr class='fail'><td>g2_b12</td><td>256</td><td>4</td><td>12</td><td>256</td><td>25.5M</td><td>965</td><td><b>2.01×</b></td><td>3183</td><td>2913</td><td>4</td><td>2</td><td>2</td><td>0</td><td>0</td><td>✗ 功能未过</td></tr>
+<tr class='fail'><td>half_d128L2</td><td>128</td><td>2</td><td>24</td><td>256</td><td>9.6M</td><td>1347</td><td><b>1.44×</b></td><td>4561</td><td>3455</td><td>4</td><td>2</td><td>2</td><td>0</td><td>0</td><td>✗ 功能未过</td></tr>
+</table>
+<p class='note'>基线 pilot_v1 step=1940ms。提速=pilot/本配置。
+绿行=功能合格（封存点火）；红行=功能未过（机制未点火，不计成功）。
+生成于 2026-10-30 17:08。</p>
+</body></html>

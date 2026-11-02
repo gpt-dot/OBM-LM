@@ -1,0 +1,13 @@
+== [mk_v2] cells=4 params=10.57M D=128 L=4 B=8 dr=10 dp=999999999 steps/blk=550 total=2200
+  [weights] dtype=fp16 -> /tmp/terr/mk_v2_weights.pkl
+  [blk0:en_lit] done @step550 cells=4 seg=0 replayed=0 104s
+  [blk1:zh_classic] done @step1100 cells=4 seg=1 replayed=0 206s
+  [blk2:code_py] done @step1650 cells=4 seg=2 replayed=0 311s
+  [blk3:en_wiki] done @step2200 cells=4 seg=3 replayed=0 414s
+  [weights] saved -> /tmp/terr/mk_v2_weights.pkl (10.6M params)
+  [eval] en_lit=2434 zh_classic=2822 code_py=6738 en_wiki=6047
+  [eval-ht] en_lit: market=2434.0 oracle(cell#None)=None router(cell#1)=4970.1 cells={0: 25291.3, 1: 4970.1, 2: 3.84170779742271e+23, 3: 1.816350427237344e+24}
+  [eval-ht] zh_classic: market=2822.3 oracle(cell#None)=None router(cell#0)=1935.6 cells={0: 1935.6, 1: 367018374.0, 2: 6.588757523574779e+23, 3: 7.003900536269983e+24}
+  [eval-ht] code_py: market=6738.4 oracle(cell#None)=None router(cell#1)=8606.6 cells={0: 2191205.1, 1: 8606.6, 2: 3.677471308328528e+23, 3: 6.081772619901619e+23}
+  [eval-ht] en_wiki: market=6047.0 oracle(cell#None)=None router(cell#1)=8801.3 cells={0: 713483.0, 1: 8801.3, 2: 2.9071183344374606e+24, 3: 4.560679255965424e+23}
+== [mk_v2] DONE wall=6.9min step=188ms(p50 181ms) tok/s=5440 peakRSS=1652MB params=10.57M cells=4 events={'seal': 3} | 功能 seal(封存/边界)=✓ birth(分裂)=✗ death(凋亡)=✗ pass=True

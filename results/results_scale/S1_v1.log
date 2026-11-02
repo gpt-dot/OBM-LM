@@ -1,0 +1,4 @@
+== OBM-LM scale run: S1 | cells=4 params=53.9M | steps/block=1000 total=6000
+  s100 [blk0:en_lit] en_lit=41925736.0 zh_classic=47747772577.8 code_py=23695330032.1 en_wiki=3747131703.0 | online=0.102 cells=4 seg=0 6.9min
+  s200 [blk0:en_lit] en_lit=15520670.9 zh_classic=53487758332.7 code_py=13357033468.0 en_wiki=3329772031.7 | online=0.038 cells=4 seg=0 13.7min
+  s300 [blk0:en_lit] en_lit=69979.4 zh_classic=6789196206.6 code_py=182855811.8 en_wiki=13306078.6 | online=0.102 cells=4 seg=0 22.1min

@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>OBM-LM 第七轮战报：无人值守流水线 + 按遗忘度重放 + 细胞园丁</title>
+<style>
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;margin:0;background:#f6f8fa;color:#1a2332;line-height:1.7}
+.wrap{max-width:1060px;margin:0 auto;padding:30px 36px 60px;background:#fff}
+h1{font-size:23px;border-bottom:3px solid #1a5fb4;padding-bottom:10px}
+h2{font-size:17px;margin-top:30px;color:#1a5fb4}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0}
+th,td{border:1px solid #dfe6ee;padding:7px 10px;text-align:left}
+th{background:#eef2f7}
+.ok{color:#26a269;font-weight:600}.dim{color:#5a6a7e}
+.note{background:#eaf2fc;border-left:4px solid #1a5fb4;padding:10px 14px;margin:14px 0;font-size:13.5px}
+code{background:#f0f2f5;padding:1px 5px;border-radius:3px;font-size:12.5px}
+</style></head><body><div class="wrap">
+
+<h1>OBM-LM 第七轮战报：头脑风暴 × TRIZ——走向无人值守</h1>
+
+<div class="note"><b>本轮主题</b>：把"人盯"全部换成"系统盯"——夜间流水线、按需重放、饲养可视化，
+为 scale8/9 连轴转做基础设施。</div>
+
+<h2>收敛矩阵（4 个想法全落地）</h2>
+<table>
+<tr><th>#</th><th>想法</th><th>TRIZ 原理</th><th>结果</th></tr>
+<tr><td>1</td><td><b>无人值守夜间流水线</b>：scale8 完工→自动下载权重+成绩单→自动生成跨代战报</td><td>No.10 预先作用</td><td class="ok">✅ night_pipeline.py 已布防盯守 126537697（每 3 分钟轮询，完工即全自动产出 <code>OBM-LM-scale8跨代战报.html</code>）</td></tr>
+<tr><td>2</td><td><b>按遗忘度重放</b> <code>--replay-need</code>：LRU 是"按时间公平"，need 是"按需求公平"——滚动 EMA 记账各域准确率，相对自身历史最好掉分最多的域优先获得重放预算</td><td>No.35 参数变化</td><td class="ok">✅ 已实现 + 冒烟通过（重放预算自动向遗忘最多的域倾斜：8/23/27 递增分配）</td></tr>
+<tr><td>3</td><td><b>细胞园丁页</b> <code>/gardener</code>：逐细胞×逐域 ppl 条形图，饲养状态可视化</td><td>No.23 反馈</td><td class="ok">✅ 上线（见下方实测数据）</td></tr>
+<tr><td>4</td><td>pypi 收工即 encode（scale9 备料）</td><td>No.11 事先缓冲</td><td>🔄 87/95 sdist 到位，链条继续</td></tr>
+</table>
+
+<h2>细胞园丁实测（scale7 权重）</h2>
+<table>
+<tr><th>域</th><th>细胞#3</th><th>细胞#4</th><th>细胞#1（弱者）</th></tr>
+<tr><td>en_lit</td><td>281</td><td class="ok"><b>120</b></td><td>397</td></tr>
+<tr><td>zh_classic</td><td class="ok"><b>820</b></td><td>994</td><td>9421</td></tr>
+<tr><td>code_py</td><td class="ok"><b>72</b></td><td>220</td><td>2868</td></tr>
+<tr><td>en_wiki</td><td>527</td><td class="ok"><b>293</b></td><td>3076</td></tr>
+</table>
+<p class="dim">一眼看清分工：#3 = zh/code 专才，#4 = en 双域专才，#1 = 老弱细胞（若 8GB 内存吃紧，预算裁剪会先裁它——正好裁对）。</p>
+
+<h2>本轮修正的 bug</h2>
+<p><code>demo_server.py</code> 的 <code>global STREAMS</code> 声明位置错误（Python 要求 global 声明先于使用）——一处顺序修正后复活。</p>
+
+<h2>态势</h2>
+<table>
+<tr><th>线</th><th>状态</th></tr>
+<tr><td>scale8（126537697）</td><td>🔄 排队 → 完工后夜间流水线自动交付战报</td></tr>
+<tr><td>语料扩容</td><td>🔄 pypi 87/95 → encode 150M tokens（scale9 备料）</td></tr>
+<tr><td>演示服务器</td><td class="ok">✅ / 生成 + /gardener 园丁页 双页运行中</td></tr>
+<tr><td>推理栈版本</td><td class="ok">v3.1 = zoo + 自适应路由 + 自动选温 + 园丁可视化</td></tr>
+</table>
+
+<h2>下一轮候选（登记）</h2>
+<ul>
+<li>encode 启动（pypi 收工触发）→ scale9 脚本定稿（resume scale8 + 扩容语料 + replay-need + 看门狗）</li>
+<li>dream 2.0 跨细胞互梦 / 自蒸馏合成语料（仍登记，等 scale9 后的空窗期）</li>
+<li>权重 EMA（训练中影子平均，免费 ppl 收益的经典技巧）——新想法，登记</li>
+</ul>
+
+</div></body></html>

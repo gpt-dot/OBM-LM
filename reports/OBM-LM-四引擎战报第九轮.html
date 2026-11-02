@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>OBM-LM 四引擎战报·第九轮（哪个组合收益最大？）</title>
+<style>
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;margin:0;background:#f6f8fa;color:#1a2332;line-height:1.7}
+.wrap{max-width:1080px;margin:0 auto;padding:30px 36px 60px;background:#fff}
+h1{font-size:24px;border-bottom:3px solid #b54708;padding-bottom:10px}
+h2{font-size:18px;color:#b54708;margin-top:28px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0}
+th,td{border:1px solid #dfe6ee;padding:7px 9px;vertical-align:top}
+th{background:#fdf3e7}
+.good{color:#1a7f37;font-weight:600}.bad{color:#c01c28;font-weight:600}.mid{color:#b54708;font-weight:600}
+.note{background:#fdf3e7;border-left:4px solid #b54708;padding:10px 14px;margin:14px 0;font-size:13.5px}
+code{background:#f0f2f5;padding:1px 5px;border-radius:3px;font-size:12.5px}
+</style></head><body><div class="wrap">
+<h1>OBM-LM 四引擎战报 · 第九轮<br><span style="font-size:14px;color:#5a6a7e">回答"哪个组合收益最大" + 三连落地 + 备料事故复盘</span></h1>
+
+<div class="note"><b>收益审计结论</b>：八轮落地项逐笔复盘——<b>「类比迁移（借结构）× SCAMPER-C/P（合并/复用）× 实验裁决」是收益最大的组合</b>。它专产零训练成本的部署收益（NLL 路由 2.5×、动物园严格占优、凋亡提速 1.49×），且类比自带可证伪性，错得快、砍得果断。TRIZ 单独用偏防御（消矛盾），头脑风暴单独发散过散——作为辅助透镜最佳。</div>
+
+<h2>① 生态学类比（Gause 竞争排斥）——被数据否决，收获甜点位</h2>
+<p>凋亡后 6 细胞结构：<b>2 个生态位 × 各 3 个跨代副本</b>（zh/code 位、en 位，跨代相似度 0.98-0.997）。Gause 定理预言同生态位只留冠军 → 试裁到 2 细胞：</p>
+<table><tr><th>域</th><th>6 细胞</th><th>2 细胞（冠军）</th><th>裁决</th></tr>
+<tr><td>en_lit</td><td class="good"><b>113</b></td><td>121</td><td class="bad">+7% 变差</td></tr>
+<tr><td>zh_classic</td><td class="good"><b>785</b></td><td>812</td><td class="bad">+3.4% 变差</td></tr>
+<tr><td>code_py</td><td>71</td><td>71</td><td>持平</td></tr>
+<tr><td>en_wiki</td><td>280</td><td>280</td><td>持平</td></tr></table>
+<p><b>否决理由</b>：中等细胞是自适应路由模糊回退的"保险组合"——组合效应 &gt; 极简主义（金融类比再次应验）。<b>6 细胞就是甜点位</b>；Gause 判据降级为"生态位重叠监测"。</p>
+
+<h2>② SCAMPER-C 合并：训练-评估合并反馈 ✅</h2>
+<p>新参数 <code>--eval-every N</code>：每 N 步做轻量在线读数（每域 8 窗口，~2s 级）——</p>
+<ul>
+<li>ppl 曲线落盘到结果 json（<code>eval_curve</code>），训练后可直接画遗忘曲线；</li>
+<li>读数以 <code>-log(ppl)</code> 实时喂给 <code>--replay-need</code> 记账：<b>真实遗忘信号替代 batch-acc EMA 代理</b>（No.23 反馈闭环完成）；</li>
+<li>冒烟通过：6 个读数点曲线正常递减、need 记账消费真实信号。已上传 scnet，scale9 标配。</li>
+</ul>
+
+<h2>③ SCAMPER-R 重组 × 金融类比：边际收益再平衡</h2>
+<p>用 s5→s6→s7 跨代成绩算每 1200 步块的 log-ppl 边际：</p>
+<table><tr><th>域</th><th>s5→s6</th><th>s6→s7</th></tr>
+<tr><td>en_lit</td><td>0.07</td><td class="mid">0.01</td></tr>
+<tr><td>zh_classic</td><td>0.16</td><td class="mid">-0.00</td></tr>
+<tr><td>code_py</td><td>0.01</td><td>0.34</td></tr>
+<tr><td>en_wiki</td><td>-0.07</td><td>0.07</td></tr></table>
+<p><b>投资结论：各域边际已大幅递减，继续加步数是亏本买卖——scale9 的真杠杆是新数据</b>（0.65 → 目标 2+ tok/param），而非更多步。恰好 encode 在路上。</p>
+
+<h2>④ 备料事故复盘（TRIZ No.1 分段的彻底执行）</h2>
+<p>encode 首跑 <code class="bad">EXIT=137</code>（8GB cgroup OOM，日志全空的静默死亡）。根因：<code>tok.encode(全量文本)</code> + parts 列表 + concatenate 三份驻留。v2 修复三连：</p>
+<ul>
+<li><b>逐块追加写盘</b>（int32 裸流 → tmp → npy），峰值 = 全文本 + 单块 ids；</li>
+<li><b>分域进程隔离</b>（<code>--only</code> 参数），单域 OOM 不拖累全局，幂等续跑；</li>
+<li>gc 逐域回收。当前 4 域串行后台编码中（en_lit 171 文件 / zh 100 / code 100 / wiki parquet）。</li>
+</ul>
+
+<h2>态势</h2>
+<ul>
+<li><b>scale8</b>（126537697）：排队中，夜间流水线盯守；</li>
+<li><b>encode</b>：后台跑，完工即得 ~110-130M tokens 新粮草 → 上传远端 → scale9（新数据 + eval-every 闭环 + dream-seq A/B）；</li>
+<li><b>方法论记分板</b>：四引擎累计 47 候选 → 落地 16 → 快杀 6（本轮 Gause 裁剪、比较优势路由加入快杀名单）——<b>证据裁决文化</b>是不跑偏的根基。</li>
+</ul>
+</div></body></html>

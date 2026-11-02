@@ -1,0 +1,10 @@
+== OBM-LM-FAST pilot | trunk=256x4 head=2L | cells=4 trunk_params=6.4M head_params=4.21M steps/block=300 total=1800
+  [pretrain] step 50/800 loss=28.23 (139s)
+  [pretrain] step 100/800 loss=16.94 (211s)
+  [pretrain] step 150/800 loss=13.99 (283s)
+  [pretrain] step 200/800 loss=11.54 (355s)
+  [pretrain] step 250/800 loss=9.59 (427s)
+  [pretrain] step 300/800 loss=9.64 (496s)
+  [pretrain] step 350/800 loss=8.93 (567s)
+  [pretrain] step 400/800 loss=8.47 (640s)
+  [pretrain] step 450/800 loss=8.27 (711s)

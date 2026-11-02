@@ -1,0 +1,8 @@
+[zh_classic] 20.6M chars
+  chunk 0: cum 4.14M tokens
+  [saved] zh_classic: 19.44M tokens (28s)
+  en_lit: 27.2M
+  zh_classic: 19.4M
+  code_py: 24.7M
+  en_wiki: 31.2M
+=== encode done: 102.6M tokens, 28s ===

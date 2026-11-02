@@ -1,0 +1,115 @@
+{
+ "tag": "evcurve_smoke",
+ "d_model": 64,
+ "n_layers": 2,
+ "batch": 4,
+ "ctx": 64,
+ "dist_refresh": 10,
+ "dream_period": 200,
+ "amp": true,
+ "n_params": 2238208,
+ "cells_final": 2,
+ "total_steps": 75,
+ "wall_sec": 9.62498140335083,
+ "eval_curve": [
+  {
+   "step": 12,
+   "en_lit": 403180248835.2,
+   "zh_classic": 279673157417.4,
+   "code_py": 400772270819.9,
+   "en_wiki": 335020686024.3
+  },
+  {
+   "step": 24,
+   "en_lit": 368044163819.5,
+   "zh_classic": 255434454334.5,
+   "code_py": 371135534152.4,
+   "en_wiki": 298520658827.8
+  },
+  {
+   "step": 36,
+   "en_lit": 338456082053.2,
+   "zh_classic": 233551575313.0,
+   "code_py": 344191082582.6,
+   "en_wiki": 264002787173.4
+  },
+  {
+   "step": 48,
+   "en_lit": 320852195480.8,
+   "zh_classic": 221542338224.6,
+   "code_py": 326132272118.6,
+   "en_wiki": 239944999596.2
+  },
+  {
+   "step": 60,
+   "en_lit": 286010482378.2,
+   "zh_classic": 190626669402.6,
+   "code_py": 273759636628.5,
+   "en_wiki": 199520765836.4
+  },
+  {
+   "step": 72,
+   "en_lit": 254348622831.7,
+   "zh_classic": 166245811252.8,
+   "code_py": 217239567915.8,
+   "en_wiki": 171691027686.1
+  }
+ ],
+ "step_time_mean": 0.05264218966166179,
+ "step_time_p50": 0.020367860794067383,
+ "step_time_p90": 0.0744987964630127,
+ "tok_per_sec": 1994.8090490144464,
+ "peak_rss_mb": 1352.1484375,
+ "event_counts": {},
+ "events": [],
+ "segments": 0,
+ "online": [
+  {
+   "step": 25,
+   "block": 0,
+   "acc": 0.0,
+   "k": 1,
+   "peak": 0.001,
+   "cells": 2
+  },
+  {
+   "step": 50,
+   "block": 1,
+   "acc": 0.0,
+   "k": 1,
+   "peak": 0.002,
+   "cells": 2
+  },
+  {
+   "step": 75,
+   "block": 2,
+   "acc": 0.0,
+   "k": 1,
+   "peak": 0.002,
+   "cells": 2
+  }
+ ],
+ "territory": [
+  {
+   "cell": 0,
+   "seg_rel": {
+    "0": 0.01
+   },
+   "seg_best": {
+    "0": 0.418
+   }
+  },
+  {
+   "cell": 1,
+   "seg_rel": {},
+   "seg_best": {}
+  }
+ ],
+ "peak_acc_final": 0.0016,
+ "function_verdict": {
+  "seal(封存/边界)": false,
+  "birth(分裂)": false,
+  "death(凋亡)": false
+ },
+ "function_pass": false
+}

@@ -1,0 +1,8 @@
+== trunk pretrain 500 steps (V=16384)
+  [trunk] 50/500 loss=26.37 (71s)
+  [trunk] 100/500 loss=17.44 (144s)
+  [trunk] 150/500 loss=13.29 (216s)
+  [trunk] 200/500 loss=11.17 (287s)
+  [trunk] 250/500 loss=9.64 (358s)
+  [trunk] 300/500 loss=10.98 (430s)
+  [trunk] 350/500 loss=9.66 (501s)

@@ -1,0 +1,26 @@
+== OBM-LM-FAST pilot | trunk=256x4 head=1L | cells=4 trunk_params=6.4M head_params=2.10M steps/block=40 total=240
+  [pretrain] step 50/60 loss=28.23 (70s)
+== trunk pretrain done (60 steps, 84s), frozen for OBM phase
+  [ckpt] step 1 saved (3s)
+  s40 [blk0:en_lit] en_lit=503501065.7 zh_classic=40041622605.0 code_py=13586698651.5 en_wiki=13722706541.8 | online=0.079 cells=4 seg=0 0.8min
+== block 0 (en_lit) done in 51s, cells=4
+  s80 [blk1:zh_classic] en_lit=40528294.6 zh_classic=307750619.1 code_py=732294457.9 en_wiki=535079574.0 | online=0.063 cells=4 seg=0 1.8min
+== block 1 (zh_classic) done in 57s, cells=4
+  s120 [blk2:code_py] en_lit=34038381.5 zh_classic=885021896.2 code_py=143762756.5 en_wiki=288639568.5 | online=0.042 cells=4 seg=0 2.7min
+== block 2 (code_py) done in 56s, cells=4
+  s160 [blk3:en_wiki] en_lit=19455261.1 zh_classic=844354191.4 code_py=658986771.1 en_wiki=72646698.0 | online=0.028 cells=4 seg=0 3.7min
+== block 3 (en_wiki) done in 57s, cells=4
+  s200 [blk4:en_lit#repris4] en_lit=10340494.0 zh_classic=393175823.5 code_py=359202370.5 en_wiki=153365956.0 | online=0.078 cells=4 seg=0 4.5min
+== block 4 (en_lit#repris4) done in 51s, cells=4
+  s240 [blk5:zh_classic#repris5] en_lit=10382305.4 zh_classic=361119457.6 code_py=344585881.5 en_wiki=128096033.2 | online=0.093 cells=4 seg=0 7.0min
+== block 5 (zh_classic#repris5) done in 146s, cells=4
+Traceback (most recent call last):
+  File "/workspace/obm_mvp/experiments/run_scale_fast.py", line 234, in <module>
+    main()
+  File "/workspace/obm_mvp/experiments/run_scale_fast.py", line 223, in main
+    samples = generate(mesh, streams, tok, UNIQ, ctx=cfg.max_len)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/obm_mvp/experiments/run_scale_fast.py", line 107, in generate
+    p = np.exp(lg - lg.max(-1, keepdims=True))
+               ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for -: 'Tensor' and 'torch.return_types.max'

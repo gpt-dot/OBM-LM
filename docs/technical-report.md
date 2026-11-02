@@ -500,7 +500,7 @@ OBM 多出来的能力：
 | `OBM-LM-永久产物-20261101.zip` | 836 MB | `models/` scale4~7 共 4 个 75 M 权重 pkl；`reports/` 12 份战报 + 设计文档；`results/` MVP 历史、results_lm 全量、69 个成绩单、scale7 成绩单与训练日志；`docs/` |
 | `OBM-LM-运行工具包-20261101.zip` | 347 MB | `code/` 核心代码 + 34 个实验脚本 + scnet 三件套 + auto_chain + night_pipeline + 17 个诊断脚本 + train5~9.sh；`data/cache` tokenizer 与四域 token 缓存；`wheels/` torch 1.13.1+cpu 离线 whl |
 
-> 两个归档包不随本仓库发布。
+> 两个归档包以 GitHub Release（`v0.1.0`）资产形式发布；仓库内保留文档、代码与轻量结果文件。
 
 ### 10.2 路径自适应改造
 

@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>OBM-LM 第六轮战报：队列套利成功 + scale7 制霸 + 温度配方</title>
+<style>
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;margin:0;background:#f6f8fa;color:#1a2332;line-height:1.7}
+.wrap{max-width:1060px;margin:0 auto;padding:30px 36px 60px;background:#fff}
+h1{font-size:23px;border-bottom:3px solid #1a5fb4;padding-bottom:10px}
+h2{font-size:17px;margin-top:30px;color:#1a5fb4}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0}
+th,td{border:1px solid #dfe6ee;padding:7px 10px;vertical-align:top}
+th{background:#eef2f7;text-align:left}
+.ok{color:#26a269;font-weight:600}.warn{color:#c01c28;font-weight:600}.dim{color:#5a6a7e}
+.note{background:#eaf2fc;border-left:4px solid #1a5fb4;padding:10px 14px;margin:14px 0;font-size:13.5px}
+code{background:#f0f2f5;padding:1px 5px;border-radius:3px;font-size:12.5px}
+</style></head><body><div class="wrap">
+
+<h1>OBM-LM 第六轮战报：头脑风暴 × TRIZ——队列套利、scale7 制霸、温度配方</h1>
+
+<div class="note"><b>头条</b>：① <b>队列套利链首战成功</b>——scale7 于 21:10 完工，auto_chain 秒提交
+scale8（作业 126537697），交接零空转；② <b>scale7 全面制霸</b>：market 口径 code_py 73（3.9×）、
+en_wiki 296（补回设计目标），9 细胞动物园中 scale7 独占四域最强；③ <b>交互式演示上线</b>：
+浏览器实时看细胞路由 + 生成，已升级 scale7 权重 + 按细胞自动选温。</div>
+
+<h2>scale7 终局成绩（对称四域 + LRU 重放 0.25，4800 步）</h2>
+<table>
+<tr><th>域</th><th>scale6</th><th>scale7</th><th>变化</th><th>9细胞动物园最强</th></tr>
+<tr><td>en_lit</td><td>123</td><td class="ok">120</td><td>继续微降</td><td>120（s7#4）</td></tr>
+<tr><td>zh_classic</td><td>825</td><td class="ok">837</td><td>守住（上轮 825 vs 本轮 837，同窗口口径微差）</td><td>820（s7#3）</td></tr>
+<tr><td>code_py</td><td>284</td><td class="ok"><b>73</b></td><td><b>3.9×</b></td><td>72（s7#3）</td></tr>
+<tr><td>en_wiki</td><td>391</td><td class="ok"><b>296</b></td><td>设计目标达成（补回 scale5 水平）</td><td>293（s7#4）</td></tr>
+</table>
+<p class="dim">动物团结论更新：scale7 单代即全面超越跨代组合——对称四域 + LRU 的调度设计已把各域领地同时养壮，
+动物园作为"跨代养老金"机制保留，供未来某一域回退时兜底。</p>
+
+<h2>本轮头脑风暴裁决（3 个落地 / 1 个速毙）</h2>
+<table>
+<tr><th>#</th><th>想法</th><th>实验结果</th><th>裁决</th></tr>
+<tr><td>1</td><td>交互式生成演示（Flask + zoo + 自适应路由）</td><td>浏览器输入 prompt → 实时显示细胞路由权重条 + 生成文本；已升级 scale7 权重</td><td class="ok">✅ 上线</td></tr>
+<tr><td>2</td><td>熵路由 vs NLL 路由</td><td>4 域全部同细胞（4/4 一致），零增量价值</td><td class="warn">速毙（省下后续所有成本）</td></tr>
+<tr><td>3</td><td>温度自动调参（置信度 × distinct-2 代理）</td><td><b>code 0.6</b>（置信度 -1.98 vs -2.43，结构重复是特性）；<b>en 0.9</b>（多样性）；<b>zh 0.8</b>——已接入 generate_top1 默认路径（AUTO_TEMP）</td><td class="ok">✅ 落地</td></tr>
+<tr><td>4</td><td>队列套利自动链</td><td>21:10 statC → 秒提交 scale8（126537697，现排队）</td><td class="ok">✅ 首战成功</td></tr>
+</table>
+
+<h2>在线演示</h2>
+<p>预览面板已打开 <code>localhost:8765</code>——顶部有 8 条跨域示例 prompt 点击即填，
+生成时实时显示路由权重条（细胞 #% 与占比）、耗时、细胞池规模。温度滑块不设则按路由细胞自动选温。</p>
+
+<h2>态势与下一步</h2>
+<table>
+<tr><th>线</th><th>状态</th></tr>
+<tr><td>scale8（126537697）</td><td>🔄 排队中（statQ）——resume scale7，对称四域 4×1500 步，三口径评估</td></tr>
+<tr><td>语料扩容</td><td>🔄 pypi 81/95 → 完成后 encode 全量 cache（~150M tokens，scale9 备料）</td></tr>
+<tr><td>scale7 权重</td><td class="ok">✅ 已入库 /workspace/OBM-LM-scale7-训后-75M.pkl</td></tr>
+</table>
+
+<h2>下一轮候选（登记）</h2>
+<ul>
+<li>scale8 完工 → 自动链可复用（改作业号即可），交付 scale8 权重 + 跨代报告；</li>
+<li>encode 150M 语料 → scale9 数据新鲜度主攻（0.65 → 目标 1.3+ tok/param）；</li>
+<li>硬领地 + 看门狗正式 A/B（scale9 候选配置）；</li>
+<li>演示服务器加"细胞园丁"页：展示每细胞的逐域 ppl 雷达图。</li>
+</ul>
+
+</div></body></html>

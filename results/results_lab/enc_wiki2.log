@@ -1,0 +1,14 @@
+[en_wiki] 300.7M chars
+  chunk 0: cum 1.26M tokens
+  chunk 10: cum 14.27M tokens
+  chunk 20: cum 27.27M tokens
+  chunk 30: cum 40.27M tokens
+  chunk 40: cum 53.27M tokens
+  chunk 50: cum 66.30M tokens
+  chunk 60: cum 78.17M tokens
+  [saved] en_wiki: 78.17M tokens (147s)
+  en_lit: 27.2M
+  zh_classic: 19.4M
+  code_py: 22.1M
+  en_wiki: 78.2M
+=== encode done: 146.9M tokens, 147s ===

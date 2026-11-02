@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>OBM-LM 项目 TRIZ 矛盾深度解析与消解报告</title>
+<style>
+  :root{
+    --ink:#1a2332; --sub:#5a6a7e; --line:#dfe6ee; --bg:#f6f8fa;
+    --blue:#1a5fb4; --blue-bg:#eaf2fc; --red:#c01c28; --red-bg:#fdecee;
+    --green:#26a269; --green-bg:#e9f7f0; --amber:#c64600; --amber-bg:#fdf1e3;
+  }
+  *{box-sizing:border-box}
+  body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+       color:var(--ink); margin:0; background:var(--bg); line-height:1.75;}
+  .wrap{max-width:960px; margin:0 auto; padding:32px 40px 64px; background:#fff;}
+  h1{font-size:26px; border-bottom:3px solid var(--blue); padding-bottom:12px; margin-bottom:4px;}
+  h2{font-size:20px; margin-top:40px; padding-left:10px; border-left:5px solid var(--blue); background:var(--blue-bg); padding-top:6px; padding-bottom:6px;}
+  h3{font-size:16px; margin-top:26px;}
+  .meta{color:var(--sub); font-size:13px; margin-bottom:24px;}
+  table{border-collapse:collapse; width:100%; margin:16px 0; font-size:13.5px;}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top;}
+  th{background:#eef2f7; white-space:nowrap;}
+  tr:nth-child(even) td{background:#fafbfd;}
+  .tag{display:inline-block; padding:1px 8px; border-radius:10px; font-size:12px; white-space:nowrap;}
+  .tag.done{background:var(--green-bg); color:var(--green);}
+  .tag.run{background:var(--blue-bg); color:var(--blue);}
+  .tag.todo{background:var(--amber-bg); color:var(--amber);}
+  .tag.bad{background:var(--red-bg); color:var(--red);}
+  .quote{border-left:4px solid var(--blue); background:var(--blue-bg); padding:10px 14px; margin:14px 0; font-size:14px;}
+  .num{font-variant-numeric:tabular-nums; font-weight:600;}
+  code{background:#f0f3f7; padding:1px 5px; border-radius:3px; font-size:13px;}
+  .toc{background:var(--bg); border:1px solid var(--line); padding:14px 20px; border-radius:6px; font-size:14px;}
+  .formula{background:#0f1720; color:#d7e3f0; padding:14px 18px; border-radius:6px; font-family:Consolas,monospace; font-size:13px; overflow-x:auto; margin:14px 0;}
+  .small{font-size:12.5px; color:var(--sub);}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>OBM-LM 项目 TRIZ 矛盾深度解析与消解报告</h1>
+<div class="meta">生成于 2026-11-01 · 覆盖 scale4/scale5 两轮 scnet 训练的全部遗留问题 · 每条矛盾均对应已落地或已提交的消解动作</div>
+
+<div class="toc">
+<b>目录</b> —
+1 <a href="#t1">问题全景</a> ·
+2 <a href="#t2">矛盾的形式化表达</a> ·
+3 <a href="#t3">物理矛盾与四大分离原理（核心战场）</a> ·
+4 <a href="#t4">技术矛盾 × 发明原理映射</a> ·
+5 <a href="#t5">本次新落地的三项 TRIZ 动作</a> ·
+6 <a href="#t6">scale6 修复效果预估</a> ·
+7 <a href="#t7">残余矛盾与下一轮路线</a>
+</div>
+
+<h2 id="t1">1 · 问题全景：五个"麻烦"的真实身份</h2>
+<table>
+<tr><th>#</th><th>现象</th><th>本质矛盾</th><th>严重度</th></tr>
+<tr><td>T1</td><td>zh_classic ppl <span class="num">963 → 1557</span>（倒退 38%），其余域全部大幅改善（wiki 15.6×、code 4.6×、en_lit 3.7×）</td>
+    <td>多域共存 vs 单域深度：块序列 <code>en_lit,zh,code,wiki,code,wiki</code> 中 zh <b>零复现块</b>，2000 步之后被 8000 步冲刷，15% 均匀重放不足以保温</td>
+    <td><span class="tag bad">高危·已动手</span></td></tr>
+<tr><td>T2</td><td>scnet 32 核 CPU 仅 ~146 GFLOPS，151M 参数起步"太贵"</td>
+    <td>训练算力（FLOPs 预算）vs 模型容量；同时受沙箱 8GB 推理预算反压</td>
+    <td><span class="tag done">已消解</span></td></tr>
+<tr><td>T3</td><td>累计 49M tokens ÷ 75.8M 参数 = <span class="num">0.65 tok/param</span>（Chinchilla 最优 20，差 ~30×），目前仍是"学舌"级生成</td>
+    <td>数据量 vs 排队窗口（Agent0 队列延迟 9.5~20h）</td>
+    <td><span class="tag todo">进行中</span></td></tr>
+<tr><td>T4</td><td>评估陷阱：语料扩容后评估集变化 + 手写 ppl 与 <code>mesh.eval_ppl</code> 差 3 个数量级</td>
+    <td>度量一致性（apples-to-apples）</td>
+    <td><span class="tag done">已消解</span></td></tr>
+<tr><td>T5</td><td>排队 9.5~20h，一次失败浪费一整天</td>
+    <td>实验节奏 vs 异构资源排队</td>
+    <td><span class="tag done">已消解</span>（本地冒烟+离线torch+断点续传）</td></tr>
+</table>
+
+<h2 id="t2">2 · 矛盾的形式化表达（TRIZ 第一步：把"麻烦"翻译成"矛盾"）</h2>
+<p>TRIZ 的核心立场：<b>麻烦不是缺陷，而是两个合理诉求的冲突</b>。逐条翻译：</p>
+<div class="quote">
+<b>TC1（技术矛盾）</b>：为了"提升多域覆盖"（改善参数：<b>适应性/通用性 No.35</b>），采用多域顺序块训练 ⇒
+"旧域可靠性"恶化（恶化参数：<b>可靠性 No.27</b>）。<br>
+<b>PC1（物理矛盾）</b>：<b>同一组权重必须既"专精当前域"又"保持旧域"</b> —— 同一对象、相反要求，这是全项目的元矛盾。
+</div>
+<div class="quote">
+<b>TC2</b>：为了"训得深"（参数：功率 No.10 / 力 No.12）加大模型 ⇒ 沙箱 8GB 放不下、CPU 训练太慢（参数：物质损失 No.13）。<br>
+<b>PC2</b>：模型必须"训练时大"且"部署时小"。
+</div>
+<div class="quote">
+<b>TC3</b>：为了"数据新鲜度"扩语料 ⇒ 需要更多排队窗口与磁盘/内存预算（参数：物质损失 No.13、便利性 No.33）。<br>
+<b>PC3</b>：评估集必须"来自新语料"且"与旧结果可比"。
+</div>
+
+<h2 id="t3">3 · 物理矛盾与四大分离原理（核心战场）</h2>
+<p>TRIZ 解物理矛盾的标准武器是<b>四大分离原理</b>。PC1（专精 vs 保持）恰好四个都能用，而且 OBMLM 架构天生就长在分离原理上：</p>
+<table>
+<tr><th>分离原理</th><th>应用到"遗忘"问题</th><th>落地载体</th><th>状态</th></tr>
+<tr><td><b>空间分离</b></td><td>不同域的专家知识放进不同物理容器，互不覆盖</td>
+    <td>OBM 细胞领地（概念段路由把域绑定到细胞）——这是架构级的"分割原理 No.1 + 局部质量 No.3"</td>
+    <td><span class="tag done">架构自带</span></td></tr>
+<tr><td><b>时间分离</b></td><td>同一细胞不同时刻服务不同域：块序列改为 <code>zh → en_lit → zh</code>，让 zh 拿到<b>终局巩固权</b>（最后一步落在 zh 上）</td>
+    <td>scale6 块计划 + 复现（reprise）块</td>
+    <td><span class="tag run">作业126514523</span></td></tr>
+<tr><td><b>条件分离</b></td><td>重放预算不再均匀撒——<b>最久没被见过的域优先</b>（LRU），排在前面的块不再"挨饿"</td>
+    <td>新增 <code>--replay-lru</code>（条件分离 + 周期性作用 No.18）</td>
+    <td><span class="tag done">代码已落地</span></td></tr>
+<tr><td><b>系统级分离</b></td><td>训练系统（151M·fp32·512GB 机器）与推理系统（75.8M·fp16·8GB 沙箱）整体分开，各自满足相反要求</td>
+    <td>scnet 训 → save_weights_only(fp16) → 沙箱 load_weights_only(按预算裁剪)</td>
+    <td><span class="tag done">scale4/5 已验证</span></td></tr>
+</table>
+<div class="quote">
+<b>关键洞察</b>：scale5 的 zh 倒退不是"重放没用"，而是<b>重放机会分配违反了分离原理的条件分离</b>——
+均匀随机重放让"离当前块近的域"重复受益，zh 在 6 块里 4 块都不在重放候选循环的前沿。
+LRU 重放把"保温机会"变成<b>确定性公平分配</b>。
+</div>
+
+<h2 id="t4">4 · 技术矛盾 × 发明原理映射（全项目清单）</h2>
+<table>
+<tr><th>矛盾</th><th>发明原理</th><th>具体落地</th><th>状态</th></tr>
+<tr><td rowspan="3">TC1 多域覆盖 vs 旧域可靠性</td>
+    <td>No.18 周期性作用</td><td>dream 代谢（每 200 步）+ 交错重放 + LRU 重放</td><td><span class="tag done">已验证/新增</span></td></tr>
+<tr><td>No.10 预先作用</td><td>seal 封存：概念段提前入库，遗忘后可复现重建</td><td><span class="tag done">已验证</span></td></tr>
+<tr><td>No.21 变害为利</td><td>把"必然遗忘"转化为"主动凋亡"：death 事件裁掉低可靠性领地，参数预算回流新知识</td><td><span class="tag done">已验证</span></td></tr>
+<tr><td rowspan="3">TC2 训练算力 vs 容量/内存</td>
+    <td>No.35 参数变化</td><td>fp16 权重档（218MB），文件减半，8GB 沙箱可载</td><td><span class="tag done">已验证</span></td></tr>
+<tr><td>No.24 中介物</td><td>scnet 作为"外包算力中介"：本地只做冒烟验证，重活交给排队系统</td><td><span class="tag done">已验证</span></td></tr>
+<tr><td>No.1 分割</td><td>小参数 × 多步（151M@12000步）替代参数虚胖；FLOPs 预算内最大化学习量</td><td><span class="tag done">已验证</span></td></tr>
+<tr><td rowspan="2">TC3 数据量 vs 排队窗口</td>
+    <td>No.26 复制 / No.11 事先缓冲</td><td>token 缓存提前建好（97.7M tokens 离线分片），下次续训零数据准备时间；断点续传+Range恢复</td><td><span class="tag done">已验证</span></td></tr>
+<tr><td>No.25 自服务</td><td>OBM 事件系统自我代谢（seal/death/birth），不需人工干预即可回收参数</td><td><span class="tag done">已验证</span></td></tr>
+<tr><td>T4 评估一致性</td><td>No.26 复制</td><td>固定同一尾部 120k 评估窗口、统一用 <code>mesh.eval_ppl</code>，跨代重测旧权重</td><td><span class="tag done">已验证</span></td></tr>
+<tr><td>T5 排队风险</td><td>No.11 事先缓冲</td><td>本地 32 步冒烟（LRU 新代码已过）+ 离线 torch wheel + faulthandler 定位，远端零试错</td><td><span class="tag done">已验证</span></td></tr>
+</table>
+
+<h2 id="t5">5 · 本次新落地的三项 TRIZ 动作</h2>
+<h3>动作一：LRU 按域重放（条件分离 + 周期性作用）——结构性修复</h3>
+<div class="formula">--replay-lru：重放域按"最久未见优先"（LRU）而非均匀随机
+blk 开始时 last_seen[key]=step；每次重放刷新 last_seen[rk]=step
+⇒ 无论块序列怎么排，各域的保温机会严格公平轮转</div>
+<p>这从<b>机制</b>上消灭"某个域长期吃不到重放"这一类问题——以后无论块序列怎么排（zh 放哪都行），遗忘风险被结构性摊平。已通过本地 30 步冒烟（重放 17 次记账正常）。</p>
+
+<h3>动作二：scale6 急救短作业（时间分离）——止血</h3>
+<div class="formula">作业 126514523（wall 4h，实际卡时 ~2.5h）
+resume scale5 权重（保留全部已学知识）
+块计划: zh_classic(1000) → en_lit(1000) → zh_classic(1000, 终局巩固)
+replay=0.2 + LRU，lr=6e-4（半峰值精调），每 500 步存检查点，终局全域评估</div>
+
+<h3>动作三：监控与提交链路修复（T5）</h3>
+<p>发现并修复 <code>scnet_submit.job_detail</code> 的 API 签名错配（api_get 需要 base/path/token 三参），作业状态查询从恒错 None 修复为可正确读出 <code>statQ</code>（排队中）。</p>
+
+<h2 id="t6">6 · scale6 修复效果预估（老实标注：这是估计，非实测）</h2>
+<table>
+<tr><th>指标</th><th>scale5 现值</th><th>scale6 预期</th><th>依据</th></tr>
+<tr><td>zh_classic ppl</td><td class="num">1557（倒退38%）</td><td class="num">650~900</td>
+    <td>2000 步 zh 专职块 + lr 6e-4 精调；zh 曾在 scale4 用 2000 步达到 963，本次数据/权重基础更好</td></tr>
+<tr><td>en_lit ppl</td><td class="num">163</td><td class="num">160~180（漂移≤10%）</td><td>1000 步中途刷新 + LRU 保温</td></tr>
+<tr><td>code_py / en_wiki</td><td class="num">291 / 295</td><td class="num">≤5% 漂移</td><td>零直接训练，仅靠 0.2 LRU 重放保温——这是本次作业的最大不确定性点</td></tr>
+<tr><td>参数/细胞</td><td class="num">75.8M / 3 细胞</td><td class="num">75~80M / 3~4 细胞</td><td>max_cells=8，birth 需 acc 门限，短作业大概率不触发</td></tr>
+<tr><td>卡时</td><td>—</td><td class="num">~2.5h（排队另计）</td><td>3000 步 × 2.6s/step + dream/eval 开销</td></tr>
+</table>
+<p class="small">风险点：若 2000 步 zh 训练把 code/wiki 冲掉超过 5%，说明 LRU 0.2 仍不够 → 下一轮把 replay 提到 0.3 或把 max_cells 分裂出一个 zh 专职细胞（空间分离的完全体）。</p>
+
+<h2 id="t7">7 · 残余矛盾与下一轮路线</h2>
+<table>
+<tr><th>残余矛盾</th><th>TRIZ 路线</th><th>下一步</th></tr>
+<tr><td>T3 数据新鲜度 0.65 tok/param（差 30×）</td>
+    <td>No.26 复制 + No.11 事先缓冲</td><td>继续在本地预抓 300~500M tokens 缓存（利用排队窗口空转期），下个长作业直接续训——把"排队时间"变害为利（No.21）</td></tr>
+<tr><td>"学舌"级生成质量</td><td>No.1 分割 + 自蒸馏（No.35）</td>
+    <td>用 scale6 模型生成合成语料，过滤后混入训练流（生成式数据增强），等效扩大新鲜数据</td></tr>
+<tr><td>3 细胞领地未分化（5 细胞凋亡过早）</td><td>空间分离完全体</td>
+    <td>调低 <code>specialist_line</code>/death 门限，让 4 域各占一细胞，从架构上根治跨域干扰</td></tr>
+<tr><td>评估只能看 ppl，生成可读性未知</td><td>No.26 复制</td><td>固定 8 条跨域 prompt，每代模型输出并排对比，建立"可读性档案"</td></tr>
+</table>
+
+<div class="quote" style="margin-top:28px">
+<b>一句话总结</b>：五个麻烦翻译成三个物理矛盾；元矛盾"专精 vs 保持"被四大分离原理系统性拆解——
+空间分离已在架构里、系统级分离已在训推链路里、<b>本次补上了时间分离（zh 终局巩固）和条件分离（LRU 重放）</b>，
+且 LRU 是写进代码的结构性修复而非一次性补丁。作业 126514523 排队中，监控已挂。
+</div>
+
+</div></body>
+</html>

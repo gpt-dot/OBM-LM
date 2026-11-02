@@ -1,0 +1,10 @@
+  [resume] loaded /public/home/your_account/obm_mvp/results_lab/scale6_weights.pkl @step27000
+== [scale7] cells=3 params=75.78M D=512 L=8 B=16 dr=10 dp=200 steps/blk=1200 total=4800
+  [weights] dtype=fp16 -> /public/home/your_account/obm_mvp/results_lab/scale7_weights.pkl
+  [blk0:en_lit] done @step28200 cells=3 seg=37 replayed=306 2837s
+  [blk1:zh_classic] done @step29400 cells=3 seg=40 replayed=598 5355s
+  [blk2:code_py] done @step30600 cells=3 seg=44 replayed=933 7857s
+  [blk3:en_wiki] done @step31800 cells=3 seg=47 replayed=1224 10334s
+  [weights] saved -> /public/home/your_account/obm_mvp/results_lab/scale7_weights.pkl (75.8M params)
+  [eval] en_lit=120 zh_classic=837 code_py=73 en_wiki=296
+== [scale7] DONE wall=172.2min step=2150ms(p50 1746ms) tok/s=951 peakRSS=4494MB params=75.78M cells=3 events={'seal': 47, 'death': 3} | 功能 seal(封存/边界)=✓ birth(分裂)=✗ death(凋亡)=✓ pass=True

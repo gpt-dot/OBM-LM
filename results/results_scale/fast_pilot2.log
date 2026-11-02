@@ -1,0 +1,12 @@
+== OBM-LM-FAST pilot | trunk=256x4 head=2L | cells=4 trunk_params=6.4M head_params=4.21M trunk-lr=0.00015 steps/block=250 total=1500
+  [pretrain] step 50/300 loss=28.23 (71s)
+  [pretrain] step 100/300 loss=16.94 (141s)
+  [pretrain] step 150/300 loss=13.99 (214s)
+  [pretrain] step 200/300 loss=11.53 (285s)
+  [pretrain] step 250/300 loss=9.57 (360s)
+  [pretrain] step 300/300 loss=9.13 (432s)
+== trunk pretrain done (300 steps, 432s), KEEP TRAINABLE (trunk-lr=0.00015) for OBM phase
+  [ckpt] step 1 saved (4s)
+  s250 [blk0:en_lit] en_lit=1673.7 zh_classic=320497.6 code_py=53225.4 en_wiki=26519.3 | online=0.096 cells=4 seg=0 10.1min
+== block 0 (en_lit) done in 605s, cells=4
+  [ckpt] step 251 saved (609s)

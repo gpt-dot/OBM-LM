@@ -1,0 +1,5 @@
+== [half_d128L2] cells=4 params=9.58M D=128 L=2 B=24 dr=10 dp=200 steps/blk=200 total=600
+  [blk0:en_lit] done @step200 cells=4 seg=0 237s
+  [blk1:zh_classic] done @step400 cells=4 seg=1 495s
+  [blk2:code_py] done @step600 cells=4 seg=2 808s
+== [half_d128L2] DONE wall=13.5min step=1347ms(p50 1067ms) tok/s=4561 peakRSS=3455MB params=9.58M cells=4 events={'seal': 2}

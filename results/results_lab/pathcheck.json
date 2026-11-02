@@ -1,0 +1,56 @@
+{
+ "tag": "pathcheck",
+ "d_model": 256,
+ "n_layers": 4,
+ "batch": 24,
+ "ctx": 128,
+ "dist_refresh": 10,
+ "dream_period": 200,
+ "amp": false,
+ "n_params": 25325568,
+ "cells_final": 4,
+ "total_steps": 3,
+ "wall_sec": 5.157554626464844,
+ "step_time_mean": 1.7188916206359863,
+ "step_time_p50": 0.9041211605072021,
+ "step_time_p90": 2.8892718791961673,
+ "tok_per_sec": 1786.8933375344484,
+ "peak_rss_mb": 2362.078125,
+ "event_counts": {},
+ "events": [],
+ "segments": 0,
+ "online": [],
+ "territory": [
+  {
+   "cell": 0,
+   "seg_rel": {
+    "0": 0.545
+   },
+   "seg_best": {
+    "0": 0.549
+   }
+  },
+  {
+   "cell": 1,
+   "seg_rel": {},
+   "seg_best": {}
+  },
+  {
+   "cell": 2,
+   "seg_rel": {},
+   "seg_best": {}
+  },
+  {
+   "cell": 3,
+   "seg_rel": {},
+   "seg_best": {}
+  }
+ ],
+ "peak_acc_final": 0.0001,
+ "function_verdict": {
+  "seal(封存/边界)": false,
+  "birth(分裂)": false,
+  "death(凋亡)": false
+ },
+ "function_pass": false
+}

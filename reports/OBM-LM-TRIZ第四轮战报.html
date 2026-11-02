@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>OBM-LM TRIZ 第四轮战报：路由统一性 A/B 与自适应路由</title>
+<style>
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;margin:0;background:#f6f8fa;color:#1a2332;line-height:1.7}
+.wrap{max-width:1060px;margin:0 auto;padding:30px 36px 60px;background:#fff}
+h1{font-size:23px;border-bottom:3px solid #1a5fb4;padding-bottom:10px}
+h2{font-size:17px;margin-top:30px;color:#1a5fb4}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0}
+th,td{border:1px solid #dfe6ee;padding:7px 10px;vertical-align:top}
+th{background:#eef2f7;text-align:left}
+.ok{color:#26a269;font-weight:600}.warn{color:#c01c28;font-weight:600}
+.note{background:#eaf2fc;border-left:4px solid #1a5fb4;padding:10px 14px;margin:14px 0;font-size:13.5px}
+code{background:#f0f2f5;padding:1px 5px;border-radius:3px;font-size:12.5px}
+</style></head><body><div class="wrap">
+
+<h1>OBM-LM TRIZ 第四轮战报：训练-部署路由统一性 A/B + 自适应路由</h1>
+
+<div class="note"><b>本轮元矛盾</b>：上轮已证"NLL 路由部署全面占优"，但两个悬而未决的问题被本轮 A/B 一次性回答——
+硬领地训练（TC-O）到底值不值得上 scale9？训练/部署路由不一致（TC-N）要不要修？</div>
+
+<h2>TC-N + TC-O 合并实验：市场 vs 硬领地 同步数 A/B</h2>
+<p>对照设计：d=128/L=4/4 细胞，各 2200 步（550 步/域 × 4 域），dream 关闭以隔离路由变量，终局三口径评估。</p>
+<table>
+<tr><th>域</th><th>硬领地 oracle（专属细胞）</th><th>硬领地 router</th><th>市场 router</th><th>胜者</th></tr>
+<tr><td>en_lit</td><td class="ok">737（cell#0，逃逸成功）</td><td>737 ✓同</td><td>4970</td><td>硬领地 6.7×</td></tr>
+<tr><td>zh_classic</td><td>2092（cell#1）</td><td>2092 ✓同</td><td class="ok">1936</td><td>市场小胜</td></tr>
+<tr><td>code_py</td><td class="ok">1373（cell#2）</td><td>1373 ✓同</td><td>8607</td><td>硬领地 6.3×</td></tr>
+<tr><td>en_wiki</td><td class="warn">366,676（cell#3 逃逸失败！）</td><td class="warn">25,104（被迫跨领地）</td><td class="ok">8801</td><td>市场</td></tr>
+</table>
+
+<h2>结论（TRIZ 综合裁决）</h2>
+<ul>
+<li><b>硬领地 = 高天花板 + 灾难性失败模式</b>：3/4 细胞逃逸成功且领地完美可辨（router=oracle 全对），但 en_wiki 细胞 550 步没爬出坏初始化，该域彻底失守（36 万 ppl）——硬领地<b>没有安全网</b>，细胞逃逸失败 = 域知识归零；跨域梯度物理隔离同时也切断了搭便车通道。</li>
+<li><b>市场 + dream = 稳健地板</b>：垄断细胞全域 2000-9000，没有归零域；专才靠 dream 培养后被 NLL 路由"捞出来"部署。</li>
+<li><b>scale8 裁决：维持市场 + dream + LRU，部署 NLL 路由</b>——train8.sh 设计不变，这正是"地板 + 天花板"的混合策略（No.3 局部质量）。</li>
+<li><b>TC-O 的真解是给硬领地装反馈环（No.23 反馈）</b>：逃逸看门狗——引导期每 100 步测专属细胞 ppl，若无改善则重初始化/重新分裂该细胞（TRIZ No.21 变害为利：death 事件当重生用）。加入 scale9 候选。</li>
+<li>意外收获：市场 A/B 里 router 也能白捡收益（zh 1936 vs market 2822）——NLL 路由是普适的免费午餐。</li>
+</ul>
+
+<h2>TC-Q：路由的模糊边界 → No.5 动态化（已落地）</h2>
+<p>zh「天地玄黄」prompt 路由两细胞 NLL 差仅 0.21——top1 有误选风险。测量发现 <b>zh 语料窗口 54% 模糊</b>（en/code 0%），文言域本质难分。</p>
+<p><b>解法</b>：自适应路由——top1-top2 差 &ge; τ(0.15) 纯单细胞（省算力）；&lt; τ 按 softmax 混入第二名。实测模糊窗口收益：<b>zh 791 vs 829（-4.6%）、en_wiki 383 vs 391（-2%）</b>，且只在模糊时付第二细胞算力。已并入 v3 推理栈与 demo_sandbox 默认路径（验证：文言 prompt 自动触发 {cell#3:0.56, cell#4:0.44} 混合）。</p>
+
+<h2>态势与下一步</h2>
+<table>
+<tr><th>线</th><th>状态</th></tr>
+<tr><td>scale7（作业 126531564）</td><td>🔄 statR，预计 1h 内完工 → 完工即交 scale8（脚本已缓冲）</td></tr>
+<tr><td>语料扩容</td><td>🔄 books 收尾（Range 续传逐本收割），随后 pypi → encode</td></tr>
+<tr><td>v3 推理栈</td><td class="ok">✅ 自适应路由已并入默认路径</td></tr>
+</table>
+
+<h2>下一轮候选</h2>
+<ul>
+<li><b>TC-R</b>：逃逸看门狗实现（--territory-watchdog），让硬领地补上安全网后可与市场模式正面对决</li>
+<li><b>TC-P</b>：encode 150M 语料 + scale9 设计（数据新鲜度主攻）</li>
+</ul>
+
+</div></body></html>

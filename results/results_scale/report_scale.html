@@ -1,0 +1,177 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>OBM-LM 规模实验报告</title>
+<style>
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+max-width:1080px;margin:0 auto;padding:24px;color:#1e293b;line-height:1.65}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0}
+th,td{border:1px solid #cbd5e1;padding:6px 8px;text-align:right}
+th{background:#f1f5f9}td.l,th.l{text-align:left}
+h1{font-size:24px;border-bottom:2px solid #334155;padding-bottom:8px}
+h2{font-size:19px;margin-top:34px;color:#0f172a}
+h3{font-size:15px;color:#334155}
+img{max-width:100%;border:1px solid #e2e8f0;border-radius:6px;margin:8px 0}
+code{background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:12px}
+.note{background:#fffbeb;border-left:4px solid #f59e0b;padding:10px 14px;
+margin:14px 0;font-size:13px}
+pre{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:8px;
+overflow-x:auto;font-size:12px}
+</style></head><body>
+<h1>OBM-LM 规模实验报告：从玩具协议到真实语料 LLM 规模</h1>
+<p>本报告汇总 <code>results_scale/</code> 下各规模训练 run。
+架构与玩具协议完全同构（OBM-LM 多细胞复合体：概念签名 / 条件合同市场 /
+双信号边界检测 / 单份授予 + 复现授予 / 梦境代谢），仅把引擎从 numpy
+mini-autograd 换成 PyTorch（bf16 autocast + 8 线程甜点），语料换成
+四域真实文本（英文文学 / 中文古典 / Python 代码 / 英文百科，BPE-16K 分词）。
+六段协议：4 域顺序 + 后两段复现（测抗遗忘与复现授予）。</p>
+<h2>1. 规模阶梯总览</h2>
+<table><tr><th class='l'>run</th><th>D</th><th>层</th><th>总参数</th><th>细胞数</th><th>训练 tokens</th><th>tok/s</th><th>墙钟</th><th>四域均值 ppl</th></tr>
+<tr><td class='l'>pilot_v1</td><td>256</td><td>4</td><td>25.5M</td><td>4</td><td>11.1M</td><td>2803</td><td>66min</td><td>37474.7</td></tr>
+</table>
+<h2>2. pilot_v1（pilot，D=256，4 层，25.5M 参数，11.1M tokens，66 分钟）</h2>
+<img src='pilot_v1/fig_ppl.png'>
+<table><tr><th class='l'>域</th><th>终局 ppl</th><th>全程最佳 ppl</th><th>遗忘量 (final−best)</th></tr>
+<tr><td class='l'>英文文学（en_lit）</td><td>825.0</td><td>362.7</td><td>+462.4</td></tr>
+<tr><td class='l'>中文古典（zh_classic）</td><td>2363.0</td><td>2149.2</td><td>+213.9</td></tr>
+<tr><td class='l'>Python 代码（code_py）</td><td>97861.3</td><td>1824.4</td><td>—</td></tr>
+<tr><td class='l'>英文百科（en_wiki）</td><td>48849.6</td><td>2218.3</td><td>—</td></tr>
+</table>
+<p>复现段恢复速度（复现域首个评估点 ppl vs 最佳）：英文文学 451.0；中文古典 27131.7。</p>
+<img src='pilot_v1/fig_events.png'>
+<img src='pilot_v1/fig_territory.png'>
+<h3>路由诊断：合同市场是否按概念签名分工</h3>
+<table><tr><th class='l'>域</th><th>线上路由 ppl</th><th>全细胞等权</th><th>单细胞最优</th><th>最优细胞</th></tr>
+<tr><td class='l'>英文文学（en_lit）</td><td>1319.6</td><td>1116.7</td><td>823.6</td><td>c2</td></tr>
+<tr><td class='l'>中文古典（zh_classic）</td><td>2470.3</td><td>5157.8</td><td>2248.8</td><td>c2</td></tr>
+<tr><td class='l'>Python 代码（code_py）</td><td>1140.8</td><td>2689.5</td><td>1332.5</td><td>c1</td></tr>
+<tr><td class='l'>英文百科（en_wiki）</td><td>3842.1</td><td>4488.7</td><td>3400.9</td><td>c1</td></tr>
+</table>
+<p>解读：若『线上路由』≈『单细胞最优』≪『全细胞等权』，说明合同市场真的在执行分工（把每域输入送到对的细胞），而非放弃路由的混编。routed 优于 best1 表示该域的集成加权进一步压低了困惑度。</p>
+<h3>生成样本（集成路由贪心解码）</h3>
+<pre>===== en_lit =====
+ásha to life.
+
+A spiritual wound produced by a rending of the spiritual body is like
+a physical wound and, strange as it may seem, just as a deep wound may
+heal and
+日，
+日，
+日，
+日，
+日，
+日，
+日，
+日，
+日，
+日，
+日，
+日，
+日，
+日，
+日，
+日，
+日，
+，
+，
+日，
+日，
+日，
+日，
+，
+，
+
+===== zh_classic =====
+不施變化，就將本身法相。真個是：
+　　　　古怪別腮心裏強，自小為怪神力壯。
+　　　　高低面賽馬鞍，眼放金光如火亮。
+　　　　渾身，又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又又，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，
+
+===== code_py =====
+``.
+
+    .. versionchanged:: 2.3
+        Check ``max_content_length`` and raise an error if it is exceeded.
+
+    .. versionadded:: 0.9
+    """
+    stream = t.cast(t.IO[，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_，_
+
+===== en_wiki =====
+ parkway in 1932 that would run from the Ben Franklin Bridge in Camden to Atlantic City ; however , this proposal never materialized . In the late 1940s , the North – South Freeway was proposed by
+，
+日，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+，
+
+
+</pre>
+<h3>机制事件日志</h3><pre>[  315] seal   概念段 #0 封存：n=156，库存 1 段，最近段距离 —
+[  600] birth  细胞 #4 由 #3 分裂诞生（当前段重放损失 11.24，继承段合同）
+[  620] seal   概念段 #1 封存：n=78，库存 2 段，最近段距离 9.42
+[  915] seal   概念段 #2 封存：n=156，库存 3 段，最近段距离 8.43
+[ 1220] seal   概念段 #3 封存：n=94，库存 4 段，最近段距离 2.60
+[ 1400] birth  细胞 #5 由 #3 分裂诞生（当前段重放损失 5.87，继承段合同）
+[ 1515] seal   任务复现：156 个片段并入概念段 #0（距离 0.08）
+[ 1600] death  细胞 #5 凋亡（最佳领地可靠性 0.39），剩余 5 个
+[ 1600] death  细胞 #1 凋亡（最佳领地可靠性 0.20），剩余 4 个</pre>
+
+<h2>3. 工程注记（诚实记录）</h2>
+<div class="note"><b>性能</b>：V=16K 下初版 run_step 8.5s/步。三处修复：
+(a) 路由统计前向融合为单趟（autocast + 分块 softmax/max/argmax 合一，
+logsumexp 全量物化是单项 1.75s/步的病灶）；(b) decide 的集成统计改在
+torch 内计算（旧实现把每个细胞的 (24,256,16384) softmax 搬进 numpy，
+1.6s/步）；(c) 熵缓存刷新回归 dist_refresh=10 间隔制（每步强制刷新是
+移植期遗留，玩具协议下两种刷新频率决策逐位等价——已对照验证）。
+合计 8.5s/步 -> 1.25s/步（6.8×）。</div>
+<div class="note"><b>checkpoint</b>：初版三类静默污染——(a) numpy 数组
+与活参数共享存储（.numpy()/from_numpy 浅引用），原模型训练经 Adam 就地
+更新改写恢复体；(b) cur_x/events/history/segments 浅引用，保存后继续
+训练污染快照；(c) 路由统计缓存（上一样本统计）未入库导致恢复体选路
+分歧。修复后双引擎（numpy/torch）均实现恢复后逐步位一致（含 pickle 落盘
+往返），Adam 一阶/二阶矩与 rng 状态完整入库。</div>
+<div class="note"><b>bf16 autocast</b>：CPU AVX512-BF16 下矩阵乘激活值
+降精度、参数与 Adam 保持 fp32，实测 1.48× 加速（D=384）。</div>
+<div class="note"><b>路由坍缩 bug 与修复（核心发现）</b>：pilot 终局诊断暴露
+合同市场坍缩到单一通才细胞 c2——6/6 评估批全选、权重 1.00。code_py 线上
+ppl 高达 <b>97861</b>，而 code 专才 c1 的单细胞 ppl 仅 1332（73× 差距）；
+en_wiki 48850 vs 专才 3401。三大病灶：(a) 未训练段的
+<code>cond_reliability</code> 先验 0.5 让「从未受训」≈「专才」；(b) 合同池空
+时回退到<b>陈旧 probe 缓存</b>（上次训练批）做彩票授予，eval/生成路径
+张冠李戴；(c) 难域绝对精度达不到记账线 0.12，专才 seg_rel 磨到 0 过不了
+合同线。修复：未知段先验改 0（未证明=不可靠）、探针彩票门禁到训练路径
+（eval/generate 改按 cond_rel 排序取 top-k）、引入段内峰值参考。
+<b>零重训练、纯换选路逻辑</b>：code_py 97861→1141（86×↓）、en_wiki
+48850→3842（13×↓），routed 与单细胞最优对齐；en_lit/zh 路由到其天然归属
+细胞 c2（owner 不变，集成轻微稀释）。详见各 run 的「路由诊断」表。
+<code>experiments/diag_routing.py</code> 复现该诊断。</div>
+<div class="note"><b>玩具回归守卫</b>：<code>experiments/toy_regress.py</code>
+（numpy 路，6 段 × 300 步）在每次改动后必跑——终局精度、封存/分裂/凋亡/
+复现授予事件数、复现段抗遗忘三条底线。<code>experiments/torch_smoke.py</code>
+覆盖 torch 路全机制（梦境/评估/checkpoint/生成）。</div>
+</body></html>

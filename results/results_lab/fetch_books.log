@@ -1,0 +1,92 @@
+  [gutendex fail p6] The read operation timed out
+[en] have 112 books, todo 50
+  [fail] g26471: HTTP Error 404: Not Found
+  [fail] g26471: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g26471: HTTP Error 404: Not Found
+  [fail] g78053: IncompleteRead(186736 bytes read, 594925 more expected)
+  [fail] g78053: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [ok] g78053 0.7MB (attempt 3)
+  [fail] g10: IncompleteRead(397671 bytes read, 4058279 more expected)
+  [fail] g10: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g10: IncompleteRead(646347 bytes read, 3789921 more expected)
+  [fail] g78020: IncompleteRead(125128 bytes read, 525649 more expected)
+  [fail] g78020: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g78020: IncompleteRead(409716 bytes read, 210547 more expected)
+  [ok] g78077 0.5MB (attempt 2)
+  [ok] g78044 0.2MB (attempt 1)
+  [fail] g78090: IncompleteRead(165068 bytes read, 394636 more expected)
+  [fail] g78090: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g78090: IncompleteRead(268336 bytes read, 261731 more expected)
+  [ok] g78092 0.3MB (attempt 1)
+  [ok] g78087 0.2MB (attempt 1)
+  [ok] g42 0.2MB (attempt 1)
+  [ok] g78078 0.3MB (attempt 3)
+  [ok] g78046 0.5MB (attempt 2)
+  [fail] g78107: IncompleteRead(544560 bytes read, 91092 more expected)
+  [fail] g78107: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g78107: IncompleteRead(250800 bytes read, 353298 more expected)
+  [ok] g78028 0.2MB (attempt 1)
+  [ok] g78040 0.5MB (attempt 2)
+  [fail] g78104: IncompleteRead(417868 bytes read, 265834 more expected)
+  [fail] g78104: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g78104: IncompleteRead(334440 bytes read, 317900 more expected)
+  [fail] g78075: IncompleteRead(320152 bytes read, 630390 more expected)
+  [fail] g78075: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g78075: IncompleteRead(487636 bytes read, 426988 more expected)
+  [ok] g78005 0.4MB (attempt 1)
+  [fail] g78117: IncompleteRead(173068 bytes read, 180630 more expected)
+  [fail] g78117: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g78117: IncompleteRead(254668 bytes read, 73572 more expected)
+  [fail] g78095: IncompleteRead(254668 bytes read, 356919 more expected)
+  [fail] g78095: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [ok] g78095 0.6MB (attempt 3)
+  [ok] g78126 0.5MB (attempt 2)
+  [ok] g78083 0.0MB (attempt 1)
+  [ok] g78111 0.3MB (attempt 1)
+  [ok] g78004 0.7MB (attempt 1)
+  [fail] g78019: IncompleteRead(605708 bytes read, 73595 more expected)
+  [fail] g78019: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g78019: IncompleteRead(331584 bytes read, 316877 more expected)
+  [ok] g78103 0.5MB (attempt 3)
+  [ok] g78106 0.3MB (attempt 2)
+  [ok] g78032 0.2MB (attempt 1)
+  [fail] g78012: IncompleteRead(250800 bytes read, 324406 more expected)
+  [fail] g78012: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g78012: IncompleteRead(170416 bytes read, 374757 more expected)
+  [ok] g78112 0.1MB (attempt 1)
+  [ok] g78015 0.3MB (attempt 2)
+  [ok] g78094 0.4MB (attempt 1)
+  [ok] g78024 0.1MB (attempt 1)
+  [fail] g78010: IncompleteRead(366256 bytes read, 122084 more expected)
+  [fail] g78010: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g78010: IncompleteRead(385228 bytes read, 73801 more expected)
+  [ok] g78060 0.1MB (attempt 1)
+  [ok] g78043 0.4MB (attempt 1)
+  [ok] g78121 0.1MB (attempt 1)
+  [fail] g78114: IncompleteRead(250800 bytes read, 124951 more expected)
+  [fail] g78114: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g78114: IncompleteRead(173068 bytes read, 176115 more expected)
+  [ok] g78076 0.2MB (attempt 1)
+  [ok] g78048 0.1MB (attempt 1)
+  [fail] g78091: IncompleteRead(177148 bytes read, 200635 more expected)
+  [fail] g78091: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g78091: IncompleteRead(336268 bytes read, 15634 more expected)
+  [ok] g78109 0.1MB (attempt 1)
+  [fail] g78031: IncompleteRead(103912 bytes read, 202112 more expected)
+  [fail] g78031: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [ok] g78031 0.3MB (attempt 3)
+  [ok] g78082 0.4MB (attempt 1)
+  [fail] g108: IncompleteRead(169200 bytes read, 550450 more expected)
+  [fail] g108: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g108: IncompleteRead(268336 bytes read, 418140 more expected)
+  [ok] g78085 0.1MB (attempt 1)
+  [ok] g78067 0.3MB (attempt 1)
+  [fail] g78108: IncompleteRead(332400 bytes read, 28786 more expected)
+  [fail] g78108: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai
+  [fail] g78108: IncompleteRead(173068 bytes read, 161345 more expected)
+  [ok] g78127 0.1MB (attempt 1)
+  [ok] g78014 0.3MB (attempt 1)
+[en+x] +35/50 (total 147)
+  [gutendex fail p1] The read operation timed out
+[zh] have 90 books, todo 0
+[zh+x] +0/0 (total 90)

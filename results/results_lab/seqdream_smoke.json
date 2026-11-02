@@ -1,0 +1,71 @@
+{
+ "tag": "seqdream_smoke",
+ "d_model": 64,
+ "n_layers": 2,
+ "batch": 4,
+ "ctx": 64,
+ "dist_refresh": 10,
+ "dream_period": 20,
+ "amp": true,
+ "n_params": 2238208,
+ "cells_final": 2,
+ "total_steps": 90,
+ "wall_sec": 22.472124814987183,
+ "step_time_mean": 0.24862257639567056,
+ "step_time_p50": 0.08811259269714355,
+ "step_time_p90": 0.09555943012237557,
+ "tok_per_sec": 1025.270204294793,
+ "peak_rss_mb": 1514.36328125,
+ "event_counts": {},
+ "events": [],
+ "segments": 0,
+ "online": [
+  {
+   "step": 25,
+   "block": 0,
+   "acc": 0.0,
+   "k": 1,
+   "peak": 0.001,
+   "cells": 2
+  },
+  {
+   "step": 50,
+   "block": 1,
+   "acc": 0.0,
+   "k": 1,
+   "peak": 0.001,
+   "cells": 2
+  },
+  {
+   "step": 75,
+   "block": 2,
+   "acc": 0.0,
+   "k": 1,
+   "peak": 0.001,
+   "cells": 2
+  }
+ ],
+ "territory": [
+  {
+   "cell": 0,
+   "seg_rel": {
+    "0": 0.006
+   },
+   "seg_best": {
+    "0": 0.412
+   }
+  },
+  {
+   "cell": 1,
+   "seg_rel": {},
+   "seg_best": {}
+  }
+ ],
+ "peak_acc_final": 0.0008,
+ "function_verdict": {
+  "seal(封存/边界)": false,
+  "birth(分裂)": false,
+  "death(凋亡)": false
+ },
+ "function_pass": false
+}

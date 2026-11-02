@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>OBM-LM 头脑风暴×TRIZ 第十轮战报：数据新鲜度根因战</title>
+<style>
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;margin:0;background:#f6f8fa;color:#1a2332;line-height:1.7}
+.wrap{max-width:1080px;margin:0 auto;padding:30px 36px 60px;background:#fff}
+h1{font-size:24px;border-bottom:3px solid #0b7285;padding-bottom:10px}
+h2{font-size:18px;color:#0b7285;margin-top:28px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0}
+th,td{border:1px solid #dfe6ee;padding:7px 9px;vertical-align:top}
+th{background:#e7f5f8}
+.good{color:#1a7f37;font-weight:600}.bad{color:#c01c28;font-weight:600}.mid{color:#b54708;font-weight:600}
+.note{background:#e7f5f8;border-left:4px solid #0b7285;padding:10px 14px;margin:14px 0;font-size:13.5px}
+code{background:#f0f2f5;padding:1px 5px;border-radius:3px;font-size:12.5px}
+</style></head><body><div class="wrap">
+<h1>OBM-LM 头脑风暴 × TRIZ · 第十轮战报<br><span style="font-size:14px;color:#5a6a7e">TC-P 数据新鲜度：根因不是库存不足，是自我设限 + 重复包装欺骗盘点</span></h1>
+
+<div class="note"><b>头条：语料 97.7M → 146.9M tokens（+50%），tok/param 0.65 → 1.94（3 倍）</b>——零新抓取，只靠两处"测量揭穿的自我设限"。</div>
+
+<h2>① 测量揭穿重复包装（头脑风暴：盘点要 hash，不要数文件）</h2>
+<p>三个 wiki parquet 都是 900675 行，肉眼像三份库存。内容 hash 实测：</p>
+<table><tr><th>文件对</th><th>重叠率</th><th>结论</th></tr>
+<tr><td>train-00000 vs wiki103_train0</td><td class="bad">95.6%</td><td>同一数据的新旧包装——旧文件是"库存幻觉"</td></tr>
+<tr><td>train-00000 vs train-00001</td><td class="good">2.7%</td><td>真正的第二半——独有数据！</td></tr></table>
+<p>加载器修复：弃重复文件、只吃 train-0000x 两片、硬顶 120M→300M chars。<b>en_wiki 31.2M → 78.2M tokens（2.5×）</b>。</p>
+
+<h2>② 本轮全量语料验收</h2>
+<table><tr><th>域</th><th>旧</th><th>新</th><th>变化</th></tr>
+<tr><td>en_lit</td><td>24.3M</td><td>27.2M</td><td>+12%（171 文件含续传收割）</td></tr>
+<tr><td>zh_classic</td><td>17.5M</td><td>19.4M</td><td>+11%</td></tr>
+<tr><td>code_py</td><td>24.7M</td><td>22.1M</td><td>-11%（per_tar 重分布：多样性↑ 体积↓，可接受）</td></tr>
+<tr><td>en_wiki</td><td>31.2M</td><td class="good"><b>78.2M</b></td><td class="good"><b>+151%</b></td></tr>
+<tr><td><b>合计</b></td><td>97.7M</td><td class="good"><b>146.9M</b></td><td class="good"><b>+50%</b></td></tr></table>
+<p>encode v2（逐块追加写盘 + 分域进程隔离）全链 4 分半跑完，零 OOM——第九轮的修复兑现。</p>
+
+<h2>③ 基础设施三战</h2>
+<table>
+<tr><th>事故</th><th>解法（TRIZ）</th></tr>
+<tr><td>en_wiki 313MB 超 efile 单文件上限（413 错误）</td><td>No.1 分段：拆 a/b 两片（各 156MB）+ <code>_load_tokens</code> 通用拼接加载器（逐元素一致性验证通过）</td></tr>
+<tr><td><code>pkill -f</code> 自杀式重启（wrapper 命令行匹配模式）</td><td>第二次踩同一个坑——记入"已知乌龙清单"，启动类操作永不 pkill</td></tr>
+<tr><td>夜间流水线 v1 无接力逻辑</td><td>v2：<code>.corpus_uploaded</code> 标志 + scale8 完工自动提交 scale9（No.10 预先作用全链自动化）</td></tr></table>
+
+<h2>④ scale9 配置定稿（deploy/train9.sh，已缓冲）</h2>
+<table><tr><th>项</th><th>配置</th></tr>
+<tr><td>resume 链</td><td>scale8 → scale7 自动回退 + <code>--spawn-cells 1</code>（补第 4 细胞）</td></tr>
+<tr><td>块计划</td><td>4 域对称 × 2500 步 = 10000 步（~7h 卡时）</td></tr>
+<tr><td>抗遗忘</td><td>replay 0.3 + <b>--replay-need</b>（真实信号版，配合 eval-every）</td></tr>
+<tr><td>新机制首战</td><td><b>--dream-seq</b>（海马序列梦）+ <b>--eval-every 500</b>（在线遗忘曲线落盘）</td></tr>
+<tr><td>lr</td><td>4e-4 精调带</td></tr></table>
+
+<h2>态势</h2>
+<ul>
+<li><b>scale8</b>：排队中；夜间流水线盯守，完工自动下载+战报+<b>自动提交 scale9</b>；</li>
+<li><b>语料</b>：146.9M tokens 已全部上传 scnet（分片方案），新 corpus.py 就位；</li>
+<li><b>方法论记分板</b>：52 候选 → 落地 19 → 快杀 6。本轮最大教训级发现：<b>盘点库存必须内容 hash</b>——95.6% 重叠的"三份库存"曾是三份幻觉。</li>
+</ul>
+</div></body></html>

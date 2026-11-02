@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>TRIZ 第二轮：测量揭穿伪分离，NLL 路由器零成本夺权</title>
+<style>
+:root{--ink:#1a2332;--sub:#5a6a7e;--line:#dfe6ee;--blue:#1a5fb4;--blue-bg:#eaf2fc;--red:#c01c28;--red-bg:#fdecee;--green:#26a269;--green-bg:#e9f7f0;--amber:#c64600;--amber-bg:#fdf1e3}
+*{box-sizing:border-box}
+body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;color:var(--ink);margin:0;background:var(--bg);line-height:1.75}
+.wrap{max-width:960px;margin:0 auto;padding:32px 40px 64px;background:#fff}
+h1{font-size:25px;border-bottom:3px solid var(--blue);padding-bottom:12px}
+h2{font-size:19px;margin-top:36px;padding-left:10px;border-left:5px solid var(--blue);background:var(--blue-bg);padding-top:6px;padding-bottom:6px}
+.meta{color:var(--sub);font-size:13px;margin-bottom:24px}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:13.5px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#eef2f7}
+tr:nth-child(even) td{background:#fafbfd}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px}
+.tag.done{background:var(--green-bg);color:var(--green)}
+.tag.bad{background:var(--red-bg);color:var(--red)}
+.tag.run{background:var(--blue-bg);color:var(--blue)}
+.quote{border-left:4px solid var(--blue);background:var(--blue-bg);padding:10px 14px;margin:14px 0;font-size:14px}
+.num{font-variant-numeric:tabular-nums;font-weight:600}
+code{background:#f0f3f7;padding:1px 5px;border-radius:3px;font-size:13px}
+.small{font-size:12.5px;color:var(--sub)}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>TRIZ 第二轮战报：测量揭穿伪分离，NLL 路由器零成本夺权</h1>
+<div class="meta">2026-11-01 · 领地探针 → 根因链 → 硬领地实验 → NLL 路由器 · 全部结论均有实测数据支撑</div>
+
+<h2>1 · 测量先行（TRIZ：理想最终结果需要度量反馈）</h2>
+<p>上一轮声称"空间分离由 OBM 细胞承担"，但从未测量。新工具 <code>territory_probe.py</code>
+（逐序列记录路由选择与可靠度）一次测量揭穿真相：</p>
+<table>
+<tr><th>模型</th><th>实测路由</th><th>判定</th></tr>
+<tr><td>scale4</td><td>所有域均匀 1/3 分给 3 个细胞（无专精）</td><td><span class="tag bad">无领地</span></td></tr>
+<tr><td>scale5</td><td><b>所有 4 个域 100% 路由到细胞 #4</b>（其余可靠度 0.18/0.00）</td><td><span class="tag bad">单细胞垄断</span></td></tr>
+<tr><td>scale6</td><td><b>所有域 100% 路由到单细胞</b>（可靠度 0.87）</td><td><span class="tag bad">单细胞垄断</span></td></tr>
+</table>
+<div class="quote"><b>"3 细胞"实为 1 细胞干活</b>——75.8M 参数中 ~50M 是死重；zh 的遗忘与修复全部发生在同一组权重里，与"领地"无关。空间分离此前是<b>伪分离</b>。</div>
+
+<h2>2 · 根因链（三层递进，逐层实验排除）</h2>
+<table>
+<tr><th>#</th><th>根因</th><th>证据</th><th>TRIZ 原理定位</th></tr>
+<tr><td>1</td><td>路由感知共享：所有细胞用 <code>cells[0].signature</code>（共享 token embedding），感知完全相同，路由只靠记账记录区分</td><td>代码结构</td><td>感知与决策未分离（No.1 分割缺失于感知层）</td></tr>
+<tr><td>2</td><td>LM 域间签名距离太近，合同市场必然 rich-get-richer</td><td>引导期合同被新段封存的"自由细胞优先"逻辑重新摊平（中等规模实验）</td><td>涌现式领地在 LM 域上数学上立不住</td></tr>
+<tr><td>3</td><td>坏初始化 + lr 门限枷锁：d=128 下随机细胞初始 NLL=<span class="num">45.8</span>（均匀基线仅 9.7，"自信地错"），而 <code>fulfill_acc=0.12</code> 让 acc≈0 的新手永远拿 1/3 学习率——逃逸速度不足</td><td>全速 lr 单细胞轨迹：250 步从 ppl 6×10¹⁹ 爬到 2464 并持续下降；1/3 lr 则卡死</td><td>No.35 参数变化：门限本意保护老专才，对新手是枷锁</td></tr>
+</table>
+
+<h2>3 · 硬领地实验（No.1 分割的纯粹形态）——架构成立，需足量引导步</h2>
+<p>实现了 <code>--hard-territory</code> + <code>--territory-assign</code>：训练全程按域强制路由（含重放 batch 送回自己的细胞，域知识活在参数孤岛上，跨域遗忘在细胞级物理隔离；dream 按细胞自身段重放，天然自洽）。实测：</p>
+<ul>
+<li>小规模（30 步/域）：合同被市场重新洗牌，未分化——<b>引导步数不足</b>；</li>
+<li>中规模 + 全速 lr 修复（fulfill_acc→0）：逃逸开始（zh oracle 770k→185k，en_lit 149M→153k），但 150 步/域仍不足以让 4 个新手全部合格——<b>market 的垄断细胞等效吃了全部 600 步</b>。</li>
+</ul>
+<p class="small">结论：硬领地是正确的架构方向，但必须配 500+ 步/域的引导预算，或从已训权重起步。留作 scale9 的架构选项，scale8 不贸然全切。</p>
+
+<h2>4 · 意外金矿：知识在，路由瞎 → NLL 路由器零成本夺权（No.24 中介物）</h2>
+<p>测量 scale6 三个细胞的逐域真实实力，发现<b>梦机制早已把细胞养成互补专才</b>，市场路由却从不启用：</p>
+<table>
+<tr><th>域</th><th>细胞#1</th><th>细胞#3</th><th>细胞#4</th><th>market 集成</th><th>最强单体</th></tr>
+<tr><td>zh_classic</td><td class="num">6968</td><td class="num"><b>823</b></td><td class="num">909</td><td class="num">825</td><td>#3 zh 专才</td></tr>
+<tr><td>code_py</td><td class="num">11915</td><td class="num"><b>87</b></td><td class="num">282</td><td class="num">284</td><td>#3 code 专才（<b>3.3× 被埋没</b>）</td></tr>
+<tr><td>en_lit</td><td class="num">698</td><td class="num">297</td><td class="num"><b>123</b></td><td class="num">123</td><td>#4 en 专才</td></tr>
+<tr><td>en_wiki</td><td class="num">7545</td><td class="num">655</td><td class="num"><b>391</b></td><td class="num">391</td><td>#4 en 专才</td></tr>
+</table>
+<p>解法：让<b>模型自身似然当中介信号</b>（逐细胞在上下文上的 NLL → softmax 权重），绕过失明的合同市场。实测（同口径）：</p>
+<table>
+<tr><th>域</th><th>market</th><th>NLL soft β=4</th><th>提升</th></tr>
+<tr><td>en_lit</td><td class="num">297</td><td class="num"><b>121</b></td><td class="num">2.5×</td></tr>
+<tr><td>en_wiki</td><td class="num">655</td><td class="num"><b>369</b></td><td class="num">1.8×</td></tr>
+<tr><td>zh_classic</td><td class="num">823</td><td class="num"><b>782</b></td><td class="num">1.05×</td></tr>
+<tr><td>code_py</td><td class="num">87</td><td class="num"><b>83</b></td><td class="num">1.05×</td></tr>
+</table>
+<p><b>零重训、纯推理端</b>。接入生成后：code_py 产出 <code>assert len(s=0) == {</code>、<code>"Test([x**2*3))</code> 等代码骨架；zh 产出文言对话体。</p>
+
+<h2>5 · 本轮新增基础设施</h2>
+<table>
+<tr><th>工具</th><th>作用</th><th>状态</th></tr>
+<tr><td><code>territory_probe.py</code></td><td>域×细胞领地矩阵测量（选择份额+可靠度）</td><td><span class="tag done">已验证</span></td></tr>
+<tr><td><code>--spawn-cells</code></td><td>resume 后预分裂继承合同的细胞</td><td><span class="tag done">已验证</span></td></tr>
+<tr><td><code>--hard-territory / --territory-assign</code></td><td>硬领地训练 + 新手全速 lr 修复</td><td><span class="tag done">已验证（架构成立）</span></td></tr>
+<tr><td><code>evaluate_all_ht</code></td><td>market/oracle/nll-router 三口径评估</td><td><span class="tag done">已验证</span></td></tr>
+<tr><td><code>generate_nll</code></td><td>NLL 路由 + 采样解码生成</td><td><span class="tag done">已验证</span></td></tr>
+</table>
+
+<h2>6 · scale8 设计修订（基于本轮测量）</h2>
+<div class="quote">
+<b>修订逻辑</b>：market 训练 + dream 恰好是"专才培养器"（互补细胞自发形成），问题只在推理路由。
+故 scale8 <b>保留 market 训练</b>（对称四域 + LRU），<b>推理与评估全面切换 NLL 路由</b>；
+硬领地作为 scale9 架构选项（配 500+ 步/域引导）。评估从 scale8 起报三口径。
+</div>
+
+<p class="small">在跑：scale7（作业 126531564，statR，约 21:15 完工）· 语料扩容（PyPI 阶段）· scale7 监控。</p>
+
+</div></body>
+</html>

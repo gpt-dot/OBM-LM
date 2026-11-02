@@ -1,0 +1,59 @@
+{
+ "tag": "spawn_smoke",
+ "d_model": 64,
+ "n_layers": 2,
+ "batch": 4,
+ "ctx": 64,
+ "dist_refresh": 10,
+ "dream_period": 200,
+ "amp": true,
+ "n_params": 3357312,
+ "cells_final": 3,
+ "total_steps": 16,
+ "wall_sec": 3.2320685386657715,
+ "step_time_mean": 0.19984212517738342,
+ "step_time_p50": 0.08696496486663818,
+ "step_time_p90": 0.11018240451812744,
+ "tok_per_sec": 1267.2998579698647,
+ "peak_rss_mb": 1308.6484375,
+ "event_counts": {
+  "birth": 1
+ },
+ "events": [
+  [
+   0,
+   "birth",
+   "预先分裂：细胞 #2 由 #0 诞生（--spawn-cells）"
+  ]
+ ],
+ "segments": 0,
+ "online": [],
+ "territory": [
+  {
+   "cell": 0,
+   "seg_rel": {
+    "0": 0.32
+   },
+   "seg_best": {
+    "0": 0.443
+   }
+  },
+  {
+   "cell": 1,
+   "seg_rel": {},
+   "seg_best": {}
+  },
+  {
+   "cell": 2,
+   "seg_rel": {},
+   "seg_best": {}
+  }
+ ],
+ "peak_acc_final": 0.0014,
+ "function_verdict": {
+  "seal(封存/边界)": false,
+  "birth(分裂)": true,
+  "death(凋亡)": false
+ },
+ "function_pass": false
+}

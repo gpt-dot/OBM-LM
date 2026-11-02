@@ -1,0 +1,34 @@
+{
+ "tag": "half_d128L2",
+ "d_model": 128,
+ "n_layers": 2,
+ "batch": 24,
+ "dist_refresh": 10,
+ "dream_period": 200,
+ "amp": true,
+ "n_params": 9575424,
+ "cells_final": 4,
+ "total_steps": 600,
+ "wall_sec": 808.3162648677826,
+ "step_time_mean": 1.3466508464018503,
+ "step_time_p50": 1.067225456237793,
+ "step_time_p90": 2.426723909378052,
+ "tok_per_sec": 4560.591145104559,
+ "peak_rss_mb": 3455.328125,
+ "event_counts": {
+  "seal": 2
+ },
+ "events": [
+  [
+   266,
+   "seal",
+   "概念段 #0 封存：n=156，库存 1 段，最近段距离 —"
+  ],
+  [
+   420,
+   "seal",
+   "任务复现：78 个片段并入概念段 #0（距离 1.27）"
+  ]
+ ],
+ "segments": 2
+}

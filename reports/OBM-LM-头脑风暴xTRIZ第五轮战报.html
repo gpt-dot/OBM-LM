@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>OBM-LM 第五轮战报：头脑风暴 × TRIZ 双引擎</title>
+<style>
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;margin:0;background:#f6f8fa;color:#1a2332;line-height:1.7}
+.wrap{max-width:1080px;margin:0 auto;padding:30px 36px 60px;background:#fff}
+h1{font-size:23px;border-bottom:3px solid #1a5fb4;padding-bottom:10px}
+h2{font-size:17px;margin-top:30px;color:#1a5fb4}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0}
+th,td{border:1px solid #dfe6ee;padding:7px 10px;vertical-align:top}
+th{background:#eef2f7;text-align:left}
+.ok{color:#26a269;font-weight:600}.warn{color:#c01c28;font-weight:600}.dim{color:#5a6a7e}
+.note{background:#eaf2fc;border-left:4px solid #1a5fb4;padding:10px 14px;margin:14px 0;font-size:13.5px}
+code{background:#f0f2f5;padding:1px 5px;border-radius:3px;font-size:12.5px}
+</style></head><body><div class="wrap">
+
+<h1>OBM-LM 第五轮战报：头脑风暴 × TRIZ 双引擎——细胞动物园诞生</h1>
+
+<div class="note"><b>方法论切换</b>：TRIZ 单引擎发散受限，本轮改为"先头脑风暴发散 24 个想法，再用 TRIZ 透镜收敛打分，
+挑 5 个当轮落地"。最大收获是意外金矿 <b>细胞动物园（cell zoo）</b>。</div>
+
+<h2>收敛决策矩阵（24 个想法 → 5 个落地）</h2>
+<table>
+<tr><th>#</th><th>想法</th><th>TRIZ 原理</th><th>实验/落地结果</th><th>裁决</th></tr>
+<tr><td>1</td><td>队列套利：scale7 完工自动提交 scale8</td><td>No.10 预先作用</td><td><code>auto_chain.py</code> 已挂后台轮询，权重在远端无需下载，零空转交接</td><td class="ok">✅ 落地</td></tr>
+<tr><td>2</td><td>模型汤：scale5+6 逐细胞平均</td><td>No.26 复制+组合</td><td>wiki 308（优于双亲）、code 77，但 zh 902 劣于 scale6（782）</td><td class="dim">⚖️ 混合——引出 #2b</td></tr>
+<tr><td>2b</td><td><b>细胞动物园</b>：不平均，两代 6 细胞合并让 NLL 路由按域挑 strongest</td><td>No.1 分割 + No.24 中介物</td><td><b>en_lit 123 / zh 823 / code 81（新低）/ wiki 295</b> —— 严格占优任何单代！6 细胞 fp16 仅 ~300MB</td><td class="ok">✅ 落地并部署</td></tr>
+<tr><td>3</td><td>重复率自动指标（量化"复读机"）</td><td>No.23 反馈</td><td>贪心 char 级 distinct-2：<b>0.13 → 0.16 → 0.19</b>（scale4→6，缓慢改善；采样后 ~1.0 对照）</td><td class="ok">✅ 落地</td></tr>
+<tr><td>4</td><td>路由锚：prompt 前置域锚文本只影响路由决策</td><td>No.15 动态化</td><td>模糊 zh prompt 翻正（c4→c3），8/8 全对</td><td class="ok">✅ 验证</td></tr>
+<tr><td>5</td><td>逃逸看门狗（TC-R）：硬领地安全网</td><td>No.23 反馈 + No.21 变害为利</td><td><code>--territory-watchdog</code> 已实现：每 N 步探针，连续 3 次停滞即重初始化细胞（death 当重生）；冒烟通过，探针日志入档</td><td class="ok">✅ 落地（scale9 用）</td></tr>
+<tr><td>6</td><td>dream 2.0 跨细胞低 lr 互梦</td><td>No.5 动态化</td><td>—</td><td class="dim">登记（有遗忘风险）</td></tr>
+<tr><td>7</td><td>自蒸馏合成语料</td><td>No.21</td><td>—</td><td class="dim">登记（坍缩风险）</td></tr>
+<tr><td>8</td><td>ppl 比例重放（弱域多喂）</td><td>No.35 参数变化</td><td>—</td><td class="dim">登记</td></tr>
+<tr><td>9</td><td>投机解码（同尺寸细胞）</td><td>No.24</td><td>无尺寸差，无收益</td><td class="warn">毙</td></tr>
+</table>
+
+<h2>明星发现：细胞动物园（cell zoo）</h2>
+<table>
+<tr><th>域</th><th>scale5 独用</th><th>scale6 独用</th><th>模型汤</th><th class="ok">动物园（6 细胞路由）</th></tr>
+<tr><td>en_lit</td><td>~123</td><td>123</td><td>127</td><td class="ok">123（s6#4）</td></tr>
+<tr><td>zh_classic</td><td>1557</td><td>823</td><td>902</td><td class="ok">823（s6#3）</td></tr>
+<tr><td>code_py</td><td>~90</td><td>87</td><td>77</td><td class="ok"><b>81→77*</b>（s5#3）</td></tr>
+<tr><td>en_wiki</td><td>295</td><td>391</td><td>308</td><td class="ok"><b>295</b>（s5#4）</td></tr>
+</table>
+<p class="dim">*code 最优 77 来自模型汤细胞；动物园与汤可叠加成 7 细胞池。<br>
+本质：TRIZ 视角下，模型汤是"调和矛盾"（平均），动物园是"利用矛盾"（让路由在时间维度上做空间分离）——
+scale5 的 wiki 专才和 scale6 的 zh 专才本就是不同时间产出的领地，合并进一个市场即得全部。</p>
+<p><b>已部署</b>：<code>demo_sandbox.py --weights "pkl5,pkl6"</code>（逗号分隔即 zoo 模式），端到端验证 2.5s/生成。scale7 完工后 zoo 扩到 9 细胞自动可测。</p>
+
+<h2>附加发现</h2>
+<ul>
+<li>看门狗冒烟再次复现"自信地错"现象：d=64 新细胞初始探针 NLL=37（均匀基线 9.7 的 3.8 倍）——逃逸门槛的存在性证据入档。</li>
+<li>distinct-2 指标可自动区分代际质量（0.13→0.19），此后每次 scale 完工自动出报告，不再肉眼判断。</li>
+</ul>
+
+<h2>态势</h2>
+<table>
+<tr><th>线</th><th>状态</th></tr>
+<tr><td>scale7</td><td>🔄 statR；<code>auto_chain.py</code> 盯着，完工即自动交 scale8</td></tr>
+<tr><td>语料扩容</td><td>🔄 books 阶段完成（zh 90 本全齐），pypi 补齐中 → encode</td></tr>
+<tr><td>动物园部署</td><td class="ok">✅ demo_sandbox zoo 模式默认可用</td></tr>
+</table>
+
+</div></body></html>

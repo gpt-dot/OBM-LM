@@ -1,0 +1,209 @@
+{
+ "tag": "scale2_local",
+ "d_model": 384,
+ "n_layers": 6,
+ "batch": 24,
+ "ctx": 128,
+ "dist_refresh": 10,
+ "dream_period": 200,
+ "amp": true,
+ "n_params": 80607744,
+ "cells_final": 6,
+ "total_steps": 360,
+ "wall_sec": 893.4809422492981,
+ "step_time_mean": 2.478034503592385,
+ "step_time_p50": 2.594181776046753,
+ "step_time_p90": 3.1201573133468643,
+ "tok_per_sec": 1237.7656284597365,
+ "peak_rss_mb": 3245.17578125,
+ "event_counts": {
+  "seal": 1
+ },
+ "events": [
+  [
+   266,
+   "seal",
+   "概念段 #0 封存：n=156，库存 1 段，最近段距离 —"
+  ]
+ ],
+ "segments": 1,
+ "online": [
+  {
+   "step": 25,
+   "block": 0,
+   "acc": 0.0,
+   "k": 1,
+   "peak": 0.0,
+   "cells": 6
+  },
+  {
+   "step": 50,
+   "block": 0,
+   "acc": 0.056640625,
+   "k": 1,
+   "peak": 0.044,
+   "cells": 6
+  },
+  {
+   "step": 75,
+   "block": 0,
+   "acc": 0.09895833333333333,
+   "k": 1,
+   "peak": 0.089,
+   "cells": 6
+  },
+  {
+   "step": 100,
+   "block": 0,
+   "acc": 0.0947265625,
+   "k": 1,
+   "peak": 0.107,
+   "cells": 6
+  },
+  {
+   "step": 125,
+   "block": 1,
+   "acc": 0.004557291666666667,
+   "k": 1,
+   "peak": 0.107,
+   "cells": 6
+  },
+  {
+   "step": 150,
+   "block": 1,
+   "acc": 0.10807291666666667,
+   "k": 1,
+   "peak": 0.107,
+   "cells": 6
+  },
+  {
+   "step": 175,
+   "block": 1,
+   "acc": 0.09342447916666667,
+   "k": 1,
+   "peak": 0.106,
+   "cells": 6
+  },
+  {
+   "step": 200,
+   "block": 1,
+   "acc": 0.1015625,
+   "k": 1,
+   "peak": 0.105,
+   "cells": 6
+  },
+  {
+   "step": 225,
+   "block": 1,
+   "acc": 0.048828125,
+   "k": 1,
+   "peak": 0.104,
+   "cells": 6
+  },
+  {
+   "step": 250,
+   "block": 2,
+   "acc": 0.053059895833333336,
+   "k": 1,
+   "peak": 0.104,
+   "cells": 6
+  },
+  {
+   "step": 275,
+   "block": 2,
+   "acc": 0.050455729166666664,
+   "k": 1,
+   "peak": 0.05,
+   "cells": 6
+  },
+  {
+   "step": 300,
+   "block": 2,
+   "acc": 0.06510416666666667,
+   "k": 1,
+   "peak": 0.064,
+   "cells": 6
+  },
+  {
+   "step": 325,
+   "block": 2,
+   "acc": 0.08919270833333333,
+   "k": 1,
+   "peak": 0.082,
+   "cells": 6
+  },
+  {
+   "step": 350,
+   "block": 2,
+   "acc": 0.0003255208333333333,
+   "k": 1,
+   "peak": 0.081,
+   "cells": 6
+  }
+ ],
+ "territory": [
+  {
+   "cell": 0,
+   "seg_rel": {
+    "0": 0.503
+   },
+   "seg_best": {
+    "0": 0.829
+   }
+  },
+  {
+   "cell": 1,
+   "seg_rel": {
+    "0": 0.131,
+    "1": 0.641
+   },
+   "seg_best": {
+    "0": 0.385,
+    "1": 0.922
+   }
+  },
+  {
+   "cell": 2,
+   "seg_rel": {
+    "1": 0.065
+   },
+   "seg_best": {
+    "1": 0.42
+   }
+  },
+  {
+   "cell": 3,
+   "seg_rel": {},
+   "seg_best": {}
+  },
+  {
+   "cell": 4,
+   "seg_rel": {},
+   "seg_best": {}
+  },
+  {
+   "cell": 5,
+   "seg_rel": {},
+   "seg_best": {}
+  }
+ ],
+ "peak_acc_final": 0.0809,
+ "final_ppl": {
+  "en_lit": 1951577.9027221967,
+  "zh_classic": 3256870.8627253408,
+  "code_py": 842464.1906855296,
+  "en_wiki": 17127903.255668223
+ },
+ "final_acc": {
+  "en_lit": 0.06575520833333334,
+  "zh_classic": 0.040364583333333336,
+  "code_py": 0.0380859375,
+  "en_wiki": 0.010091145833333334
+ },
+ "function_verdict": {
+  "seal(封存/边界)": true,
+  "birth(分裂)": false,
+  "death(凋亡)": false
+ },
+ "function_pass": true
+}

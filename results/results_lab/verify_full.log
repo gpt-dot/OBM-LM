@@ -1,0 +1,56 @@
+########## FULL VERIFY START Fri Oct 30 03:40:23 PM CST 2026 ##########
+=== verify_ctx128 (6-block, eval) ===
+== [verify_ctx128] cells=4 params=25.33M D=256 L=4 B=24 dr=10 dp=200 steps/blk=300 total=1800
+  [blk0:en_lit] done @step300 cells=4 seg=0 178s
+  [blk1:zh_classic] done @step600 cells=4 seg=1 355s
+  [blk2:code_py] done @step900 cells=4 seg=2 545s
+  [blk3:en_wiki] done @step1200 cells=4 seg=3 721s
+  [blk4:en_lit#repris4] done @step1500 cells=4 seg=4 913s
+  [blk5:zh_classic#repris5] done @step1800 cells=4 seg=5 1090s
+Traceback (most recent call last):
+  File "/workspace/obm_mvp/experiments/obm_lab.py", line 211, in <module>
+    main()
+  File "/workspace/obm_mvp/experiments/obm_lab.py", line 185, in main
+    ev = evaluate_all(mesh, streams, uniq, mesh.cfg.max_len)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/obm_mvp/experiments/obm_lab.py", line 71, in evaluate_all
+    p, a = mesh.eval_ppl(seq[b:b + 12], tgt[b:b + 12],
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/obm_mvp/experiments/../obm_lm/lm_mesh.py", line 1101, in eval_ppl
+    nll, n, c = bk.ens_nll(self.cells, sel, w, s_, t_)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/obm_mvp/experiments/../obm_lm/backend.py", line 190, in ens_nll
+    ens = _ens_torch(cells, sel, w, seq)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/obm_mvp/experiments/../obm_lm/backend.py", line 117, in _ens_torch
+    lg = lg_list[k] if lg_list is not None else cells[i].logits_torch(seq)
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/obm_mvp/experiments/../obm_lm/torch_cell.py", line 162, in logits_torch
+    return self._fwd(idx, noise)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/obm_mvp/experiments/../obm_lm/torch_cell.py", line 169, in _fwd
+    x = self.tok_emb[t] + self.pos_emb[:L]                       # (B,L,D)
+        ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (256) must match the size of tensor b (128) at non-singleton dimension 1
+=== verify_b12 (6-block, eval) ===
+== [verify_b12] cells=4 params=25.46M D=256 L=4 B=12 dr=10 dp=200 steps/blk=300 total=1800
+  [blk0:en_lit] done @step300 cells=4 seg=0 202s
+  [blk1:zh_classic] done @step600 cells=4 seg=1 402s
+  [blk2:code_py] done @step900 cells=4 seg=2 631s
+  [blk3:en_wiki] done @step1200 cells=4 seg=3 831s
+  [blk4:en_lit#repris4] done @step1500 cells=4 seg=4 1065s
+  [blk5:zh_classic#repris5] done @step1800 cells=4 seg=5 1272s
+  [eval] en_lit=916 zh_classic=4621 code_py=994 en_wiki=2168
+== [verify_b12] DONE wall=21.2min step=706ms(p50 495ms) tok/s=4348 peakRSS=2962MB params=25.46M cells=4 events={'seal': 5} | 功能 seal(封存/边界)=✓ birth(分裂)=✗ death(凋亡)=✗ pass=True
+=== report ===
+tag              D  L   B  ctx params(M) step(ms)  speedup   tok/s  RSS(MB) cells  seg   seal birth death  PASS
+---------------------------------------------------------------------------------------------------------------
+verify_b12     256  4  12  256      25.5      706    2.75x    4348     2962     4    5      5     0     0     ✓
+g2_ctx128      256  4  24  256      25.3      827    2.34x    3712     2885     4    2      2     0     0     ✓
+g2_b12         256  4  12  256      25.5      965    2.01x    3183     2913     4    2      2     0     0     ✗
+half_d128L2    128  2  24  256       9.6     1347    1.44x    4561     3455     4    2      2     0     0     ✗
+
+★ 最快且功能合格：verify_b12  step=706ms  speedup=2.75×  RSS=2962MB  events={'seal': 5}
+
+[report] /workspace/obm_mvp/results_lab/report_lab.html
+########## FULL VERIFY DONE Fri Oct 30 04:20:00 PM CST 2026 ##########

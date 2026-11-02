@@ -1,0 +1,40 @@
+{
+ "tag": "g2_ctx128",
+ "d_model": 256,
+ "n_layers": 4,
+ "batch": 24,
+ "dist_refresh": 10,
+ "dream_period": 200,
+ "amp": true,
+ "n_params": 25325568,
+ "cells_final": 4,
+ "total_steps": 600,
+ "wall_sec": 496.593364238739,
+ "step_time_mean": 0.8273047264417013,
+ "step_time_p50": 0.6692100763320923,
+ "step_time_p90": 0.9390893220901642,
+ "tok_per_sec": 3711.6887432146095,
+ "peak_rss_mb": 2884.67578125,
+ "event_counts": {
+  "seal": 2
+ },
+ "events": [
+  [
+   266,
+   "seal",
+   "概念段 #0 封存：n=156，库存 1 段，最近段距离 —"
+  ],
+  [
+   420,
+   "seal",
+   "概念段 #1 封存：n=78，库存 2 段，最近段距离 1.92"
+  ]
+ ],
+ "segments": 2,
+ "function_verdict": {
+  "seal(封存/边界)": true,
+  "birth(分裂)": false,
+  "death(凋亡)": false
+ },
+ "function_pass": true
+}

@@ -1,0 +1,7 @@
+== [scale2_local] cells=6 params=80.61M D=384 L=6 B=24 dr=10 dp=200 steps/blk=120 total=360
+  [blk0:en_lit] done @step120 cells=6 seg=0 412s
+  [blk1:zh_classic] done @step240 cells=6 seg=0 735s
+  [blk2:code_py] done @step360 cells=6 seg=1 892s
+  [weights] saved -> results_lab/scale2_local_weights.pkl (80.6M params)
+  [eval] en_lit=1951578 zh_classic=3256871 code_py=842464 en_wiki=17127903
+== [scale2_local] DONE wall=14.9min step=2478ms(p50 2594ms) tok/s=1238 peakRSS=3245MB params=80.61M cells=6 events={'seal': 1} | 功能 seal(封存/边界)=✓ birth(分裂)=✗ death(凋亡)=✗ pass=True

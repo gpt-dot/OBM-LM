@@ -1,0 +1,83 @@
+{
+ "tag": "smoke2",
+ "d_model": 384,
+ "n_layers": 6,
+ "batch": 24,
+ "ctx": 128,
+ "dist_refresh": 10,
+ "dream_period": 200,
+ "amp": true,
+ "n_params": 80607744,
+ "cells_final": 6,
+ "total_steps": 50,
+ "wall_sec": 173.7991225719452,
+ "step_time_mean": 3.4615397214889527,
+ "step_time_p50": 2.808289051055908,
+ "step_time_p90": 3.585811710357674,
+ "tok_per_sec": 883.7789151462279,
+ "peak_rss_mb": 2745.44140625,
+ "event_counts": {},
+ "events": [],
+ "segments": 0,
+ "online": [
+  {
+   "step": 25,
+   "block": 0,
+   "acc": 0.0,
+   "k": 1,
+   "peak": 0.0,
+   "cells": 6
+  },
+  {
+   "step": 50,
+   "block": 1,
+   "acc": 0.019205729166666668,
+   "k": 1,
+   "peak": 0.014,
+   "cells": 6
+  }
+ ],
+ "territory": [
+  {
+   "cell": 0,
+   "seg_rel": {
+    "0": 0.18
+   },
+   "seg_best": {
+    "0": 0.603
+   }
+  },
+  {
+   "cell": 1,
+   "seg_rel": {},
+   "seg_best": {}
+  },
+  {
+   "cell": 2,
+   "seg_rel": {},
+   "seg_best": {}
+  },
+  {
+   "cell": 3,
+   "seg_rel": {},
+   "seg_best": {}
+  },
+  {
+   "cell": 4,
+   "seg_rel": {},
+   "seg_best": {}
+  },
+  {
+   "cell": 5,
+   "seg_rel": {},
+   "seg_best": {}
+  }
+ ],
+ "peak_acc_final": 0.0144,
+ "function_verdict": {
+  "seal(封存/边界)": false,
+  "birth(分裂)": false,
+  "death(凋亡)": false
+ },
+ "function_pass": false
+}

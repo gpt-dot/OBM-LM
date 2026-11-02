@@ -1,0 +1,86 @@
+OBM-LM 多细胞语言模型 —— 训练前模型 + 训练方法
+================================================
+
+一、随包文件
+------------
+1) OBM-LM-模型-训练前.pkl（约 135MB）—— 训练前的模型骨架
+   - 架构：OBM-LM（Organic Boundary-Mesh Language Model）多细胞涌现架构
+   - 规模：4 个细胞（cell），总参数量 25.5M（随机初始化，尚未训练）
+           配置 = d_model=256, n_layers=4, n_heads=8, ctx=256, vocab=16384(BPE)
+   - 状态：step=0，权重为随机初始化；含 adam 矩占位、合同账本、rng 状态
+   - 这就是「训练前的模型文件」：结构已就绪、权重未学，可直接载入后训练
+2) 本文件 OBM-LM-训练方法.txt —— 如何把它训练成多细胞专才模型
+
+二、环境依赖
+------------
+- Python 3.11
+- torch（CPU 即可，bf16 混合精度）+ numpy
+- 项目代码包 obm_lm/（位于 /workspace/obm_mvp/obm_lm）
+- 词表 data/cache/tokenizer.json（BPE，16384 词）
+- 语料   data/ 下 6 个领域（en_lit / zh_classic / code_py / en_wiki 等）
+
+三、载入这个训练前模型
+----------------------
+import os, sys, pickle
+sys.path.insert(0, "/workspace/obm_mvp")
+from obm_lm.lm_mesh import OBMLM
+
+with open("/workspace/OBM-LM-模型-训练前.pkl", "rb") as f:
+    ck = pickle.load(f)
+mesh = OBMLM(ck["cfg"])   # 用保存时的配置先建空 mesh
+mesh.restore(ck)          # 载入随机初始化权重 + 账本 + rng 状态
+print(len(mesh.cells), mesh.n_params, mesh.step)   # 4  25456640  0
+
+四、训练方法（把它训完的完整流程）
+----------------------------------
+1) 一条命令从头复刻 pilot 训练（等价于先 build 再跑，这里直接产出同结构模型）：
+   cd /workspace/obm_mvp
+   MALLOC_ARENA_MAX=2 OBM_THREADS=8 \
+   python3 experiments/run_scale.py --scale pilot --steps 300 --seed 0 --tag _myrun
+   -> 在 results_scale/pilot_myrun/ 生成 ckpt_final.pkl + metrics.json + samples.txt
+   （若用上面的「训练前.pkl」，可在 run_scale.py 加 --resume 指向它，从 step 0 继续）
+
+2) 训练主循环（每步 OBM 机制）：
+   a. 双信号边界检测 -> 把连续 token 流切分为「概念段落」
+   b. 条件合同市场：seg_rel × cond_reliability(ctx) 给段落选细胞
+      （单授予 + 任期锁，避免抖动；未训练段落 seg_rel=0 不参与竞争）
+   c. 受训细胞前向 + 反传；每 dist_refresh=10 步全库 forward_stats 刷新路由统计
+   d. 每 dream_period=200 步进入 dream 代谢：段落合并 / 遗忘 / 凋亡 / 分裂决策
+
+3) 训练方法三要素（踩坑后沉淀）：
+   - 课程式多域切换：6 块 × 300 步，专才化靠「域切换 + 合同竞争」自然涌现，
+     不预设谁负责哪个域
+   - 路由修复（关键）：未训练段落 seg_rel 取 0（不再给 0.5 先验）；
+     评估路径按 cond_rel 排序取 top-k；probe 抽签只发生在训练路径
+   - 内存控制：MALLOC_ARENA_MAX=2 + 8 线程，峰值 RSS ~3GB；
+     规模墙（cgroup 8GB 静默 SIGKILL）靠「不在每步 deepcopy 快照、按父配置重放」规避
+
+五、提速版（功能不减，约 2.75×）
+--------------------------------
+在保功能前提下已验证的提速手段（详见 results_lab/verify_b12.json）：
+- decide 统计融合：单细胞时 ensemble argmax ≡ per-cell argmax（数学恒等，零风险），
+  省 1 次 V 维 softmax 物化（402MB）+ 1 次 V 维 argmax
+- batch 24 -> 12：step 1940ms -> 706ms（2.75×），封存 seal×5 照常点火
+- 效果（ppl）不降反升：code_py 994 / en_wiki 2168（优于未提速档 code_py 1141 / 3842）
+运行：
+  python3 experiments/obm_lab.py --tag myrun --batch 12 \
+      --steps-per-domain 300 --n-blocks 6 --eval
+
+六、怎么判断「训练成功 / 功能正常」（验证判据）
+----------------------------------------------
+1. 事件点火：seal ≥ 1 是底线，birth（分裂）/ death（凋亡）代表完整涌现
+2. 困惑度：各域 final ppl 不劣于基线（训练后典型：en_lit ~825 / zh_classic ~2363
+   / code_py ~1141 / en_wiki ~3842）
+3. 领地分化：每个细胞 seg_rel 峰值分离，无通才坍缩到单一细胞
+
+七、目录索引
+------------
+- 训练前模型      ：OBM-LM-模型-训练前.pkl（本包）
+- 训练方法        ：本文件 OBM-LM-训练方法.txt
+- 训练脚本        ：experiments/run_scale.py（原架构）、experiments/obm_lab.py（提速实验台）
+- 核心代码        ：obm_lm/lm_mesh.py（OBM 主循环/机制）、obm_lm/cell_lm.py（细胞）、
+                    obm_lm/torch_cell.py、obm_lm/backend.py（前向/评估）
+- 已训练参考模型  ：results_scale/pilot_v1/ckpt_final.pkl（训练完的对照，非本包必需）
+- 指标与图        ：results_scale/pilot_v1/metrics.json、fig_events.png、fig_ppl.png、
+                    fig_territory.png、samples.txt
+- 提速验证        ：results_lab/verify_b12.json、results_lab/report_lab.html

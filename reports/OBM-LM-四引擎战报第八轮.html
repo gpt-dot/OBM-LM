@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>OBM-LM 四引擎战报·第八轮（头脑风暴×TRIZ×SCAMPER×类比迁移）</title>
+<style>
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;margin:0;background:#f6f8fa;color:#1a2332;line-height:1.7}
+.wrap{max-width:1080px;margin:0 auto;padding:30px 36px 60px;background:#fff}
+h1{font-size:24px;border-bottom:3px solid #7b2d8b;padding-bottom:10px}
+h2{font-size:18px;color:#7b2d8b;margin-top:28px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0}
+th,td{border:1px solid #dfe6ee;padding:7px 9px;vertical-align:top}
+th{background:#f3eef7}
+.good{color:#1a7f37;font-weight:600}.bad{color:#c01c28;font-weight:600}.mid{color:#b54708;font-weight:600}
+.note{background:#f3eef7;border-left:4px solid #7b2d8b;padding:10px 14px;margin:14px 0;font-size:13.5px}
+code{background:#f0f2f5;padding:1px 5px;border-radius:3px;font-size:12.5px}
+</style></head><body><div class="wrap">
+<h1>OBM-LM 四引擎战报 · 第八轮<br><span style="font-size:14px;color:#5a6a7e">头脑风暴（发散） × TRIZ（矛盾） × SCAMPER（变形） × 类比迁移（跨域借智）</span></h1>
+
+<div class="note">本轮把方法论从双引擎升级为<b>四引擎</b>：SCAMPER 提供七个变形透镜（替代/合并/调整/修改/其他用途/消除/重组），类比迁移从免疫学、神经科学、经济学、移植医学借结构。7 个候选收敛为 4 个落地，全部实测验证。</div>
+
+<h2>① 类比·经济学：比较优势路由（李嘉图）</h2>
+<p>问：NLL 路由用"绝对最优"，那"比较优势"（谁能释放谁的产能）会不会更好？穷举 3⁴ 分配做福利比较：</p>
+<table><tr><th>域</th><th>cell#3</th><th>cell#4</th><th>cell#1</th></tr>
+<tr><td>en_lit</td><td>281</td><td class="good"><b>120</b></td><td>397</td></tr>
+<tr><td>zh_classic</td><td class="good"><b>820</b></td><td>994</td><td>9421</td></tr>
+<tr><td>code_py</td><td class="good"><b>72</b></td><td>220</td><td>2868</td></tr>
+<tr><td>en_wiki</td><td>527</td><td class="good"><b>293</b></td><td>3076</td></tr></table>
+<p><b>裁决：比较优势分配 = 绝对最优分配</b>（en_lit/wiki→c4，zh/code→c3，福利 214 恒等）。经济学含义清晰：当各细胞在不同域有<b>绝对优势</b>时，两种分配必然重合——当前 top1 路由已是理论最优，无需改。</p>
+
+<h2>② 类比·移植医学：路由排异监测</h2>
+<p>同一 prompt 在 scale5/6/7 三代上做 top1 路由，漂移 = 排异反应：</p>
+<table><tr><th>指标</th><th>结果</th></tr>
+<tr><td>排异率</td><td><b>2/8</b>（scale7 有 1 条 zh、1 条 code prompt 转投第二名细胞）</td></tr>
+<tr><td>定性</td><td class="mid">轻度排异——都在模糊带内，自适应路由（τ 回退）恰好覆盖；scale7 分工更成熟，属"换匹配"而非"排异失控"</td></tr></table>
+
+<h2>③ SCAMPER-E 消除：细胞凋亡（×免疫学"apoptosis"）</h2>
+<p><b>实现 <code>prune_zoo(mesh, streams, factor=2.0)</code></b>：某细胞在所有域上都比该域最优差 2 倍以上 → 凋亡移除（免疫学对应：未被任何抗原需要的克隆走向凋亡而非耐受）。</p>
+<table><tr><th>测量项</th><th>凋亡前（9 细胞）</th><th>凋亡后（6 细胞）</th></tr>
+<tr><td>路由决策（8 prompt top1 身份保持）</td><td colspan="2" class="good"><b>8/8 一致，质量零损（120/820/72/293）</b></td></tr>
+<tr><td>路由耗时</td><td>129ms</td><td class="good"><b>87ms（1.49×）</b></td></tr>
+<tr><td>内存</td><td>~300MB</td><td class="good"><b>~200MB</b></td></tr></table>
+<p class="bad">顺手抓到真 bug：<code>load_zoo</code> 按 cell_id 跨代去重——三代撞号导致 9 细胞塌缩成 3，s5 的 code 专才（81）被误删！已修为不去重。若非 SCAMPER-E 的 9 细胞重测，这个 bug 会一直潜伏。</p>
+
+<h2>④ 类比·神经科学：序列梦（海马系统巩固）</h2>
+<p>神经科学事实：海马睡眠重放是<b>按白天经历顺序加速回放</b>，不是随机。OBM 的 dream 一直是随机采样——补上"顺序"这一半：</p>
+<table><tr><th>项</th><th>内容</th></tr>
+<tr><td>实现</td><td><code>OBMLMConfig.dream_seq</code> + <code>--dream-seq</code>：梦段按段号升序（=训练经历的时间顺序）推进，段内样本仍随机</td></tr>
+<tr><td>冒烟</td><td class="good">90 步端到端跑通，dream 每 20 步正常点火</td></tr>
+<tr><td>部署</td><td><code>lm_mesh.py</code> + <code>obm_lab.py</code> 已上传 scnet——scale9 可跑 随机梦 vs 序列梦 A/B（抗遗忘保持率对比）</td></tr></table>
+
+<h2>快杀与登记</h2>
+<table>
+<tr><th>想法</th><th>来源</th><th>裁决</th></tr>
+<tr><td>比较优势路由改造</td><td>李嘉图</td><td class="bad">快杀——与绝对最优恒等，零增量（实验证据）</td></tr>
+<tr><td>watch-dog 复用为 lr 调参器</td><td>SCAMPER-P</td><td>登记（scale9 空窗）</td></tr>
+<tr><td>Adam→Lion 省内存</td><td>SCAMPER-S</td><td>登记</td></tr>
+<tr><td>路由排异自动报警</td><td>移植医学</td><td>登记——已具备测量工具，接园丁页即可</td></tr>
+</table>
+
+<h2>态势</h2>
+<ul>
+<li><b>scale8</b>（作业 126537697）：排队中，夜间流水线盯守，完工自动下载+战报；</li>
+<li><b>语料</b>：pypi 87/95，收工即 encode ~150M tokens（scale9 主攻数据新鲜度 0.65 tok/param）；</li>
+<li><b>推理栈 v3.2</b> = zoo（带凋亡修剪）+ 自适应路由 + 自动选温 + 园丁页 + 排异监测；</li>
+<li><b>方法论账本</b>：四引擎共产生 40+ 候选，落地 14，快杀 4，登记 6——类比迁移的证据文化（每个类比必须用数据裁决，不许玄学存活）是持续高产的关键。</li>
+</ul>
+</div></body></html>

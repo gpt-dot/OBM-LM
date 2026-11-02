@@ -1,0 +1,35 @@
+########## VERIFY2 START Fri Oct 30 04:27:55 PM CST 2026 ##########
+=== verify_b12_dbg (split diagnostic ON) ===
+== [verify_b12_dbg] cells=4 params=25.46M D=256 L=4 B=12 dr=10 dp=200 steps/blk=300 total=1800
+  [blk0:en_lit] done @step300 cells=4 seg=0 208s
+  [blk1:zh_classic] done @step600 cells=4 seg=1 422s
+  [blk2:code_py] done @step900 cells=4 seg=2 663s
+  [blk3:en_wiki] done @step1200 cells=4 seg=3 880s
+  [blk4:en_lit#repris4] done @step1500 cells=4 seg=4 1127s
+  [blk5:zh_classic#repris5] done @step1800 cells=4 seg=5 1346s
+  [eval] en_lit=1195 zh_classic=4620 code_py=1826 en_wiki=1936
+== [verify_b12_dbg] DONE wall=22.4min step=747ms(p50 518ms) tok/s=4109 peakRSS=2953MB params=25.46M cells=4 events={'seal': 5} | 功能 seal(封存/边界)=✓ birth(分裂)=✗ death(凋亡)=✗ pass=True
+=== verify_ctx128 (fixed eval) ===
+== [verify_ctx128] cells=4 params=25.33M D=256 L=4 B=24 dr=10 dp=200 steps/blk=300 total=1800
+  [blk0:en_lit] done @step300 cells=4 seg=0 174s
+  [blk1:zh_classic] done @step600 cells=4 seg=1 351s
+  [blk2:code_py] done @step900 cells=4 seg=2 541s
+  [blk3:en_wiki] done @step1200 cells=4 seg=3 719s
+  [blk4:en_lit#repris4] done @step1500 cells=4 seg=4 909s
+  [blk5:zh_classic#repris5] done @step1800 cells=4 seg=5 1085s
+  [eval] en_lit=899 zh_classic=3906 code_py=1136 en_wiki=2575
+== [verify_ctx128] DONE wall=18.1min step=602ms(p50 477ms) tok/s=5096 peakRSS=2669MB params=25.33M cells=4 events={'seal': 5} | 功能 seal(封存/边界)=✓ birth(分裂)=✗ death(凋亡)=✗ pass=True
+=== report ===
+tag              D  L   B  ctx params(M) step(ms)  speedup   tok/s  RSS(MB) cells  seg   seal birth death  PASS
+---------------------------------------------------------------------------------------------------------------
+verify_ctx128  256  4  24  128      25.3      602    3.22x    5096     2669     4    5      5     0     0     ✓
+verify_b12     256  4  12  256      25.5      706    2.75x    4348     2962     4    5      5     0     0     ✓
+verify_b12_dbg 256  4  12  256      25.5      747    2.60x    4109     2953     4    5      5     0     0     ✓
+g2_ctx128      256  4  24  256      25.3      827    2.34x    3712     2885     4    2      2     0     0     ✓
+g2_b12         256  4  12  256      25.5      965    2.01x    3183     2913     4    2      2     0     0     ✗
+half_d128L2    128  2  24  256       9.6     1347    1.44x    4561     3455     4    2      2     0     0     ✗
+
+★ 最快且功能合格：verify_ctx128  step=602ms  speedup=3.22×  RSS=2669MB  events={'seal': 5}
+
+[report] /workspace/obm_mvp/results_lab/report_lab.html
+########## VERIFY2 DONE Fri Oct 30 05:08:42 PM CST 2026 ##########

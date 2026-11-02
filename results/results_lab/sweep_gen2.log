@@ -1,0 +1,13 @@
+########## SWEEP START Sun Oct 25 06:51:24 AM CST 2026 ##########
+== [g2_b12] cells=4 params=25.46M D=256 L=4 B=12 dr=10 dp=200 steps/blk=200 total=600
+  [blk0:en_lit] done @step200 cells=4 seg=0 171s
+  [blk1:zh_classic] done @step400 cells=4 seg=1 372s
+  [blk2:code_py] done @step600 cells=4 seg=2 579s
+== [g2_b12] DONE wall=9.7min step=965ms(p50 712ms) tok/s=3183 peakRSS=2913MB params=25.46M cells=4 events={'seal': 2}
+== [g2_ctx128] cells=4 params=25.33M D=256 L=4 B=24 dr=10 dp=200 steps/blk=200 total=600
+  [blk0:en_lit] done @step200 cells=4 seg=0 153s
+  [blk1:zh_classic] done @step400 cells=4 seg=1 325s
+  [blk2:code_py] done @step600 cells=4 seg=2 497s
+== [g2_ctx128] DONE wall=8.3min step=827ms(p50 669ms) tok/s=3712 peakRSS=2885MB params=25.33M cells=4 events={'seal': 2} | 功能 seal(封存/边界)=✓ birth(分裂)=✗ death(凋亡)=✗ pass=True
+== [g2_d192] cells=4 params=16.33M D=192 L=3 B=24 dr=10 dp=200 steps/blk=200 total=600
+  [blk0:en_lit] done @step200 cells=4 seg=0 250s

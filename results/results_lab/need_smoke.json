@@ -1,0 +1,63 @@
+{
+ "tag": "need_smoke",
+ "d_model": 64,
+ "n_layers": 2,
+ "batch": 4,
+ "ctx": 64,
+ "dist_refresh": 10,
+ "dream_period": 200,
+ "amp": true,
+ "n_params": 2238208,
+ "cells_final": 2,
+ "total_steps": 60,
+ "wall_sec": 3.50402569770813,
+ "step_time_mean": 0.05712361335754394,
+ "step_time_p50": 0.023825883865356445,
+ "step_time_p90": 0.07754793167114257,
+ "tok_per_sec": 4383.529495815764,
+ "peak_rss_mb": 1326.8203125,
+ "event_counts": {},
+ "events": [],
+ "segments": 0,
+ "online": [
+  {
+   "step": 25,
+   "block": 1,
+   "acc": 0.00390625,
+   "k": 1,
+   "peak": 0.001,
+   "cells": 2
+  },
+  {
+   "step": 50,
+   "block": 2,
+   "acc": 0.0,
+   "k": 1,
+   "peak": 0.001,
+   "cells": 2
+  }
+ ],
+ "territory": [
+  {
+   "cell": 0,
+   "seg_rel": {
+    "0": 0.108
+   },
+   "seg_best": {
+    "0": 0.424
+   }
+  },
+  {
+   "cell": 1,
+   "seg_rel": {},
+   "seg_best": {}
+  }
+ ],
+ "peak_acc_final": 0.0007,
+ "function_verdict": {
+  "seal(封存/边界)": false,
+  "birth(分裂)": false,
+  "death(凋亡)": false
+ },
+ "function_pass": false
+}
