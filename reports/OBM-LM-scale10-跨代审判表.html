@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>OBM-LM scale10 跨代审判表</title><style>
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#f6f8fa;margin:0}
+.wrap{max-width:920px;margin:0 auto;background:#fff;padding:34px 40px 60px}
+h1{font-size:1.5em;margin:0 0 4px}
+h2{font-size:1.1em;margin-top:34px}
+.sub{color:#667;margin-bottom:24px}
+table{border-collapse:collapse;width:100%;margin:18px 0}
+th,td{border:1px solid #dde;padding:9px 12px;text-align:center;font-size:.95em}
+th{background:#f0f4f8}
+.ok{color:#0a7d32;font-weight:700}.bad{color:#c0392b;font-weight:700}
+.note{background:#f6f9fc;border-left:4px solid #4a90d9;padding:12px 16px;margin:14px 0;font-size:.92em;line-height:1.8}
+.warn{border-left-color:#e67e22;background:#fdf6ee}
+</style></head><body><div class="wrap">
+<h1>OBM-LM scale10 跨代审判表</h1>
+<div class="sub">2026-11-07 18:05 生成 · R1 治饿 + SOTA 批次首战 · 作业 ID 与节点已脱敏 · 跑完保存自动释放节点（等效关机）✓</div>
+
+<h2>一、四域成绩（域 ppl，越低越好；口径说明见技术报告 §5.4）</h2>
+<table>
+<tr><th>域</th><th>scale9（101M/4细胞）</th><th>scale10（152M/6细胞，R1+WSD+z-loss）</th><th>Δ</th><th>世代最优</th></tr>
+<tr><td>en_lit</td><td class="ok">112.0</td><td>127</td><td class="bad">+13%</td><td class="ok">112.0 (scale9)</td></tr>
+<tr><td>zh_classic</td><td class="ok">656.1</td><td>761</td><td class="bad">+16%</td><td class="ok">656.1 (scale9)</td></tr>
+<tr><td>code_py</td><td class="ok">62.4</td><td>66</td><td>≈收复</td><td class="ok">54.5 (scale8)</td></tr>
+<tr><td>en_wiki</td><td>232.6</td><td class="ok">201</td><td class="ok"><b>−13.6% 全史新高</b></td><td class="ok">201 (scale10)</td></tr>
+<tr><td><b>四域几何平均</b></td><td class="ok">180.7</td><td>189.2</td><td class="bad">+4.7%</td><td class="ok">180.7 (scale9)</td></tr>
+</table>
+
+<div class="note"><b>一句话判读</b>：R1 治饿成功（code_py 从 +14% 回退收复到 ≈持平，且全程未再崩盘）+ wiki 全史新高；代价是 en_lit/zh 被 WSD-resume 失误的 10×lr 冲击打伤且后程没能完全修复——几何均 +4.7% 是配方失误的账，不是 R1 的账。</div>
+
+<h2>二、机制裁决</h2>
+<table>
+<tr><th>机制</th><th>证据</th><th>裁决</th></tr>
+<tr><td>R1 replay-need-soft（比例分配+5%保底）</td><td>① code_py 66 vs scale9 的 62，+14% 回退收复；② en_lit 块期间 code 全程稳在 156-276（scale9 同期崩到 339→2184）；③ 分配账本 replay_alloc：en_lit 1072 / zh 933 / wiki 509 / code 494——按需供给，无单域饿死</td><td class="ok">有效（默认转正）</td></tr>
+<tr><td>WSD 调度 + resume 组合</td><td>lr 调度以会话进度重置，WSD 前 80% 满峰值 4e-4（scale9 末态 cosine 已衰减到 ~0.1×），等效 10×lr 冲击：resume 后首块 code 62→276、wiki 233→335；en_lit/zh 全程带伤</td><td class="bad">失误（WSD 只许从头训练臂；resume 臂用 cosine 延续）</td></tr>
+<tr><td>z-loss 1e-4</td><td>捆绑点火无法单独归因，但无副作用迹象（学习正常、无 logit 失稳）</td><td class="warn">存疑待 AB（小臂）</td></tr>
+<tr><td>市场自发 birth ×2</td><td>step49400 #6 由 #4 分裂（重放损失 4.71）、step53000 #7 由 #3 分裂（4.00）——均继承段合同；cells 4→6，params 101M→151.6M；wiki 201 新高由 6 细胞拿下</td><td class="ok">市场活性 ✓（但 max-cells=4 约束被绕过，待查）</td></tr>
+<tr><td>自动关机（跑完保存即释放）</td><td>37.6k 秒跑完 → 权重+冗余副本落盘 → scancel 自释放（statC）→ CPU 配额即时释放，探测作业 17:46 无缝接力</td><td class="ok">按用户要求生效 ✓</td></tr>
+</table>
+
+<h2>三、运行指标</h2>
+<table>
+<tr><th>指标</th><th>值</th></tr>
+<tr><td>规模</td><td>151.56M 参数 · 6 细胞（2 次自发分裂，继承段合同）</td></tr>
+<tr><td>训练</td><td>resume scale9@47800 → 57800 步（新增 10000 步，四块域序 en_lit→zh→code→wiki）</td></tr>
+<tr><td>耗时</td><td>wall 612.6 分钟 · step 均值 3651ms（p50 2449ms）· 557 tok/s · peakRSS 7.3GB</td></tr>
+<tr><td>市场事件</td><td>seal 封存 ×98（+21）· death ×3（历史）· birth ×3（含 2 次自发）· 功能自检 pass=True</td></tr>
+<tr><td>权重</td><td>scale10_weights.pkl 370MB · MD5 <code>78f4a094aed73a9e4cd5fb9db8b4652e</code>（远端 manifest 一致）</td></tr>
+</table>
+
+<h2>四、下一代配方（scale11）</h2>
+<div class="note">
+<b>修复 + 迁移两条腿走路</b>：<br>
+① <b>DCU 迁移</b>（主线）：节点已实锤 <code>/opt/dtk-25.04.4</code> 软件栈在位、系统 python 无 torch——第二轮探测（第二轮探测作业）确认 DTK 自带环境与可用的 torch-dcu 构建版后，上传 dtorch 轮子 + device 迁移补丁（仅 3 处 device 相关代码）+ 小规模对拍，<b>step 2.4s → 亚秒级，训练提速 10-50×</b>；<br>
+② <b>scale11 CPU 收尾臂</b>（迁移前若开跑）：resume scale10@57800（6 细胞）+ <b>cosine 延续</b>（修 WSD-resume 失误）+ R1 + z-loss，目标把 en_lit/zh 拉回（预期 GM &lt; 175）。<br>
+<b>风险项</b>：max-cells=4 约束被自发 birth 绕过——需读分裂路径代码裁决是 bug 还是市场活性（后者是更好的新闻）。
+</div>
+
+<div class="note" style="margin-top:30px;color:#889;font-size:.85em">
+产物：<a href="obm-scale10-weights-20261107.bin">obm-scale10-weights-20261107.bin</a>（353MB）·
+<a href="obm-scale10-logs-20261107.bin">obm-scale10-logs-20261107.bin</a>（成绩单+日志，zip 改后缀解压）·
+本页 · <a href="index.html">返回下载页</a>
+</div>
+</div></body></html>

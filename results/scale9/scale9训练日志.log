@@ -1,0 +1,31 @@
+  [resume] loaded results_lab/scale8_weights.pkl @step37800
+  [spawn] +1 cells -> 4
+== [scale9] cells=4 params=101.04M D=512 L=8 B=16 dr=10 dp=200 steps/blk=2500 total=10000
+  [weights] dtype=fp16 -> /public/home/your_account/obm_mvp/results_lab/scale9_weights.pkl
+  [eval] step38000 en_lit=111 zh_classic=1181 code_py=339 en_wiki=431
+  [eval] step38500 en_lit=106 zh_classic=940 code_py=2184 en_wiki=1052
+  [eval] step39000 en_lit=103 zh_classic=947 code_py=266 en_wiki=428
+  [eval] step39500 en_lit=100 zh_classic=1068 code_py=151 en_wiki=1589
+  [eval] step40000 en_lit=100 zh_classic=927 code_py=235 en_wiki=451
+  [blk0:en_lit] done @step40300 cells=4 seg=67 replayed=753 8389s
+  [eval] step40500 en_lit=98 zh_classic=910 code_py=283 en_wiki=442
+  [eval] step41000 en_lit=102 zh_classic=749 code_py=272 en_wiki=467
+  [eval] step41500 en_lit=100 zh_classic=707 code_py=270 en_wiki=471
+  [eval] step42000 en_lit=99 zh_classic=688 code_py=263 en_wiki=416
+  [eval] step42500 en_lit=101 zh_classic=705 code_py=272 en_wiki=436
+  [blk1:zh_classic] done @step42800 cells=4 seg=70 replayed=1532 16676s
+  [eval] step43000 en_lit=101 zh_classic=684 code_py=70 en_wiki=451
+  [eval] step43500 en_lit=115 zh_classic=675 code_py=64 en_wiki=612
+  [eval] step44000 en_lit=117 zh_classic=663 code_py=61 en_wiki=700
+  [eval] step44500 en_lit=119 zh_classic=661 code_py=60 en_wiki=602
+  [eval] step45000 en_lit=126 zh_classic=665 code_py=58 en_wiki=549
+  [blk2:code_py] done @step45300 cells=4 seg=76 replayed=2265 25131s
+  [eval] step45500 en_lit=111 zh_classic=664 code_py=64 en_wiki=293
+  [eval] step46000 en_lit=116 zh_classic=657 code_py=62 en_wiki=272
+  [eval] step46500 en_lit=115 zh_classic=656 code_py=62 en_wiki=256
+  [eval] step47000 en_lit=113 zh_classic=657 code_py=63 en_wiki=252
+  [eval] step47500 en_lit=113 zh_classic=654 code_py=63 en_wiki=237
+  [blk3:en_wiki] done @step47800 cells=4 seg=77 replayed=3009 33418s
+  [weights] saved -> /public/home/your_account/obm_mvp/results_lab/scale9_weights.pkl (101.0M params)
+  [eval] en_lit=112 zh_classic=656 code_py=62 en_wiki=233
+== [scale9] DONE wall=557.0min step=3322ms(p50 2448ms) tok/s=613 peakRSS=5338MB params=101.04M cells=4 events={'seal': 77, 'death': 3, 'birth': 1} | 功能 seal(封存/边界)=✓ birth(分裂)=✓ death(凋亡)=✓ pass=True

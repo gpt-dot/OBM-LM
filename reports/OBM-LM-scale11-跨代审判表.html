@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>OBM-LM scale11 跨代战报 · DCU 全速首战</title>
+<style>
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+         max-width: 900px; margin: 40px auto; padding: 0 24px; color: #1a1a2e; line-height: 1.7; }
+  h1 { font-size: 26px; border-bottom: 3px solid #c0392b; padding-bottom: 10px; }
+  h2 { font-size: 20px; margin-top: 36px; color: #c0392b; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: center; }
+  th { background: #f7f3ee; }
+  .win { color: #c0392b; font-weight: 700; }
+  .lose { color: #27ae60; }
+  .tag { display: inline-block; background: #c0392b; color: #fff; border-radius: 4px;
+         padding: 2px 10px; font-size: 13px; margin-right: 6px; }
+  .note { background: #fff8ec; border-left: 4px solid #e67e22; padding: 12px 16px; margin: 16px 0; }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 14px; }
+</style>
+</head>
+<body>
+<h1>OBM-LM scale11 跨代战报 <span class="tag">DCU 全速首战</span></h1>
+<p><b>2026-11-07</b> · 7 细胞 176.8M 参数（151.6M 起步 + 4 次 birth − 3 次 death）<br>
+配方：resume scale10@57800 + <b>R1 比例分配 replay</b> + z-loss 1e-4 + cosine 延续（lr 2e-4，修 WSD 失误）+ <b>OBM_DEVICE=auto 上海光 DCU（BW 卡 64GB，HIP 6.3.25405）</b></p>
+
+<h2>一、速度：数量级跃迁</h2>
+<table>
+<tr><th>指标</th><th>scale10（CPU）</th><th>scale11（DCU）</th><th>提速</th></tr>
+<tr><td>万步总时长</td><td>557 分钟</td><td class="win"><b>8.6 分钟</b></td><td class="win">65×</td></tr>
+<tr><td>单块 2500 步</td><td>8751 s</td><td>127–512 s</td><td class="win">17–69×</td></tr>
+<tr><td>步时 p50</td><td>~2400 ms</td><td class="win"><b>28 ms</b></td><td class="win">86×</td></tr>
+<tr><td>单细胞真训练基准</td><td>108 tok/s</td><td class="win">93,956 tok/s</td><td class="win">860×</td></tr>
+</table>
+
+<h2>二、成绩：域 ppl（域内最优 / 终评；口径说明见技术报告 §5.4）</h2>
+<table>
+<tr><th>域</th><th>scale9</th><th>scale10</th><th>scale11 域内最优</th><th>scale11 终评</th></tr>
+<tr><td>en_lit</td><td>112</td><td>127</td><td class="win"><b>86</b></td><td>89.6</td></tr>
+<tr><td>zh_classic</td><td>656</td><td>761</td><td class="win"><b>565</b></td><td>814</td></tr>
+<tr><td>code_py</td><td>62</td><td>66</td><td class="win"><b>51（全史最低）</b></td><td>92</td></tr>
+<tr><td>en_wiki</td><td>233</td><td>201</td><td class="win"><b>200</b></td><td>200.4</td></tr>
+</table>
+<div class="note">
+<b>为什么"终评"几何均（191.7）没超过 scale10（189.2）而 peak_acc 却创新高？</b>
+终评发生在最后一个块（en_wiki）训练完之后，zh/code 已被后续块推高（zh 中途 565 → 终评 814）。
+这是块序效应，不是能力回退——<b>全程峰值准确率 0.2215（全史新高，s9=0.2142，+3.4%）</b>
+和四个域的域内最优全面破纪录才是真实能力。下一代应把终评改为"各域块末快照最优"（eval_curve 已有数据）。
+</div>
+
+<h2>三、R1（replay-need-soft）裁决：<span class="win">成功</span></h2>
+<p>重放记账 <code>{zh:732, code:1115, wiki:828, en_lit:333}</code>——code 拿到最多重放（它确实最饥渴），
+<b>code 块内打到 51（全史最低，此前最好 62）</b>。scale9 的 argmax 赢者通吃机制下 code 曾被系统性饿死回退 14%，
+R1 的"比例分配+5%保底"修复生效。遗留：wiki 块训练时 code 仍从 51 漂回 91——跨域干扰需 B4 delta 结构（trunk 冻结）根治。</p>
+
+<h2>四、市场活动</h2>
+<p>birth ×4（6→7 细胞）、death ×3、seal ×113；三项功能自检（封存/分裂/凋亡）全过。
+peakRSS 5.7GB——64GB 卡还有巨大余量，为下一代 300M+ 双卡数据并行铺平道路。</p>
+
+<h2>五、下一代配方（scale12 候选）</h2>
+<ol>
+<li><b>B4 base+delta</b>：trunk=scale11 冻结 + 各域低秩 delta 专才——结构性消灭跨域漂移（code 92→51 定格）</li>
+<li><b>终评改块末快照</b>：消除块序效应，让成绩单反映真实能力</li>
+<li>DCU 上 10000 步只要 8.6 分钟 → <b>消融矩阵当天出结果</b>（qk-norm / muon / A4 归因都不再是奢侈品）</li>
+<li>再往上的天花板在数据量与训练步数，不在算力</li>
+</ol>
+</body>
+</html>

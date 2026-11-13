@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>OBM-LM scale9 跨代审判表</title><style>
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#f6f8fa;margin:0}
+.wrap{max-width:920px;margin:0 auto;background:#fff;padding:34px 40px 60px}
+h1{font-size:1.5em;margin:0 0 4px}
+h2{font-size:1.1em;margin-top:34px}
+.sub{color:#667;margin-bottom:24px}
+table{border-collapse:collapse;width:100%;margin:18px 0}
+th,td{border:1px solid #dde;padding:9px 12px;text-align:center;font-size:.95em}
+th{background:#f0f4f8}
+.ok{color:#0a7d32;font-weight:700}.bad{color:#c0392b;font-weight:700}
+.note{background:#f6f9fc;border-left:4px solid #4a90d9;padding:12px 16px;margin:14px 0;font-size:.92em;line-height:1.8}
+.warn{border-left-color:#e67e22;background:#fdf6ee}
+</style></head><body><div class="wrap">
+<h1>OBM-LM scale9 跨代审判表</h1>
+<div class="sub">2026-11-07 06:30 生成 · A4 补丁首战（双因子集成 F / 慢周期闭卷复评 G / 分位数自校准 A）· 作业 ID 与节点已脱敏</div>
+
+<h2>一、四域成绩（域 ppl，越低越好；口径说明见技术报告 §5.4）</h2>
+<table>
+<tr><th>域</th><th>scale8（75M/3细胞）</th><th>scale9（101M/4细胞 + A4）</th><th>Δ</th><th>世代最优</th></tr>
+<tr><td>en_lit</td><td>112.6</td><td class="ok">112.0</td><td>−0.5%</td><td class="ok">112.0 (scale9)</td></tr>
+<tr><td>zh_classic</td><td>799.8</td><td class="ok">656.1</td><td class="ok">−18.0%</td><td class="ok">656.1 (scale9)</td></tr>
+<tr><td>code_py</td><td class="ok">54.5</td><td>62.4</td><td class="bad">+14.4%</td><td class="ok">54.5 (scale8)</td></tr>
+<tr><td>en_wiki</td><td>277.0</td><td class="ok">232.6</td><td class="ok">−16.0%</td><td class="ok">232.6 (scale9)</td></tr>
+<tr><td><b>四域几何平均</b></td><td>192.0</td><td class="ok">180.7</td><td class="ok"><b>−5.9%</b></td><td class="ok">180.7 (scale9)</td></tr>
+</table>
+<table>
+<tr><th>域</th><th>scale8 acc</th><th>scale9 acc</th><th>Δ</th></tr>
+<tr><td>en_lit</td><td>0.2360</td><td>0.2331</td><td>≈持平</td></tr>
+<tr><td>zh_classic</td><td>0.1452</td><td class="ok">0.1533</td><td class="ok">+5.6%</td></tr>
+<tr><td>code_py</td><td>0.3242</td><td>0.2881</td><td class="bad">−11.1%</td></tr>
+<tr><td>en_wiki</td><td>0.1465</td><td class="ok">0.1735</td><td class="ok">+18.4%</td></tr>
+<tr><td>全程峰值 acc</td><td>0.195</td><td class="ok">0.2142</td><td class="ok">+9.8%</td></tr>
+</table>
+
+<div class="note"><b>判读</b>：zh 与 en_wiki 两位数提升、en_lit 持平，代价是 code_py 回退 14%（但其块内最优点仍达 57.7，距 scale8 的 54.5 仅 6%——属块末领地漂移，不是能力丧失）。<b>净收益为正：A4 首战判「有效」。</b></div>
+
+<h2>二、A4 三机制裁决</h2>
+<table>
+<tr><th>机制</th><th>证据</th><th>裁决</th></tr>
+<tr><td>F 双因子集成权重 exp(β·rel−δ·ent)</td><td>市场路由未出现雪崩，四域终评无单一细胞塌方</td><td class="ok">有效（维持默认开启）</td></tr>
+<tr><td>G 慢周期闭卷复评</td><td>全程 77 次封存、事件账本健康；replay_need_book 产出可用遥测：code −5.93（最饥渴）· en_lit −5.70 · zh −5.56 · wiki +0.165（已饱和）</td><td class="ok">有效（阈值自校准产物可用）</td></tr>
+<tr><td>A 分位数自校准阈值</td><td>本次训入历史分位（无塌缩迹象），death/birth 判定未误触发自残</td><td class="ok">有效（维持）</td></tr>
+<tr><td>λ=1.0 / dream-seq / dist_refresh=10</td><td>本代未做 AB 消融，无法归因到单项</td><td class="warn">存疑待验（列入下一代 AB）</td></tr>
+</table>
+
+<h2>三、运行指标</h2>
+<table>
+<tr><th>指标</th><th>值</th></tr>
+<tr><td>规模</td><td>101.04M 参数（D=512, L=8, B=16, ctx=128）· 4 细胞满编</td></tr>
+<tr><td>训练</td><td>resume 自 scale8@step37800 → 47800 步（新增 10000 步，四块对称域序）</td></tr>
+<tr><td>耗时</td><td>wall 557 分钟 · step 均值 3322ms（p50 2448ms）· 613 tok/s · peakRSS 5.3GB</td></tr>
+<tr><td>资源</td><td>16 核 CPU + 1×DCU（GAP_NDCU=1）· 队列 hx1hdnormal</td></tr>
+<tr><td>市场事件</td><td>seal 封存 ×77（新增 15）· death 凋亡 ×3（历史继承）· birth 分裂 ×1（#5 预备役承接 #4 合同底座）</td></tr>
+<tr><td>replay</td><td>四块 replayed 753 → 1532 → 2265 → 3009（每块约 +750，replay-need 均匀供给）</td></tr>
+<tr><td>功能自检</td><td>seal ✓ birth ✓ death ✓ · function_pass=True</td></tr>
+<tr><td>权重</td><td>scale9_weights.pkl 269MB · MD5 <code>1d9bd29d4862d5577018cbe67a34326a</code>（远端 manifest 一致）</td></tr>
+</table>
+
+<h2>四、遗留问题与下一代</h2>
+<div class="note warn">
+<b>① code_py 回退 14%</b>：scale8 的 code 专才 54.1 是 75M 规模强基线；scale9 加细胞后新领地稀释了 code 块的 replay 配额。候选修复：replay-need 已给出 code 最饥渴的信号（−5.93），下一代把该信号直接接进 replay 采样权重（当前只是遥测，未闭环）。<br>
+<b>② A4 单项消融缺失</b>：F/G/A 三机制同时点火，收益无法归因。下一代安排双进程 AB（exp_e4_a4_ab.py 已就绪）。<br>
+<b>③ B4 base+delta 未上全尺寸</b>：trunk=scale8 冻结 + 低秩 delta 专才的方案（17.7% 参数、雪崩结构性消失）是下一代主菜，scale9 的 4 细胞权重可作为第二 trunk 候选。
+</div>
+
+<div class="note" style="margin-top:30px;color:#889;font-size:.85em">
+产物：<a href="obm-scale9-weights-20261107.bin">obm-scale9-weights-20261107.bin</a>（257MB）·
+<a href="obm-scale9-logs-20261107.bin">obm-scale9-logs-20261107.bin</a>（成绩单+日志，zip 改后缀解压）·
+本页 · <a href="index.html">返回下载页</a>
+</div>
+</div></body></html>

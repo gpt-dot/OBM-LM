@@ -1,0 +1,30 @@
+  [resume] loaded results_lab/scale9_weights.pkl @step47800
+== [scale10] cells=4 params=101.04M D=512 L=8 B=16 dr=10 dp=200 steps/blk=2500 total=10000
+  [weights] dtype=fp16 -> /public/home/your_account/obm_mvp/results_lab/scale10_weights.pkl
+  [eval@48000] en_lit=106 zh_classic=895 code_py=276 en_wiki=314
+  [eval@48500] en_lit=100 zh_classic=1150 code_py=182 en_wiki=338
+  [eval@49000] en_lit=101 zh_classic=843 code_py=201 en_wiki=344
+  [eval@49500] en_lit=106 zh_classic=2050 code_py=172 en_wiki=336
+  [eval@50000] en_lit=97 zh_classic=1446 code_py=189 en_wiki=338
+  [blk0:en_lit] done @step50300 cells=5 seg=83 replayed=755 8751s
+  [eval@50500] en_lit=127 zh_classic=739 code_py=161 en_wiki=332
+  [eval@51000] en_lit=98 zh_classic=700 code_py=176 en_wiki=346
+  [eval@51500] en_lit=109 zh_classic=681 code_py=178 en_wiki=321
+  [eval@52000] en_lit=110 zh_classic=648 code_py=156 en_wiki=361
+  [eval@52500] en_lit=146 zh_classic=659 code_py=167 en_wiki=338
+  [blk1:zh_classic] done @step52800 cells=5 seg=88 replayed=1496 17620s
+  [eval@53000] en_lit=143 zh_classic=748 code_py=72 en_wiki=339
+  [eval@53500] en_lit=142 zh_classic=1047 code_py=70 en_wiki=342
+  [eval@54000] en_lit=147 zh_classic=997 code_py=65 en_wiki=353
+  [eval@54500] en_lit=151 zh_classic=1069 code_py=61 en_wiki=356
+  [eval@55000] en_lit=134 zh_classic=845 code_py=59 en_wiki=415
+  [blk2:code_py] done @step55300 cells=6 seg=95 replayed=2234 27383s
+  [eval@55500] en_lit=141 zh_classic=874 code_py=66 en_wiki=263
+  [eval@56000] en_lit=143 zh_classic=999 code_py=66 en_wiki=242
+  [eval@56500] en_lit=136 zh_classic=794 code_py=64 en_wiki=221
+  [eval@57000] en_lit=136 zh_classic=800 code_py=65 en_wiki=217
+  [eval@57500] en_lit=127 zh_classic=776 code_py=71 en_wiki=212
+  [blk3:en_wiki] done @step57800 cells=6 seg=98 replayed=3008 36753s
+  [weights] saved -> /public/home/your_account/obm_mvp/results_lab/scale10_weights.pkl (151.6M params)
+  [eval] en_lit=127 zh_classic=761 code_py=66 en_wiki=201
+== [scale10] DONE wall=612.6min step=3651ms(p50 2449ms) tok/s=557 peakRSS=7308MB params=151.56M cells=6 events={'seal': 98, 'death': 3, 'birth': 3} | 功能 seal(封存/边界)=✓ birth(分裂)=✓ death(凋亡)=✓ pass=True

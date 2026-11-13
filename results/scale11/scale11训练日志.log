@@ -1,0 +1,30 @@
+  [resume] loaded results_lab/scale10_weights.pkl @step57800
+== [scale11] cells=6 params=151.56M D=512 L=8 B=16 dr=10 dp=200 steps/blk=2500 total=10000
+  [weights] dtype=fp16 -> /public/home/your_account/obm_mvp/results_lab/scale11_weights.pkl
+  [eval@58000] en_lit=93 zh_classic=823 code_py=180 en_wiki=223
+  [eval@58500] en_lit=91 zh_classic=798 code_py=150 en_wiki=243
+  [eval@59000] en_lit=90 zh_classic=853 code_py=124 en_wiki=224
+  [eval@59500] en_lit=87 zh_classic=762 code_py=97 en_wiki=239
+  [eval@60000] en_lit=86 zh_classic=800 code_py=171 en_wiki=216
+  [blk0:en_lit] done @step60300 cells=6 seg=103 replayed=755 127s
+  [eval@60500] en_lit=89 zh_classic=624 code_py=145 en_wiki=238
+  [eval@61000] en_lit=91 zh_classic=608 code_py=139 en_wiki=242
+  [eval@61500] en_lit=90 zh_classic=588 code_py=132 en_wiki=240
+  [eval@62000] en_lit=91 zh_classic=573 code_py=128 en_wiki=235
+  [eval@62500] en_lit=95 zh_classic=669 code_py=132 en_wiki=236
+  [blk1:zh_classic] done @step62800 cells=6 seg=105 replayed=1496 241s
+  [eval@63000] en_lit=92 zh_classic=565 code_py=119 en_wiki=250
+  [eval@63500] en_lit=90 zh_classic=562 code_py=54 en_wiki=241
+  [eval@64000] en_lit=177 zh_classic=869 code_py=52 en_wiki=470
+  [eval@64500] en_lit=90 zh_classic=852 code_py=51 en_wiki=242
+  [eval@65000] en_lit=93 zh_classic=838 code_py=63 en_wiki=255
+  [blk2:code_py] done @step65300 cells=7 seg=109 replayed=2234 391s
+  [eval@65500] en_lit=89 zh_classic=830 code_py=91 en_wiki=217
+  [eval@66000] en_lit=90 zh_classic=833 code_py=91 en_wiki=214
+  [eval@66500] en_lit=90 zh_classic=817 code_py=92 en_wiki=206
+  [eval@67000] en_lit=90 zh_classic=818 code_py=92 en_wiki=203
+  [eval@67500] en_lit=89 zh_classic=817 code_py=93 en_wiki=202
+  [blk3:en_wiki] done @step67800 cells=7 seg=113 replayed=3008 512s
+  [weights] saved -> /public/home/your_account/obm_mvp/results_lab/scale11_weights.pkl (176.8M params)
+  [eval] en_lit=90 zh_classic=814 code_py=92 en_wiki=200
+== [scale11] DONE wall=8.6min step=47ms(p50 28ms) tok/s=39823 peakRSS=5719MB params=176.82M cells=7 events={'seal': 113, 'death': 3, 'birth': 4} | 功能 seal(封存/边界)=✓ birth(分裂)=✓ death(凋亡)=✓ pass=True
